@@ -42,6 +42,7 @@
 
 <img alt="Hierarchy with explanations" src="https://raw.githubusercontent.com/swannman/ircapabilities/master/hierarchy.png" />
 
+[Ref: Matt Swann](https://github.com/swannman/ircapabilities)
 
 # Header 1
 ## Header 2
