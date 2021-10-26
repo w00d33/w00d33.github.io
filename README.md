@@ -39,44 +39,11 @@
 	* Compliance verification
 
 ## Incident Response Hierarchy of Needs
-
 <img alt="Hierarchy with explanations" src="https://raw.githubusercontent.com/swannman/ircapabilities/master/hierarchy.png" />
 
 [Ref: Matt Swann](https://github.com/swannman/ircapabilities)
 
-
 ## Attack Lifecycle
-
 <img alt="Micosoft's Attack Lifecycle" src="https://docs.microsoft.com/en-us/advanced-threat-analytics/media/attack-kill-chain-small.jpg" />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-
-
+## [SANS Windows Forensic Analysis Poster](https://github.com/w00d33/w00d33.github.io/blob/main/_files/SANS_Windows_Forensics_Poster.pdf)
