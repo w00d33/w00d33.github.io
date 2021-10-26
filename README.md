@@ -46,4 +46,5 @@
 ## Attack Lifecycle
 <img alt="Micosoft's Attack Lifecycle" src="https://docs.microsoft.com/en-us/advanced-threat-analytics/media/attack-kill-chain-small.jpg" />
 
-## [SANS Windows Forensic Analysis Poster](https://github.com/w00d33/w00d33.github.io/blob/main/_files/SANS_Windows_Forensics_Poster.pdf)
+## SANS Windows Forensic Analysis Poster
+[Link](https://github.com/w00d33/w00d33.github.io/blob/main/_files/SANS_Windows_Forensics_Poster.pdf)
