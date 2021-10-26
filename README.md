@@ -70,8 +70,11 @@
 * [LOLBAS Project](https://lolbas-project.github.io/)
 
 ## Persitence Locations
-AutoStart - Start automatically at system boot or user login
+
+# AutoStart
 ```
+Common Autostart Locations
+
 NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Run
 NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\RunOnce
 SOFTWARE\Microsoft\Windows\CurrentVersion\Runonce
@@ -80,3 +83,20 @@ SOFTWARE\Microsoft\Windows\CurrentVersion\Run
 SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Userinit
 %AppData%\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 ```
+
+Tools
+* Autoruns
+* Kansa
+
+# Services
+```
+HKLM\SYSTEM\CurrentControlSet\Services
+```
+* 0x02 = Automatic
+* 0x00 = Boot Start of a Device Driver
+* "sc" command can create services
+
+Tools
+* Autoruns
+* "sc" command
+* Kansa
