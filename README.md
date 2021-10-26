@@ -6,6 +6,7 @@
   * [Incident Response Hierarchy of Needs](#incident-response-hierarchy-of-needs)
   * [Attack Lifecycle](#attack-lifecycle)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
+# Hunting
   * [Common Malware Names](#common-malware-names)
   * [Common Malware Locations](#common-malware-locations)
   * [Living of the Land Binaries](#living-of-the-land-binaries)
@@ -67,3 +68,18 @@
 
 ## Living of the Land Binaries
 * [LOLBAS Project](https://lolbas-project.github.io/)
+
+## Persitence Locations
+
+# AutoStart
+Start automatically at system boot or user login
+
+```
+NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Run
+NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\RunOnce
+SOFTWARE\Microsoft\Windows\CurrentVersion\Runonce
+SOFTWARE\Microsoft\Windows\CurrentVersion\policies\Explorer\Run
+SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Userinit
+%AppData%\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+```
