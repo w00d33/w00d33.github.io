@@ -44,6 +44,27 @@
 
 [Ref: Matt Swann](https://github.com/swannman/ircapabilities)
 
+
+## Attack Lifecycle
+
+<img alt="Micosoft's Attack Lifecycle" src="https://docs.microsoft.com/en-us/advanced-threat-analytics/media/attack-kill-chain-small.jpg" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Header 1
 ## Header 2
 ### Header 3
