@@ -11,10 +11,29 @@
 	* Notification from user
 	* Hunt for additional compromise
 3. Containment/Intelligence Development
-	* Ide
+	* Identify vulnerabilities or exploits
+	* Persistence Techniques
+	* Lateral Movement
+	* Command and Control
+	* Implement mitigative changes to environment
+	* Produce threat intel
 4. Eradication/Remediation
+	* Block IPs and Domains
+	* Restore systems
+	* Password changes
+	* Vulnerability patching
 5. Recovery
+	* Improve logging (SIEM)
+	* Cybersecurity Awareness
+	* Segmentation
+	* Password policies
+	* Vulnerability management
+	* Network/Endpoint visibility
 6. Lessons Learned/Threat Intel Consumption
+	* Verify remediations
+	* Penetration tests
+	* Information sharing
+	* Compliance verification
 
 
 
