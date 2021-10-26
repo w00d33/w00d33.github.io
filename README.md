@@ -1,8 +1,10 @@
+# Notes on DFIR, Threat Hunting, and Malware Analysis
+
 ## Incident Response Process (Cyclical)
 1. Preparation
 	* Creating a response capability
 	* Testing response capabilites
-	* Securing Systems
+	* Securing Systems  
 
 2. Identification and Scoping
 3. Containment/Intelligence Development
