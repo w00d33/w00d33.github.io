@@ -5,6 +5,7 @@
 	* Creating a response capability
 	* Testing response capabilites
 	* Securing Systems
+	* Changes to response capabilties from lessons learned
 2. Identification and Scoping
 	* Alert from security tools
 	* Result of threat hunting
@@ -15,13 +16,15 @@
 	* Persistence Techniques
 	* Lateral Movement
 	* Command and Control
-	* Implement mitigative changes to environment
-	* Produce threat intel
+	* IOC developement
+	* Mitigative actions to slow attacker
 4. Eradication/Remediation
 	* Block IPs and Domains
 	* Restore systems
 	* Password changes
 	* Vulnerability patching
+	* Prevent further adversarial access
+	* Remove adversarial presence
 5. Recovery
 	* Improve logging (SIEM)
 	* Cybersecurity Awareness
@@ -35,7 +38,9 @@
 	* Information sharing
 	* Compliance verification
 
+## Incident Response Hierarchy of Needs
 
+<img alt="Hierarchy with explanations" src="https://raw.githubusercontent.com/swannman/ircapabilities/master/hierarchy.png" />
 
 
 # Header 1
