@@ -4,8 +4,7 @@
 1. Preparation
 	* Creating a response capability
 	* Testing response capabilites
-	* Securing Systems
-<br/>
+	* Securing Systems<br/>
 2. Identification and Scoping
 3. Containment/Intelligence Development
 4. Eradication/Remediation
