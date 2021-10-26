@@ -114,3 +114,6 @@ Phantom DLL Hijacking
 
 DLL Side Loading
 - WinSXS provides a new version of a legit DLL
+
+Relative Path DLL Hijacking
+- Copy target .exe and corresponding bad .dll to a different location
