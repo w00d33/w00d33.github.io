@@ -54,3 +54,6 @@
 
 ## Common Malware Locations
 * [Digging for Malware: Suspicious Filesystem Geography](http://www.malicious-streams.com/resources/articles/DGMW1_Suspicious_FS_Geography.html)
+
+## Living of the Land Binaries (LOLBin)
+* [LOLBAS Project](https://lolbas-project.github.io/)
