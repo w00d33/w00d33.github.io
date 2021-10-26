@@ -1,14 +1,16 @@
 # Notes on DFIR, Threat Hunting, and Malware Analysis
 
-  * [Incident Response Process (Cyclical)](#incident-response-process--cyclical-)
+## Table of Contents
+
+  * [Incident Response Process](#incident-response-process)
   * [Incident Response Hierarchy of Needs](#incident-response-hierarchy-of-needs)
   * [Attack Lifecycle](#attack-lifecycle)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
-  * [Common Malware Names (Homomorphic Abuse)](#common-malware-names--homomorphic-abuse-)
+  * [Common Malware Names](#common-malware-names)
   * [Common Malware Locations](#common-malware-locations)
-  * [Living of the Land Binaries (LOLBin)](#living-of-the-land-binaries--lolbin-)
+  * [Living of the Land Binaries](#living-of-the-land-binaries)
 
-## Incident Response Process (Cyclical)
+## Incident Response Process
 1. Preparation
 	* Creating a response capability
 	* Testing response capabilites
@@ -57,11 +59,11 @@
 ## SANS Windows Forensic Analysis Poster
 * [Link](https://github.com/w00d33/w00d33.github.io/blob/main/_files/SANS_Windows_Forensics_Poster.pdf)
 
-## Common Malware Names (Homomorphic Abuse)
+## Common Malware Names
 * [The typographical and homomorphic abuse of svchost.exe, and other popular file names](https://www.hexacorn.com/blog/2015/12/18/the-typographical-and-homomorphic-abuse-of-svchost-exe-and-other-popular-file-names/)
 
 ## Common Malware Locations
 * [Digging for Malware: Suspicious Filesystem Geography](http://www.malicious-streams.com/resources/articles/DGMW1_Suspicious_FS_Geography.html)
 
-## Living of the Land Binaries (LOLBin)
+## Living of the Land Binaries
 * [LOLBAS Project](https://lolbas-project.github.io/)
