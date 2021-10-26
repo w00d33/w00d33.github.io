@@ -4,9 +4,14 @@
 1. Preparation
 	* Creating a response capability
 	* Testing response capabilites
-	* Securing Systems<br/>
+	* Securing Systems
 2. Identification and Scoping
+	* Alert from security tools
+	* Result of threat hunting
+	* Notification from user
+	* Hunt for additional compromise
 3. Containment/Intelligence Development
+	* Ide
 4. Eradication/Remediation
 5. Recovery
 6. Lessons Learned/Threat Intel Consumption
