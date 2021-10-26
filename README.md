@@ -7,7 +7,7 @@ Incident Response
   * [Incident Response Hierarchy of Needs](#incident-response-hierarchy-of-needs)
   * [Attack Lifecycle](#attack-lifecycle)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)   
-  
+
 Hunting
   * [Common Malware Names](#common-malware-names)
   * [Common Malware Locations](#common-malware-locations)
@@ -109,6 +109,7 @@ DLL Search Order Hijacking
 - Place malicious file ahead of DLL in search order
 - Windows looks at Application directory prior to Windows/System32 folder
 - Look at exe's import table
+- Exception: DLLs present in the KnownDLLs Registry Key
 
 Phantom DLL Hijacking
 - Find DLLs that applications attempt to load, but doesn't exist
@@ -118,3 +119,25 @@ DLL Side Loading
 
 Relative Path DLL Hijacking
 - Copy target .exe and corresponding bad .dll to a different location
+
+Common DLL Search Order
+1. DLLs already in memory
+2. Side-by-side components
+3. KnownDLLs List
+4. Directory of the application
+5. C:\Windows\System32
+6. C:\Windows\System
+7. C:\Windows
+8. Current Directory
+9. System %PATH%
+
+### Hunting DLL Hijacking
+- Machines rarely get new dlls (Application Install/Patching)
+
+File system analysis
+- Look for new or unsigned .exe/.dll files in unusual places
+
+Memory Analysis
+- Find system process or DLLs loaded from the wrong location
+
+This technique is often followed up C2 network beaconing
