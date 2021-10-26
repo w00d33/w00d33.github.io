@@ -2,11 +2,12 @@
 
 ## Table of Contents
 
+Incident Response
   * [Incident Response Process](#incident-response-process)
   * [Incident Response Hierarchy of Needs](#incident-response-hierarchy-of-needs)
   * [Attack Lifecycle](#attack-lifecycle)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
-# Hunting
+Hunting
   * [Common Malware Names](#common-malware-names)
   * [Common Malware Locations](#common-malware-locations)
   * [Living of the Land Binaries](#living-of-the-land-binaries)
@@ -71,7 +72,7 @@
 
 ## Persitence Locations
 
-# AutoStart
+### AutoStart
 ```
 Common Autostart Locations
 
@@ -88,7 +89,7 @@ Tools
 * Autoruns
 * Kansa
 
-# Services
+### Services
 ```
 HKLM\SYSTEM\CurrentControlSet\Services
 ```
@@ -100,3 +101,16 @@ Tools
 * Autoruns
 * "sc" command
 * Kansa
+
+### DLL Hijacking
+
+DLL Search Order Hijacking
+- Place malicious file ahead of DLL in search order
+- Windows looks at Application directory prior to Windows/System32 folder
+- Look at exe's import table
+
+Phantom DLL Hijacking
+- Find DLLs that applications attempt to load, but doesn't exist
+
+DLL Side Loading
+- WinSXS provides a new version of a legit DLL
