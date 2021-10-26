@@ -1,3 +1,15 @@
+# Incident Response Process (Cyclical)
+1. Preparation
+	* Test
+2. Identification and Scoping
+3. Containment/Intelligence Development
+4. Eradication/Remediation
+5. Recovery
+6. Lessons Learned/Threat Intel Consumption
+
+
+
+
 # Header 1
 ## Header 2
 ### Header 3
