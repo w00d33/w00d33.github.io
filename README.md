@@ -1,6 +1,9 @@
-# Incident Response Process (Cyclical)
+## Incident Response Process (Cyclical)
 1. Preparation
-	* Test
+	* Creating a response capability
+	* Testing response capabilites
+	* Securing Systems
+
 2. Identification and Scoping
 3. Containment/Intelligence Development
 4. Eradication/Remediation
