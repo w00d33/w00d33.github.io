@@ -70,10 +70,7 @@
 * [LOLBAS Project](https://lolbas-project.github.io/)
 
 ## Persitence Locations
-
-# AutoStart
-Start automatically at system boot or user login
-
+AutoStart - Start automatically at system boot or user login
 ```
 NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Run
 NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\RunOnce
