@@ -6,7 +6,7 @@ Incident Response
   * [Incident Response Process](#incident-response-process)
   * [Incident Response Hierarchy of Needs](#incident-response-hierarchy-of-needs)
   * [Attack Lifecycle](#attack-lifecycle)
-  * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
+  * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)  
 Hunting
   * [Common Malware Names](#common-malware-names)
   * [Common Malware Locations](#common-malware-locations)
