@@ -1,5 +1,13 @@
 # Notes on DFIR, Threat Hunting, and Malware Analysis
 
+  * [Incident Response Process (Cyclical)](#incident-response-process--cyclical-)
+  * [Incident Response Hierarchy of Needs](#incident-response-hierarchy-of-needs)
+  * [Attack Lifecycle](#attack-lifecycle)
+  * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
+  * [Common Malware Names (Homomorphic Abuse)](#common-malware-names--homomorphic-abuse-)
+  * [Common Malware Locations](#common-malware-locations)
+  * [Living of the Land Binaries (LOLBin)](#living-of-the-land-binaries--lolbin-)
+
 ## Incident Response Process (Cyclical)
 1. Preparation
 	* Creating a response capability
