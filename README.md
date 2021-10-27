@@ -2,21 +2,21 @@
 
 ## Table of Contents
 
-  * [Table of Contents](#table-of-contents)
-  * [Incident Response Process](#incident-response-process)
-  * [Incident Response Hierarchy of Needs](#incident-response-hierarchy-of-needs)
-  * [Attack Lifecycle](#attack-lifecycle)
-  * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
-  * [Common Malware Names](#common-malware-names)
-  * [Common Malware Locations](#common-malware-locations)
-  * [Living of the Land Binaries](#living-of-the-land-binaries)
-  * [Persitence Locations](#persitence-locations)
-    + [AutoStart](#autostart)
-    + [Services](#services)
-    + [DLL Hijacking](#dll-hijacking)
-    + [Hunting DLL Hijacking](#hunting-dll-hijacking)
-    + [WMI Event Consumer Backdoors](#wmi-event-consumer-backdoors)
-    
+- [Incident Response Process](#incident-response-process)
+- [Incident Response Hierarchy of Needs](#incident-response-hierarchy-of-needs)
+- [Attack Lifecycle](#attack-lifecycle)
+- [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
+- [Common Malware Names](#common-malware-names)
+- [Common Malware Locations](#common-malware-locations)
+- [Living of the Land Binaries](#living-of-the-land-binaries)
+- [Persitence Locations](#persitence-locations)
+  * [AutoStart](#autostart)
+  * [Services](#services)
+  * [DLL Hijacking](#dll-hijacking)
+  * [Hunting DLL Hijacking](#hunting-dll-hijacking)
+  * [WMI Event Consumer Backdoors](#wmi-event-consumer-backdoors)
+  * [Hunting WMI Persistence](#hunting-wmi-persistence)
+
 ## Incident Response Process
 1. Preparation
 	* Creating a response capability
@@ -163,7 +163,7 @@ Get-WMIObject -Namespace root\Subscription -Class __Event Consumer
 Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 ```
 
-Hunting WMI Persistence
+### Hunting WMI Persistence
 - Look at consumers (CommandLine and Active Script)
 	- Correlate to Event Filter (trigger)
 - Search
