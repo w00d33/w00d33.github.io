@@ -168,13 +168,11 @@ Distributed Kansa
 ### Stacking Autoruns
 
 1. Run ```Get-ASEPImagePathLaunchStringStack.ps1``` against autoruns data from workstations and output to csv
-
 ```powershell
 .\Get-ASEPImagePathLaunchStringMD5UnsignedStack.ps1 >asep-workstation-stack.csv
 ```
 
 2. Note entries with the least amount of occurences and the associated workstations
-
 ```powershell
 Select-String "process name" *Autorunsc.csv
 ```
@@ -182,7 +180,6 @@ Select-String "process name" *Autorunsc.csv
 ### Stacking Services
 
 1. Use ```Get-LogparserStack.ps1``` to perform frequency analysis on services
-
 ```powershell
 .\Get-LogparserStack.ps1 -FilePattern *SvcAll.csv -Delimiter "," -Direction asc -OutFile SvcAll-workstation-stack.csv
 ```
@@ -195,7 +192,6 @@ Select-String "process name" *Autorunsc.csv
 	- Enter "quit" to quit
 
 3. Open the csv output and note entries with the least amount of occurences and the associated workstations
-
 ```powershell
 Select-String "tbbd05" *SvcAll.csv 
 ```
@@ -203,7 +199,6 @@ Select-String "tbbd05" *SvcAll.csv
 ### Stacking WMI Filters and Consumers
 
 1. Use ```Get-LogparserStack.ps1``` to perform frequency analysis on WMI Filters
-
 ```powershell
 .\Get-LogparserStack.ps1 -FilePattern *WMIEvtFilter.csv -Delimiter "," -Direction asc -OutFile WMIEvtFilter-workstation-stack.csv
 ```
@@ -215,19 +210,16 @@ Select-String "tbbd05" *SvcAll.csv
 	- Enter "quit" to quit
 
 3. Open the csv output and note entries with the least amount of occurences and the associated workstations
-
 ```powershell
 Select-String "PerformanceMonitor" *WMIEvtFilter.csv
 ```
 
 4. Search the Kansa WMI Binding output data
-
 ```powershell
 Select-String "PerformanceMonitor" *ConBind.csv
 ```
 
 5. Search the Kansa WMI Event Consumer output data
-
 ```powershell
 Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 ```
