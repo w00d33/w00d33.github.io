@@ -141,3 +141,20 @@ Memory Analysis
 - Find system process or DLLs loaded from the wrong location
 
 This technique is often followed up C2 network beaconing
+
+### WMI Event Consumer Backdoors
+- Allows triggers to be set that will run scripts and executables
+- Event Filter: Trigger Condition
+- Event Consumer: Script or executable to run
+- Binding: Combine Filter and Consumer
+
+Tools
+- Kansa
+- Autoruns
+
+Discover Suspicious WMI Events
+```powershell
+Get-WMIObject -Namespace root\Subscription -Class _EventFilter
+Get-WMIObject -Namespace root\Subscription -Class _Event Consumer
+Get-WMIObject -Namespace root\Subscription -Class _FilterToConsumerBinding
+```
