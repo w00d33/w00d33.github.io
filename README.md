@@ -163,6 +163,19 @@ Distributed Kansa
 - [Kansa for Enterprise scale Threat Hunting w/ Jon Ketchum](https://www.youtube.com/watch?v=ZyTbqpc7H-M)
 - [Kansa for Enterprise Scale Threat Hunting](https://www.sans.org/presentations/kansa-for-enterprise-scale-threat-hunting/)
 
+Enable PowerShell Remoting
+- Remoting requires that all network connections be set to something other than "Public." 
+
+1. User ```Get-NetConnectionProfile``` to check
+2. If necessary, change it to Private with ```Set-NetConnectionProfile```
+```powershell
+Set-NetConnectionProfile -InterfaceIndex XX -NetworkCategory Private
+```
+3. Enable PowerShell Remoting with ```Enable-PSRemoting -force```
+4. Run Kansa
+```powershell
+.\kansa.ps1 -Pushbin -Target computername -Credential SANSDFIR -Authentication Negotiate
+```
 ## Kansa Data Stacking Collection and Analysis
 
 ### Stacking Autoruns
