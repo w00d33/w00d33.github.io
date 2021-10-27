@@ -107,12 +107,20 @@ wmic /node:10.1.1.1 nicconfig get
 
 Remoting
 ```powershell
-Enter-PSSession <computername>
+Enter-PSSession computername
 Invoke-Command -ScriptBlock -Filepath -AsJob
 ```
 - [The Power of PowerShell Remoting](https://www.sans.org/blog/the-power-of-powershell-remoting/)
 - [Invoke-Command](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command?view=powershell-7.1)
 - [PowerShell Remoting Performance](https://www.hofferle.com/powershell-remoting-performance/)
+
+Authentication
+- Non-interactive (Type 3) logon
+- Does not cache creds
+- Creds not passed to remote system (Mimikatz, Incognito)
+
+### Kansa
+[Kansa GitHub](https://github.com/davehull/Kansa)
 
 ---
 
