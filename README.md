@@ -228,3 +228,20 @@ Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 		- Unfamiliar Signers
 		- Blank (No Signer)
 4. Filter by Enabled (Active)
+5. Compare hashes to VirusTotal
+6. Research vendor and product listed in "Publisher" and "Description" fields
+7. Compare output to a the output of a known good machine
+
+# Misc
+
+## Decode Base64
+
+```bash
+echo  "SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AVwBlAGIAQwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACcAaAB0AHQAcAA6AC8ALwBzAHEAdQBpAHIAcgBlAGwAZABpAHIAZQBjAHQAbwByAHkALgBjAG8AbQAvAGEAJwApAAoA" | base64 -d | iconv -f UTF-16LE -t UTF-8
+```
+
+## Powershell CommandLine Switches
+- -W: WindowStyle
+- -nop: NoProfile
+- -noni: NonInteractive
+- -ec: EncodedCommand
