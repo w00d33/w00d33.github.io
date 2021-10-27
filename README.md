@@ -159,8 +159,10 @@ Distributed Kansa
 - [Kansa for Enterprise scale Threat Hunting w/ Jon Ketchum](https://www.youtube.com/watch?v=ZyTbqpc7H-M)
 - [Kansa for Enterprise Scale Threat Hunting](https://www.sans.org/presentations/kansa-for-enterprise-scale-threat-hunting/)
 
-### Kansa Data Stacking Collection and Analysis
-Stacking Autoruns
+## Kansa Data Stacking Collection and Analysis
+
+### Stacking Autoruns
+
 1. Run ```Get-ASEPImagePathLaunchStringStack.ps1``` against autoruns data from workstations and output to csv
 
 ```powershell
@@ -168,29 +170,40 @@ Stacking Autoruns
 ```
 
 2. Note entries with the least amount of occurences and the associated workstations
+
 ```powershell
 Select-String "process name" *Autorunsc.csv
 ```
-Stacking Services
+
+### Stacking Services
+
 1. Use ```Get-LogparserStack.ps1``` to perform frequency analysis on services
+
 ```powershell
 .\Get-LogparserStack.ps1 -FilePattern *SvcAll.csv -Delimiter "," -Direction asc -OutFile SvcAll-workstation-stack.csv
 ```
+
 2. Script lists names of headers in the CSV files and prompts for which field to count matching values across all files and then which fields to group by (list) in the output.
 	- Enter "Name"
 	- Name
 	- DisplayName
 	- PathName
 	- Enter "quit" to quit
+
 3. Open the csv output and note entries with the least amount of occurences and the associated workstations
+
 ```powershell
 Select-String "tbbd05" *SvcAll.csv 
 ```
-Stacking WMI Filters and Consumers
+
+### Stacking WMI Filters and Consumers
+
 1. Use ```Get-LogparserStack.ps1``` to perform frequency analysis on WMI Filters
+
 ```powershell
 .\Get-LogparserStack.ps1 -FilePattern *WMIEvtFilter.csv -Delimiter "," -Direction asc -OutFile WMIEvtFilter-workstation-stack.csv
 ```
+
 2. Script lists names of headers in the CSV files and prompts for which field to count matching values across all files and then which fields to group by (list) in the output.
 	- Enter "Name"
 	- Name
@@ -198,17 +211,23 @@ Stacking WMI Filters and Consumers
 	- Enter "quit" to quit
 
 3. Open the csv output and note entries with the least amount of occurences and the associated workstations
+
 ```powershell
 Select-String "PerformanceMonitor" *WMIEvtFilter.csv
 ```
+
 4. Search the Kansa WMI Binding output data
+
 ```powershell
 Select-String "PerformanceMonitor" *ConBind.csv
 ```
+
 5. Search the Kansa WMI Event Consumer output data
+
 ```powershell
 Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 ```
+
 ---
 
 # Digital Forensics
