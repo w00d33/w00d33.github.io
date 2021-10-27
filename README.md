@@ -86,10 +86,8 @@
 
 ## Persitence Locations
 
-### AutoStart
+### Common Autostart Locations
 ```
-Common Autostart Locations
-
 NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Run
 NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\RunOnce
 SOFTWARE\Microsoft\Windows\CurrentVersion\Runonce
