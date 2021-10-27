@@ -15,6 +15,7 @@
   * [Persitence Locations](#persitence-locations)
     + [AutoStart](#autostart)
     + [Services](#services)
+    + [Scheduled Tasks](#scheduled-tasks)
     + [DLL Hijacking](#dll-hijacking)
     + [Hunting DLL Hijacking](#hunting-dll-hijacking)
     + [WMI Event Consumer Backdoors](#wmi-event-consumer-backdoors)
@@ -113,6 +114,21 @@ Tools
 * Autoruns
 * "sc" command
 * Kansa
+
+### Scheduled Tasks
+- at.exe
+	- Deprecated but present in WinXP and Win7+
+	- Recorded in at.job files and schdlgu.txt (XP)
+- schtasks.exe
+	- Activitiy logged in Task Scheduler and Security Logs
+
+```powershell
+schtasks /create /sc minute /mo 1 /tn "Reverse shell" /tr c:\some\directory\revshell.exe
+```
+
+Tools:
+- Autoruns
+- Kansa
 
 ### DLL Hijacking
 
