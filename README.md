@@ -143,6 +143,17 @@ Analysis
 - Located in the .\Analysis folder
 - Uses "stacking" (Least Frequency of Occurence)
 - "Meta" scripts loook at indicators like file size
+- Example
+	- LogParser (LogparserStack.ps1) to stack unsigned Autoruns output from multiple Kansa output files
+	- [Computer Forensics How-To: Microsoft Log Parser](https://www.sans.org/blog/computer-forensics-how-to-microsoft-log-parser/)  
+
+Distributed Kansa
+- Kansa has issues scaling to 1000+ systems
+- Fixed with .\DistributedKansa.ps1
+- Scripts included to set up distrubted Kansa-Servers
+- Modules collect and send data asynchronously to ELK
+- [Kansa for Enterprise scale Threat Hunting w/ Jon Ketchum](https://www.youtube.com/watch?v=ZyTbqpc7H-M)
+- [Kansa for Enterprise Scale Threat Hunting](https://www.sans.org/presentations/kansa-for-enterprise-scale-threat-hunting/)
 
 ```powershell
 .\kansa.ps1 -OutputPath .\Output\ -TargetList .\hostlist -TargetCount 250 -Verbose -Pushbin
