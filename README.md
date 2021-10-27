@@ -215,6 +215,7 @@ Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 - Live System Only
 - Works for Autostart locations, Services, Scheduled Tasks, WMI Events
 - Hashes files and can search VirusTotal for hits
- ```
+
+ ```powershell
  C:\>autorunsc -accepteula -a * -s -h -c -vr > \\server\share\autoruns.csv
  ```
