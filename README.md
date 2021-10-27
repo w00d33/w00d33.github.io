@@ -71,8 +71,27 @@
 <img alt="Micosoft's Attack Lifecycle" src="https://docs.microsoft.com/en-us/advanced-threat-analytics/media/attack-kill-chain-small.jpg" />
 
 ## IR Scripting
-[Running WMI Scripts Against Multiple Computers](https://docs.microsoft.com/en-us/previous-versions/tn-archive/ee692838(v=technet.10))
+- [Running WMI Scripts Against Multiple Computers](https://docs.microsoft.com/en-us/previous-versions/tn-archive/ee692838(v=technet.10))
+- [WMIC for incident response](https://www.sans.org/blog/wmic-for-incident-response/)
+- [Like a Kid in a WMIC Candy Store](https://isc.sans.edu/diary/Tip+of+the+Day+-+Like+a+Kid+in+a+WMIC+Candy+Store/1622)
+- [PoSh-R2](https://github.com/WiredPulse/PoSh-R2)
 
+### Examples
+```
+/node:<remote-IP> | /user:<admin acct>
+```
+Get Auto-Start Process
+```
+wmic /node:10.1.1.1 startup list full
+```
+Remote Process List
+```
+wmic /node:10.1.1.1 process get
+```
+Network Configuration
+```
+wmic /node:10.1.1.1 nicconfig get
+```
 # Digital Forensics
 
 ## SANS Windows Forensic Analysis Poster
