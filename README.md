@@ -127,10 +127,22 @@ Authentication
 - Creds not passed to remote system (Mimikatz, Incognito)
 
 ### Kansa
+Collection
 - [Kansa GitHub](https://github.com/davehull/Kansa)
 - Uses PowerShell scripting
 - Can remote run executables
 - Modules.conf manages what scripts run
+- Omit -TargetList and Kansa will query AD for a list of computers and target all of them
+	- Requires [Remote Server Administration Tools](https://www.microsoft.com/en-us/download/details.aspx?id=39296)
+- -TargetCount limits the total number of systems queried
+- -PushBin required by scripts that employ 3rd party binaries (will first copy binaries to targets before running)
+- -Rmbin removes binaries after execution  
+
+Analysis
+- Can pre-filter and organize data
+- Located in the .\Analysis folder
+- Uses "stacking" (Least Frequency of Occurence)
+- "Meta" scripts loook at indicators like file size
 
 ```powershell
 .\kansa.ps1 -OutputPath .\Output\ -TargetList .\hostlist -TargetCount 250 -Verbose -Pushbin
