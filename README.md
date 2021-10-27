@@ -154,7 +154,31 @@ Tools
 
 Discover Suspicious WMI Events
 ```powershell
-Get-WMIObject -Namespace root\Subscription -Class _EventFilter
-Get-WMIObject -Namespace root\Subscription -Class _Event Consumer
-Get-WMIObject -Namespace root\Subscription -Class _FilterToConsumerBinding
+Get-WMIObject -Namespace root\Subscription -Class __EventFilter
+Get-WMIObject -Namespace root\Subscription -Class __Event Consumer
+Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 ```
+
+Hunting WMI Persistence
+- Look at consumers (CommandLine and Active Script)
+	- Correlate to Event Filter (trigger)
+- Search
+	- .exe
+	- .vbs
+	- .ps1
+	- .dll
+	- .eval
+	- ActiveXObject
+	- powershell
+	- CommandLineTemplate
+	- ScriptText
+- Common WMI Occurences
+	- SCM Event Log Consumer
+	- BVTFilter
+	- TSlogonEvents.vbs
+	- TSLogonFilter
+	- RAevent.vbs
+	- RmAssistEventFilter
+	- KernCap.vbs
+	- NETEventLogConsumer
+	- WSCEAA.exe (Dell)
