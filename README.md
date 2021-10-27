@@ -316,4 +316,4 @@ echo  "SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AV
 - -W: WindowStyle
 - -nop: NoProfile
 - -noni: NonInteractive
-- -ec: EncodedCommand 
+- -ec: EncodedCommand
