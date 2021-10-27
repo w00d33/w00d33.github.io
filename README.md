@@ -6,6 +6,10 @@
   * [Incident Response Process](#incident-response-process)
   * [Incident Response Hierarchy of Needs](#incident-response-hierarchy-of-needs)
   * [Attack Lifecycle](#attack-lifecycle)
+  * [IR Scripting](#ir-scripting)
+    + [IR Using WMIC](#ir-using-wmic)
+    + [IR Using PowerShell](#ir-using-powershell)
+    + [Kansa](#kansa)
 - [Digital Forensics](#digital-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
 - [Threat Hunting](#threat-hunting)
@@ -13,14 +17,17 @@
   * [Common Malware Locations](#common-malware-locations)
   * [Living of the Land Binaries](#living-of-the-land-binaries)
   * [Persitence Locations](#persitence-locations)
-    + [AutoStart](#autostart)
+    + [Common Autostart Locations](#common-autostart-locations)
     + [Services](#services)
     + [Scheduled Tasks](#scheduled-tasks)
     + [DLL Hijacking](#dll-hijacking)
     + [Hunting DLL Hijacking](#hunting-dll-hijacking)
     + [WMI Event Consumer Backdoors](#wmi-event-consumer-backdoors)
     + [Hunting WMI Persistence](#hunting-wmi-persistence)
-    + [Hunt Persistence with Autoruns](#hunt-persistence-with-autoruns)
+    + [Hunt and Analyze Persistence with Autoruns](#hunt-and-analyze-persistence-with-autoruns)
+- [Misc](#misc)
+  * [Decode Base64](#decode-base64)
+  * [Powershell CommandLine Switches](#powershell-commandline-switches)
 
 ---
 
@@ -124,10 +131,10 @@ Authentication
 - Uses PowerShell scripting
 - Can remote run executables
 - Modules.conf manages what scripts run
+
 ```powershell
 .\kansa.ps1 -OutputPath .\Output\ -TargetList .\hostlist -TargetCount 250 -Verbose -Pushbin
 ```
-
 
 ---
 
