@@ -211,7 +211,7 @@ Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 	- NETEventLogConsumer
 	- WSCEAA.exe (Dell)
 
-## Hunt Persistence with Autoruns
+### Hunt Persistence with Autoruns
 - Live System Only
 - Works for Autostart locations, Services, Scheduled Tasks, WMI Events
 - Hashes files and can search VirusTotal for hits
