@@ -104,6 +104,16 @@ wmic /node:10.1.1.1 nicconfig get
 - [Use PowerShell to Perform Offline Analysis of Security Logs](https://devblogs.microsoft.com/scripting/use-powershell-to-perform-offline-analysis-of-security-logs/)
 - [Learn the Easy Way to Use PowerShell to Get File Hashes](https://devblogs.microsoft.com/scripting/learn-the-easy-way-to-use-powershell-to-get-file-hashes/)
 - [Use PowerShell to Compute MD5 Hashes and Find Changed Files](https://devblogs.microsoft.com/scripting/use-powershell-to-compute-md5-hashes-and-find-changed-files/)
+
+Remoting
+```powershell
+Enter-PSSession <computername>
+Invoke-Command -ScriptBlock -Filepath -AsJob
+```
+- [The Power of PowerShell Remoting](https://www.sans.org/blog/the-power-of-powershell-remoting/)
+- [Invoke-Command](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command?view=powershell-7.1)
+- [PowerShell Remoting Performance](https://www.hofferle.com/powershell-remoting-performance/)
+
 ---
 
 # Digital Forensics
