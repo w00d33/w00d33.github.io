@@ -211,11 +211,20 @@ Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 	- NETEventLogConsumer
 	- WSCEAA.exe (Dell)
 
-### Hunt Persistence with Autoruns
+### Hunt and Analyze Persistence with Autoruns
 - Live System Only
 - Works for Autostart locations, Services, Scheduled Tasks, WMI Events
 - Hashes files and can search VirusTotal for hits
 
+1. Run autorunsc
  ```
  C:\>autorunsc -accepteula -a * -s -h -c -vr > \\server\share\autoruns.csv
  ```
+2. Open .csv with tool of choice (e.g. Excel or TimelineExplorer)
+3. Filter out trusted startup locations
+	- Use signers to filter trusted code signers (can lead to false negative but is still a good place to start)
+	- Look for:
+		- (Not Verified)
+		- Unfamiliar Signers
+		- Blank (No Signer)
+4. Filter by Enabled (Active)
