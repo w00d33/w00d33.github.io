@@ -20,6 +20,7 @@
     + [Hunting DLL Hijacking](#hunting-dll-hijacking)
     + [WMI Event Consumer Backdoors](#wmi-event-consumer-backdoors)
     + [Hunting WMI Persistence](#hunting-wmi-persistence)
+    + [Hunt Persistence with Autoruns](#hunt-persistence-with-autoruns)
 
 # Incident Response
 
