@@ -22,6 +22,8 @@
     + [Hunting WMI Persistence](#hunting-wmi-persistence)
     + [Hunt Persistence with Autoruns](#hunt-persistence-with-autoruns)
 
+---
+
 # Incident Response
 
 ## Incident Response Process
@@ -94,10 +96,15 @@ Network Configuration
 ```
 wmic /node:10.1.1.1 nicconfig get
 ```
+
+---
+
 # Digital Forensics
 
 ## SANS Windows Forensic Analysis Poster
 * [Link](https://github.com/w00d33/w00d33.github.io/blob/main/_files/SANS_Windows_Forensics_Poster.pdf)
+
+---
 
 # Threat Hunting
 
@@ -255,6 +262,8 @@ Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 5. Compare hashes to VirusTotal
 6. Research vendor and product listed in "Publisher" and "Description" fields
 7. Compare output to a the output of a known good machine
+
+---
 
 # Misc
 
