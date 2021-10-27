@@ -120,7 +120,14 @@ Authentication
 - Creds not passed to remote system (Mimikatz, Incognito)
 
 ### Kansa
-[Kansa GitHub](https://github.com/davehull/Kansa)
+- [Kansa GitHub](https://github.com/davehull/Kansa)
+- Uses PowerShell scripting
+- Can remote run executables
+- Modules.conf manages what scripts run
+```powershell
+.\kansa.ps1 -OutputPath .\Output\ -TargetList .\hostlist -TargetCount 250 -Verbose -Pushbin
+```
+
 
 ---
 
