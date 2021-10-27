@@ -1,21 +1,26 @@
 # Notes on DFIR, Threat Hunting, and Malware Analysis
 
-## Table of Contents
 
-- [Incident Response Process](#incident-response-process)
-- [Incident Response Hierarchy of Needs](#incident-response-hierarchy-of-needs)
-- [Attack Lifecycle](#attack-lifecycle)
-- [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
-- [Common Malware Names](#common-malware-names)
-- [Common Malware Locations](#common-malware-locations)
-- [Living of the Land Binaries](#living-of-the-land-binaries)
-- [Persitence Locations](#persitence-locations)
-  * [AutoStart](#autostart)
-  * [Services](#services)
-  * [DLL Hijacking](#dll-hijacking)
-  * [Hunting DLL Hijacking](#hunting-dll-hijacking)
-  * [WMI Event Consumer Backdoors](#wmi-event-consumer-backdoors)
-  * [Hunting WMI Persistence](#hunting-wmi-persistence)
+### Table of Contents
+- [Incident Response](#incident-response)
+  * [Incident Response Process](#incident-response-process)
+  * [Incident Response Hierarchy of Needs](#incident-response-hierarchy-of-needs)
+  * [Attack Lifecycle](#attack-lifecycle)
+- [Digital Forensics](#digital-forensics)
+  * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
+- [Threat Hunting](#threat-hunting)
+  * [Common Malware Names](#common-malware-names)
+  * [Common Malware Locations](#common-malware-locations)
+  * [Living of the Land Binaries](#living-of-the-land-binaries)
+  * [Persitence Locations](#persitence-locations)
+    + [AutoStart](#autostart)
+    + [Services](#services)
+    + [DLL Hijacking](#dll-hijacking)
+    + [Hunting DLL Hijacking](#hunting-dll-hijacking)
+    + [WMI Event Consumer Backdoors](#wmi-event-consumer-backdoors)
+    + [Hunting WMI Persistence](#hunting-wmi-persistence)
+
+# Incident Response
 
 ## Incident Response Process
 1. Preparation
@@ -63,8 +68,12 @@
 ## Attack Lifecycle
 <img alt="Micosoft's Attack Lifecycle" src="https://docs.microsoft.com/en-us/advanced-threat-analytics/media/attack-kill-chain-small.jpg" />
 
+# Digital Forensics
+
 ## SANS Windows Forensic Analysis Poster
 * [Link](https://github.com/w00d33/w00d33.github.io/blob/main/_files/SANS_Windows_Forensics_Poster.pdf)
+
+# Threat Hunting
 
 ## Common Malware Names
 * [The typographical and homomorphic abuse of svchost.exe, and other popular file names](https://www.hexacorn.com/blog/2015/12/18/the-typographical-and-homomorphic-abuse-of-svchost-exe-and-other-popular-file-names/)
