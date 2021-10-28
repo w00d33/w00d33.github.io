@@ -418,13 +418,15 @@ Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 	- Sensitive Networks
 - After Hour Logins
 
-Mitigations (Win10)
+**Mitigations (Win10)**
 - Credential Guard: Moves credentials (hashes & ticket) into virtual enclave
 - Remote Credential Guard: RDP without pushing credentials to remote target
 - Device Guard (Prevent execution of untrusted code)
 
-Hunt Notes
-- SSP Plaintext Password Registry Key Enabled (Should be disabled)
+**Hunt Notes**
+- WDigest Plaintext Credentials
+	- HKLM\System\CurrentControlSet\Control\SecurityProviders\WDigest
+		- UseLogonCredential = "1" (Should be 0)
 
 ### Hashes
 - Availabe in the LSASS process
@@ -477,8 +479,13 @@ sekurlsa::pth /user:username /domain:computername /ntlm:hash /run:".\psexec.exe 
 | Run as a Service | 5   | Yes    | (w/user account)-Password saved as LSA Secret   |
 | Remote Registry | 3   | No    |    |
 
----
+### Tokens
+- Generated when user authenticates on the system
+- Used for SSO
+- Attacker can impersonate user's security context
 
+---
+<br>
 # Misc
 
 ## Decode Base64
