@@ -16,6 +16,9 @@
     + [Stacking WMI Filters and Consumers](#stacking-wmi-filters-and-consumers)
 - [Digital Forensics](#digital-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
+  * [Registy Overview](#registy-overview)
+  * [Users and Groups](#users-and-groups)
+  * [System Configuration](#system-configuration)
 - [Threat Hunting](#threat-hunting)
   * [Common Malware Names](#common-malware-names)
   * [Common Malware Locations](#common-malware-locations)
@@ -331,7 +334,7 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 
 <br>
 
-## Users & Groups
+## Users and Groups
 
 - SAM\Domains\Account\Users\
 - Username
