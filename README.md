@@ -293,19 +293,19 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 
 - %WinDIr%\System32\Config
 	- SAM
-		○ Info about user accounts
-		○ Password last changed
-		○ Last logon
-		○ In user accounts
+		- Info about user accounts
+		- Password last changed
+		- Last logon
+		- In user accounts
 	- Security
-		○ Access Control list
-		○ Stored passwords
+		- Access Control list
+		- Stored passwords
 	- System
-		○ Configuration data (hardware)
+		- Configuration data (hardware)
 	- Software
-		○ Configuration data (software/os)
+		- Configuration data (software/os)
 	- Default
-		○ Not much of use
+		- Not much of use
 
 **User Registry Hives**
 
