@@ -668,6 +668,37 @@ mimikatz # token:elevate /domain admin (identifies any domain admins present on 
 
 <br>
 
+### NTDS.DIT
+- Active Directory Domain Services (AD DS) database holds all user and computer account hashes (LM/NT) in the domain
+- Encrypted but algorithm is easy to decrypt
+- Located in the \Windows\NTDS folder on Domain Controller
+- Requires admin accessto load driver to access raw disk or use Volume Shadow Copy Service
+
+**Common Tools**
+- ntdsutil
+- VSSAdmin
+- NTDSXtract
+- Metasploit
+- PowerShell
+- secretsdump.py
+
+### Find a Path to Domain Admin: Bloodhound
+- Active Directory relationship graphing tool
+	- Nodes: Users, Computers, Groups, OUs, GPOs
+	- Edges: MemberOf, HasSession, AdminTo, TrustedBy
+	- Paths: A list of nodes connected by edges (Path to Domain Admin)
+	- Visualizes dangerous trust relationships and misconfigurations
+	- Reduces brute-force effort required
+	- Difficult to detect (Uses prodominantly LDAP)
+	- [Automating the Empire with the Death Star: getting Domain Admin with a push of a button](https://byt3bl33d3r.github.io/automating-the-empire-with-the-death-star-getting-domain-admin-with-a-push-of-a-button.html)
+	- [GoFetch](https://github.com/GoFetchAD/GoFetch)
+	- [BloodHound](https://github.com/BloodHoundAD/BloodHound)
+
+	<img alt="BloodHound" src="https://i0.wp.com/wald0.com/wp-content/uploads/2017/05/TransitiveControllers.png?ssl=1" />
+
+
+<br>
+
 ---
 
 <br>
