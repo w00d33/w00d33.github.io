@@ -403,6 +403,69 @@ Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 6. Research vendor and product listed in "Publisher" and "Description" fields
 7. Compare output to a the output of a known good machine
 
+## Lateral Movement
+
+### Detecting Credential Harvesting
+- Event Logs
+	- 4624 Logons
+	- 4720 Account Creation
+	- 4776 Local Account Auth
+	- 4672 Privileged Account Usage
+- Unix "secure"logs
+- Auditing New Accounts
+- Anomalous Logins
+	- Workstation to Workstation
+	- Sensitive Networks
+- After Hour Logins
+
+Mitigations (Win10)
+- Credential Guard: Moves credentials (hashes & ticket) into virtual enclave
+- Remote Credential Guard: RDP without pushing credentials to remote target
+- Device Guard (Prevent execution of untrusted code)
+
+Hunt Notes
+- SSP Plaintext Password Registry Key Enabled (Should be disabled)
+
+### Hashes
+- Availabe in the LSASS process
+- Can be extracted with admin privileges
+- Local account password hashes are available in the SAM hive in memory or on disk
+- Domain account hashes are present in memory during interactive sessions
+
+Common Tools
+- Mimikatz
+- fgdump
+- gsecdump
+- Metasploit
+- AceHash
+- PWDumpX
+- creddump
+- WCE
+
+Pash-the-Hash Attack
+- Authenticate using a stolen account hash without knowing the cleartext password
+	- Tools: Metasploit PsExec module, WCE, and SMBshell
+- Limited to NTLM authentication
+- Often used to map shares, perform PsExec-style remote execution, and WMI
+- [Protecting Privileged Domain Accounts: Safeguarding Password Hashes](https://www.sans.org/blog/protecting-privileged-domain-accounts-safeguarding-password-hashes/)
+- [Slides on Mimikatz 2.0](https://lira.epac.to/DOCS-TECH/Hacking/Mimikatz/Benjamin%20Delpy%20-%20Mimikatz%20a%20short%20journey%20inside%20the%20memory%20of%20the%20Windows%20Security%20service.pdf)
+- [Mitigating Pass-the-Hash (PtH) Attacks and Other Credential Theft, Version 1 and 2](https://www.microsoft.com/en-us/download/details.aspx?id=36036)
+
+Credential Availability on Targets
+
+| **Admin Action** | **Logon**<br>**Type** | **Credentials**<br>**on Target?** | **Notes** |
+| :---------------: | :---------------: | :---------------: | :---------------: |
+| Console Logon | 2   | Yes*   |   *Except when Credential Guard is enabled  |
+| RunAs | 2   | Yes*   |  *Except when Credential Guard is enabled    |
+| Remote Desktop | 10   | Yes*   | *Except when Remote Credential Guard is enabled    |
+| Net Use | 3   | No   | Including /u:parameter    |
+| PowerShell Remoting | 3   | No   | Invoke-Command; Enter-PSSession   |
+| PsExec Alternate Creds | 3+2   | Yes    | -u <username> -p <password>   |
+| PsExec w/o Explicit Creds | 3   |  No   |    |
+| Remote Scheduled Task | 4   | Yes    | Password saved as LSA Secret   |
+| Run as a Service | 5   | Yes    | (w/user account-Password saved as LSA Secret)   |
+| Remote Registry | 3   | No    |    |
+
 ---
 
 # Misc
