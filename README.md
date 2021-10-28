@@ -40,11 +40,10 @@
     + [Tickets (Kerberos)](#tickets--kerberos-)
     + [Pass the Ticket (Mimikatz)](#pass-the-ticket--mimikatz-)
     + [Kerberos Attacks](#kerberos-attacks)
-  * [<br>](#-br-)
 - [Misc](#misc)
   * [Decode Base64](#decode-base64)
   * [Powershell CommandLine Switches](#powershell-commandline-switches)
-  
+
 <br>
 
 ---
@@ -668,6 +667,7 @@ mimikatz # token:elevate /domain admin (identifies any domain admins present on 
 - [PROTECTING WINDOWS NETWORKS – KERBEROS ATTACKS](https://dfirblog.wordpress.com/2015/12/13/protecting-windows-networks-kerberos-attacks/)
 
 <br>
+
 ---
 
 <br>
