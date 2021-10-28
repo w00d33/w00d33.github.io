@@ -588,6 +588,31 @@ token:elevate /domain admin (identifies any domain admins present on the system)
 ```./cachedump.py SYSTEM SECURITY true``` <- Cached Hashes
 
 
+<br>
+
+### LSA Secrets
+- Credential stored in registry to allow services or tasks to be run with user privileges
+- May also hold application passwords like VPN or auto-logon credentials
+- Admin privileges allow access to encrypted registry data and keys necessary to decrypt
+	- Stored SECURITY/Policy/Secrets
+	- Parent key in SECURITY/Policy can decode
+- Passwords are plaintext
+
+### Decrypt LSA Secrets (Nishang)
+- Requires Admin
+- Gain permissions necessary to access the Security registry hive with ```Enable-DuplicateToken```
+- Dump registry data with ```Get-LsaSecret.ps1```  
+
+**Common Tools**
+- Cain
+- Metasploit
+- Mimikatz
+- gsecdump
+- AceHash
+- creddump
+- PowerShell
+
+<br>
 ---
 
 <br>
