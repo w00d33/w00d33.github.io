@@ -36,14 +36,16 @@
     + [Tokens](#tokens)
     + [Cached Credentials](#cached-credentials)
     + [LSA Secrets](#lsa-secrets)
-    + [Decrypt LSA Secrets (Nishang)](#decrypt-lsa-secrets--nishang-)
-    + [Tickets (Kerberos)](#tickets--kerberos-)
-    + [Pass the Ticket (Mimikatz)](#pass-the-ticket--mimikatz-)
+    + [Decrypt LSA Secrets with Nishang](#decrypt-lsa-secrets-with-nishang)
+    + [Tickets - Kerberos](#tickets---kerberos)
+    + [Pass the Ticket with Mimikatz](#pass-the-ticket-with-mimikatz)
     + [Kerberos Attacks](#kerberos-attacks)
+    + [NTDS.DIT](#ntdsdit)
+    + [Find a Path to Domain Admin: Bloodhound](#find-a-path-to-domain-admin--bloodhound)
 - [Misc](#misc)
   * [Decode Base64](#decode-base64)
   * [Powershell CommandLine Switches](#powershell-commandline-switches)
-
+ 
 <br>
 
 ---
@@ -592,7 +594,7 @@ mimikatz # token:elevate /domain admin (identifies any domain admins present on 
 - creddump
 - AceHash
 
-**Cached Credential Extraction (Creddump)**
+**Cached Credential Extraction with Creddump**
 
 ```./pwdump.py SYSTEM SAM true``` <- Local NT Hashes  
 ```./cachedump.py SYSTEM SECURITY true``` <- Cached Hashes
@@ -610,7 +612,7 @@ mimikatz # token:elevate /domain admin (identifies any domain admins present on 
 
 <br>
 
-### Decrypt LSA Secrets (Nishang)
+### Decrypt LSA Secrets with Nishang
 - Requires Admin
 - Gain permissions necessary to access the Security registry hive with ```Enable-DuplicateToken```
 - Dump registry data with ```Get-LsaSecret.ps1```  
@@ -626,7 +628,7 @@ mimikatz # token:elevate /domain admin (identifies any domain admins present on 
 
 <br>
 
-### Tickets (Kerberos)
+### Tickets - Kerberos
 - Kerberos issues tickets to authenticated users
 - Cached in memory and valid for 10 hours
 - Tickets can be stolen from memory and used to authenticate else where (Pass the Ticket)
@@ -640,7 +642,7 @@ mimikatz # token:elevate /domain admin (identifies any domain admins present on 
 
 <br>
 
-### Pass the Ticket (Mimikatz)
+### Pass the Ticket with Mimikatz
 - Dump Tickets
 ```mimikatz # sekurlsa::tickets /export```
 - Import ticket elsewhere
@@ -682,6 +684,8 @@ mimikatz # token:elevate /domain admin (identifies any domain admins present on 
 - PowerShell
 - secretsdump.py
 
+<br>
+
 ### Find a Path to Domain Admin: Bloodhound
 - Active Directory relationship graphing tool
 	- Nodes: Users, Computers, Groups, OUs, GPOs
@@ -690,8 +694,12 @@ mimikatz # token:elevate /domain admin (identifies any domain admins present on 
 	- Visualizes dangerous trust relationships and misconfigurations
 	- Reduces brute-force effort required
 	- Difficult to detect (Uses prodominantly LDAP)
+		- Uses cached LDAP connections
 	- [Automating the Empire with the Death Star: getting Domain Admin with a push of a button](https://byt3bl33d3r.github.io/automating-the-empire-with-the-death-star-getting-domain-admin-with-a-push-of-a-button.html)
+		- Uses PowerShell Empire to enumerate accounts, perform cred theft, and lateral movement
 	- [GoFetch](https://github.com/GoFetchAD/GoFetch)
+		- Automates BloodHound findings
+		- Uses ```Invoke-Mimikatz``` and ```Invoke-Psexec``` to auto cred theft and lateral movement
 	- [BloodHound](https://github.com/BloodHoundAD/BloodHound)
 
 	<img alt="BloodHound" src="https://i0.wp.com/wald0.com/wp-content/uploads/2017/05/TransitiveControllers.png?ssl=1" />
