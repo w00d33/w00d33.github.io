@@ -582,9 +582,9 @@ token:elevate /domain admin (identifies any domain admins present on the system)
 - creddump
 - AceHash
 
-**Cached Credential Extraction**
+**Cached Credential Extraction (Creddump)**
 
-```./pwdump.py SYSTEM SAM true``` <- Local NT Hashes
+```./pwdump.py SYSTEM SAM true``` <- Local NT Hashes  
 ```./cachedump.py SYSTEM SECURITY true``` <- Cached Hashes
 
 
