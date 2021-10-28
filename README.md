@@ -262,27 +262,40 @@ Select-String "PerformanceMonitor" *ConBind.csv
 Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 ```
 
+<br>
+
 ---
+
+<br>
 
 # Digital Forensics
 
 ## SANS Windows Forensic Analysis Poster
 * [Link](https://github.com/w00d33/w00d33.github.io/blob/main/_files/SANS_Windows_Forensics_Poster.pdf)
+
 <br>
+
 ---
+
 <br>
 
 # Threat Hunting
 
 ## Common Malware Names
 * [The typographical and homomorphic abuse of svchost.exe, and other popular file names](https://www.hexacorn.com/blog/2015/12/18/the-typographical-and-homomorphic-abuse-of-svchost-exe-and-other-popular-file-names/)
+
 <br>
+
 ## Common Malware Locations
 * [Digging for Malware: Suspicious Filesystem Geography](http://www.malicious-streams.com/resources/articles/DGMW1_Suspicious_FS_Geography.html)
+
 <br>
+
 ## Living of the Land Binaries
 * [LOLBAS Project](https://lolbas-project.github.io/)
+
 <br>
+
 ## Persitence Locations
 
 ### Common Autostart Locations
@@ -299,6 +312,7 @@ SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Userinit
 **Tools**
 * Autoruns
 * Kansa
+
 <br>
 
 ### Services
@@ -313,6 +327,7 @@ HKLM\SYSTEM\CurrentControlSet\Services
 * Autoruns
 * "sc" command
 * Kansa
+
 <br>
 
 ### Scheduled Tasks
@@ -329,6 +344,7 @@ schtasks /create /sc minute /mo 1 /tn "Reverse shell" /tr c:\some\directory\revs
 Tools:
 - Autoruns
 - Kansa
+
 <br>
 
 ### DLL Hijacking
@@ -358,6 +374,7 @@ Common DLL Search Order
 7. C:\Windows
 8. Current Directory
 9. System %PATH%
+
 <br>
 
 ### Hunting DLL Hijacking
@@ -370,6 +387,7 @@ Memory Analysis
 - Find system process or DLLs loaded from the wrong location
 
 This technique is often followed up C2 network beaconing
+
 <br>
 
 ### WMI Event Consumer Backdoors
@@ -413,6 +431,7 @@ Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 	- KernCap.vbs
 	- NETEventLogConsumer
 	- WSCEAA.exe (Dell)
+
 <br>
 
 ### Hunt and Analyze Persistence with Autoruns
@@ -435,6 +454,7 @@ Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 5. Compare hashes to VirusTotal
 6. Research vendor and product listed in "Publisher" and "Description" fields
 7. Compare output to a the output of a known good machine
+
 <br>
 
 ## Lateral Movement
@@ -461,6 +481,7 @@ Get-WMIObject -Namespace root\Subscription -Class __FilterToConsumerBinding
 - WDigest Plaintext Credentials
 	- HKLM\System\CurrentControlSet\Control\SecurityProviders\WDigest
 		- UseLogonCredential = "1" (Should be 0)
+
 <br>
 
 ### Hashes
