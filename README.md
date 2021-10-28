@@ -432,7 +432,7 @@ Hunt Notes
 - Local account password hashes are available in the SAM hive in memory or on disk
 - Domain account hashes are present in memory during interactive sessions
 
-Common Tools
+**Common Tools**
 - Mimikatz
 - fgdump
 - gsecdump
@@ -442,7 +442,7 @@ Common Tools
 - creddump
 - WCE
 
-Pash-the-Hash Attack
+**Pash-the-Hash Attack***
 - Authenticate using a stolen account hash without knowing the cleartext password
 	- Tools: Metasploit PsExec module, WCE, and SMBshell
 - Limited to NTLM authentication
@@ -451,7 +451,7 @@ Pash-the-Hash Attack
 - [Slides on Mimikatz 2.0](https://lira.epac.to/DOCS-TECH/Hacking/Mimikatz/Benjamin%20Delpy%20-%20Mimikatz%20a%20short%20journey%20inside%20the%20memory%20of%20the%20Windows%20Security%20service.pdf)
 - [Mitigating Pass-the-Hash (PtH) Attacks and Other Credential Theft, Version 1 and 2](https://www.microsoft.com/en-us/download/details.aspx?id=36036)
 
-Credential Availability on Targets
+### Credential Availability on Targets
 
 | **Admin Action** | **Logon**<br>**Type** | **Credentials**<br>**on Target?** | **Notes** |
 | :---------------: | :---------------: | :---------------: | :---------------: |
@@ -460,10 +460,10 @@ Credential Availability on Targets
 | Remote Desktop | 10   | Yes*   | *Except when Remote Credential Guard is enabled    |
 | Net Use | 3   | No   | Including /u:parameter    |
 | PowerShell Remoting | 3   | No   | Invoke-Command; Enter-PSSession   |
-| PsExec Alternate Creds | 3+2   | Yes    | -u <username> -p <password>   |
+| PsExec Alternate Creds | 3+2   | Yes    | -u <<username>> -p <<password>>   |
 | PsExec w/o Explicit Creds | 3   |  No   |    |
 | Remote Scheduled Task | 4   | Yes    | Password saved as LSA Secret   |
-| Run as a Service | 5   | Yes    | (w/user account-Password saved as LSA Secret)   |
+| Run as a Service | 5   | Yes    | (w/user account)-Password saved as LSA Secret   |
 | Remote Registry | 3   | No    |    |
 
 ---
