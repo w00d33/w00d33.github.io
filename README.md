@@ -537,12 +537,56 @@ sekurlsa::pth /user:username /domain:computername /ntlm:hash /run:".\psexec.exe 
 | Run as a Service | 5   | Yes    | (w/user account)-Password saved as LSA Secret   |
 | Remote Registry | 3   | No    |    |
 
+<br> 
+
 ### Tokens
-- Generated when user authenticates on the system
+- Targets user sessions and running services
 - Used for SSO
 - Attacker can impersonate user's security context
+- ```SeImpersonate``` privileges let tokens be copied from processes (also SYTEM or admin)
+- Can allow adding user or managing group membership, mapping of remote shares, or Running PsExec (delegate tokens only)
+- Often used to escalate from local to domain admin
+
+**Token Stealing (Mimikatz)**
+- Assumes attacker has local admin
+```
+privilege::debug
+token:whoami
+token:elevate /domain admin (identifies any domain admins present on the system)
+```
+
+**Common Tools**
+- Incognito
+- Metasploit
+- PowerShell (PowerShell Empire)
+- Mimikatz
+
+**Hunting**
+- [Monitoring for Delegation Token Theft](https://www.sans.org/blog/monitoring-for-delegation-token-theft/)
 
 <br>
+
+### Cached Credentials
+- Stored domain credentials to allow logons when off domain
+- Cached credentials hashes have to be cracked
+- Salted and case-sensitive (slow to crack)
+- Cannot be used in pass the hash
+- Stored in the SECURITY\Cache registry key
+- Admin or SYSTEM privileges required
+- Hashes cracked with John the Ripper or hashcat
+
+**Common Tools**
+- cachedump
+- Metasploit
+- PWDumpX
+- creddump
+- AceHash
+
+**Cached Credential Extraction**
+
+```./pwdump.py SYSTEM SAM true``` <- Local NT Hashes
+```./cachedump.py SYSTEM SECURITY true``` <- Cached Hashes
+
 
 ---
 
