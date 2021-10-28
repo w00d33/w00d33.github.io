@@ -14,7 +14,7 @@
     + [Stacking Autoruns](#stacking-autoruns)
     + [Stacking Services](#stacking-services)
     + [Stacking WMI Filters and Consumers](#stacking-wmi-filters-and-consumers)
-- [Digital Forensics](#digital-forensics)
+- [Windows Forensics](windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
   * [Users and Groups](#users-and-groups)
@@ -283,7 +283,7 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 
 <br>
 
-# Digital Forensics
+# Windows Forensics
 
 ## SANS Windows Forensic Analysis Poster
 * [Link](https://github.com/w00d33/w00d33.github.io/blob/main/_files/SANS_Windows_Forensics_Poster.pdf)
