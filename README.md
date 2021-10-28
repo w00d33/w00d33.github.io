@@ -41,11 +41,11 @@
     + [Pass the Ticket with Mimikatz](#pass-the-ticket-with-mimikatz)
     + [Kerberos Attacks](#kerberos-attacks)
     + [NTDS.DIT](#ntdsdit)
-    + [Find a Path to Domain Admin: Bloodhound](#find-a-path-to-domain-admin--bloodhound)
+    + [Bloodhound - Find a Path to Domain Admin](#Bloodhound---Find-a-Path-to-Domain-Admin)
 - [Misc](#misc)
   * [Decode Base64](#decode-base64)
   * [Powershell CommandLine Switches](#powershell-commandline-switches)
- 
+
 <br>
 
 ---
@@ -686,7 +686,7 @@ mimikatz # token:elevate /domain admin (identifies any domain admins present on 
 
 <br>
 
-### Find a Path to Domain Admin: Bloodhound
+### Bloodhound - Find a Path to Domain Admin
 - Active Directory relationship graphing tool
 	- Nodes: Users, Computers, Groups, OUs, GPOs
 	- Edges: MemberOf, HasSession, AdminTo, TrustedBy
