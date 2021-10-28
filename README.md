@@ -2,7 +2,6 @@
 
 <br>
 
-### Table of Contents
 - [Incident Response](#incident-response)
   * [Incident Response Process](#incident-response-process)
   * [Incident Response Hierarchy of Needs](#incident-response-hierarchy-of-needs)
@@ -30,10 +29,22 @@
     + [WMI Event Consumer Backdoors](#wmi-event-consumer-backdoors)
     + [Hunting WMI Persistence](#hunting-wmi-persistence)
     + [Hunt and Analyze Persistence with Autoruns](#hunt-and-analyze-persistence-with-autoruns)
+  * [Lateral Movement](#lateral-movement)
+    + [Detecting Credential Harvesting](#detecting-credential-harvesting)
+    + [Hashes](#hashes)
+    + [Credential Availability on Targets](#credential-availability-on-targets)
+    + [Tokens](#tokens)
+    + [Cached Credentials](#cached-credentials)
+    + [LSA Secrets](#lsa-secrets)
+    + [Decrypt LSA Secrets (Nishang)](#decrypt-lsa-secrets--nishang-)
+    + [Tickets (Kerberos)](#tickets--kerberos-)
+    + [Pass the Ticket (Mimikatz)](#pass-the-ticket--mimikatz-)
+    + [Kerberos Attacks](#kerberos-attacks)
+  * [<br>](#-br-)
 - [Misc](#misc)
   * [Decode Base64](#decode-base64)
   * [Powershell CommandLine Switches](#powershell-commandline-switches)
-
+  
 <br>
 
 ---
