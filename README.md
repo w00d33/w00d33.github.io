@@ -331,6 +331,117 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 
 <br>
 
+## Users & Groups
+
+- SAM\Domains\Account\Users\
+- Username
+- Relative Identifier
+- User Login Information
+	- Last Login
+	- Last Failed Login
+	- Logon Count
+	- Password Policy
+	- Account Creation Time
+- Group Information
+	- Administrators
+	- Users
+	- Remote Desktop Users
+
+<br>
+
+## System Configuration
+
+**Identify Current Control Set**
+- SYSTEM\Select
+- Systems Configuration Settings
+- Identify what ControlSet is in use
+		
+**Identify Microsoft OS Version**
+- MS Windows Version
+	- ProductName
+	- ReleaseID (YYMM)
+- Service Pack Level
+- Install Date of the last version/major update
+	- InstallDate
+- SOFTWARE\Microsoft\Windows NT\CurrentVersion
+		
+**Computer Name**
+- SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName
+- Name linked to log files, network connections
+- Verify the PC that is being examined
+	
+**Time Zone of the Machine**
+- System\CurrentControlSet\Control\TimeZoneInformation
+- Correlation Activity
+- Log Files\TimeStamps
+
+**Network Interfaces**
+- SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces
+- Static or DHCP
+- Ties machines to network activity
+- Interface GUID for additional profiling
+	
+**Historical Networks**
+- SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Signatures\Managed
+- SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Signatures\Unmanaged
+- SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Nla\Cache
+- Identify Networks Computer has been connected to
+- Could be wired or wireless
+- Domain/intranet Name
+- Identify SSID
+- Identify Gateway MAC Address
+- First and Last Time network connection was made
+- Networks that have been connected to via VPN
+- MAC address of SSID for Gateway can be physically triangulated
+- Write Down ProfileGUID
+
+**Network Types**
+- SOFTWARE\Microsoft\WZCSVC\Parameters\Interfaces\{GUID} (XP)
+- SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles (Win7-10)
+- ID the type of network that the computer connected to
+- ID wireless SSIDs that the computer previously connected to
+	- ProfileName
+- Time is recorded in LOCAL TIME, NOT UTC
+- First and Last Connection Time
+	- DateCreated
+	- DateLastConnected
+- Determine Type using Nametype
+	- 6 (0x06) = Wired
+	- 23 (0x17) = VPN
+	- 71 (0x47) = Wireless
+	- 243 (0xF3) = Mobile Broadband
+- Network Category
+	- Category
+	- (Public) 0 - Sharing Disabled
+	- (Private) 1 - Home, Sharing Enabled
+	- (Domain) 2 - Work, Sharing Enabled
+- Geolocate
+	- Wigle.net
+	
+**System AutoStart Programs**
+- Programs exhibiting persistence
+	- User login
+	- Boot time
+- NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Run
+- NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\RunOnce
+- Software\Microsoft\Windows\CurrentVersion\RunOnce
+- Software\Microsoft\Windows\CurrentVersion\policies\Explorer\Run
+- Software\Microsoft\Windows\CurrentVersion\Run
+- (Services) SYSTEM\CurrentControlSet\Services
+- IF start set to 0x02, then service application will start at boot (0x00 for drivers)(
+- Determine programs that start automatically
+- Useful for finding malware on a machine that installs on boot such as a rootkit
+- Look at when the time key was last updated; generally last boot time of the system
+	
+**Last Shutdown Time**
+- Discover when the system was last shutdown
+- How many successful times the system was shutdown
+- SYSTEM\CurrentControlSet\Control\Windows (Shutdown Time)
+- SYSTEM\CurrentControlSet\Control\Watchdog\Display (Shutdown Count) - XP only
+- Detect certain types of activity
+- Determine if the user properly shuts down their machine
+
+
 ---
 
 <br>
