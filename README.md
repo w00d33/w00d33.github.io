@@ -287,6 +287,50 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 
 <br>
 
+## Registy Overview
+
+**System  Registry Hives**
+
+- %WinDIr%\System32\Config
+	- SAM
+		○ Info about user accounts
+		○ Password last changed
+		○ Last logon
+		○ In user accounts
+	- Security
+		○ Access Control list
+		○ Stored passwords
+	- System
+		○ Configuration data (hardware)
+	- Software
+		○ Configuration data (software/os)
+	- Default
+		○ Not much of use
+
+**User Registry Hives**
+
+- %UserProfile%
+	- NTUSER.DAT
+	- Most recently used files
+	- Last files searched for
+	- Last typed URLs
+	- Last commands executed
+	- Opened Files
+	- Last Saved Files
+
+- %UserProfile%\AppData\Local\Microsoft\Windows\
+	- USRCLASS.DAT
+	- Program Execution
+	- Opened and closed folders
+	- Aids User Account Control (UAC)
+	- HKCU\Software\Classes
+
+- %WinDir%\appcompat\Programs
+	- AMCACHE.hve
+	- Excecution data
+
+<br>
+
 ---
 
 <br>
