@@ -41,7 +41,7 @@
     + [Pass the Ticket with Mimikatz](#pass-the-ticket-with-mimikatz)
     + [Kerberos Attacks](#kerberos-attacks)
     + [NTDS.DIT](#ntdsdit)
-    + [Bloodhound - Find a Path to Domain Admin](#Bloodhound---Find-a-Path-to-Domain-Admin)
+    + [Bloodhound - Find a Path to Domain Admin](#bloodhound---find-a-path-to-domain-admin)
 - [Misc](#misc)
   * [Decode Base64](#decode-base64)
   * [Powershell CommandLine Switches](#powershell-commandline-switches)
