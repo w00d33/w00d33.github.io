@@ -442,7 +442,7 @@ Hunt Notes
 - creddump
 - WCE
 
-**Pash-the-Hash Attack***
+**Pash-the-Hash Attack**
 - Authenticate using a stolen account hash without knowing the cleartext password
 	- Tools: Metasploit PsExec module, WCE, and SMBshell
 - Limited to NTLM authentication
@@ -450,6 +450,17 @@ Hunt Notes
 - [Protecting Privileged Domain Accounts: Safeguarding Password Hashes](https://www.sans.org/blog/protecting-privileged-domain-accounts-safeguarding-password-hashes/)
 - [Slides on Mimikatz 2.0](https://lira.epac.to/DOCS-TECH/Hacking/Mimikatz/Benjamin%20Delpy%20-%20Mimikatz%20a%20short%20journey%20inside%20the%20memory%20of%20the%20Windows%20Security%20service.pdf)
 - [Mitigating Pass-the-Hash (PtH) Attacks and Other Credential Theft, Version 1 and 2](https://www.microsoft.com/en-us/download/details.aspx?id=36036)
+
+**Examples**
+- Hash dump with Gsecdump
+```
+gsecdump.exe -a > 1.txt
+```
+
+- Pass the Hash (Mimikatz)
+```
+sekurlsa::pth /user:username /domain:computername /ntlm:hash /run:".\psexec.exe -accepteula \\10.10.10.10 cmd.exe"
+```
 
 ### Credential Availability on Targets
 
