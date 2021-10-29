@@ -420,8 +420,15 @@ amcacheparser.exe -i -f amcache.hve --csv G:\<folder>
 - [ShimCache and AmCache Enterprise-wide Hunting](https://github.com/mbevilacqua/appcompatprocessor)
 - Temporal correlations of execution activity
 
+Perform a search against built-in signatures
+```
+AppCompatProcessor.py database.db search
+```
 
-
+Perform least frequency of occurence analysis
+```
+AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe'"
+```
 <br>
 
 ---
