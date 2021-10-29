@@ -312,13 +312,13 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 - Win7 & 8/8.1 include execution flags (Win 10 does not)
 	- InsertFlag = True (App Executed)
 
-**Win 7+**
-```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache\AppCompatCache```
+**Win 7+**  
+```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache\AppCompatCache```  
 - Server 2003 = 512 Entries
 - Win7-10, Server 2008-2019 = 1024 Entries
 
 **Win XP**
-```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatibility\AppCompatCache```
+```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatibility\AppCompatCache```  
 - 96 entries
 
 **Notes**
