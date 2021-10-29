@@ -314,14 +314,18 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 
 **Win 7+**  
 
-```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache\AppCompatCache```  
+```
+SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache\AppCompatCache
+```  
 
 - Server 2003 = 512 Entries
 - Win7-10, Server 2008-2019 = 1024 Entries
 
 **Win XP**
 
-```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatibility\AppCompatCache```  
+```
+SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatibility\AppCompatCache
+```  
 
 - 96 entries
 
@@ -333,7 +337,10 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 
 **Analysis**
 - [AppCompatCacheParser](https://github.com/EricZimmerman/AppCompatCacheParser)
-```.\AppCompactCacheParser.exe -f .\SYSTEM --csv c:\temp```
+
+```
+.\AppCompactCacheParser.exe -f .\SYSTEM --csv c:\temp
+```
 - Written in order excecution or GUI discovery
 - Additional tool from Mandiant: [ShimCacheParser](https://github.com/mandiant/ShimCacheParser)
 
