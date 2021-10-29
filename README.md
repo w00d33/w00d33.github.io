@@ -281,22 +281,60 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 
 ## Intrusion Analysis
 
-### Threat Hunting & Assessment
+### Evidence of Execution
 
 #### Prefetch
 - Evidence of execution
 	- Executable name, execution time(s), and execution count
-- Off by default on servers or workstations with SSDs
-- .pf filename
+- Limitations: Off by default on servers or workstations with SSDs
+- .pf filename (compressed)
 	- executable file name followed by dash and hexidecimal representation of a hash of the file's path
 - Multiple .pf files with the same executable name can be indicative of two executables with the same name being run from different locations
 	- Execeptions: hosting applications (svchost, dllhost, backgroundtaskhost, and rundll32) hash values calculated based off of commandline arguments
-- First execution (creation date)
+
+**Notes**
+- First execution (creation date -10 seconds)
 - Last execution (modified date -10 seconds)
-- Can be analyzed with PECmd.exe
-```PECmd.exe -d "C:\Windows\Prefetch" --csv "G:\cases" -q```
+
+**Analysis**
+- Can be analyzed with PECmd.exe ```PECmd.exe -d "C:\Windows\Prefetch" --csv "G:\cases" -q```  
 - [PECmd](https://github.com/EricZimmerman/PECmd)
 
+#### ShimCache - Application Compatibility
+- Available on workstations AND Servers
+- Not as easy to delete as Prefetch
+- Designed to detect and remediate
+- Different compatibility modes are called shims
+- Tracks Name, File Path, and Last Modification Time of executable
+- Executables can be added to the regirsty regradless if they've been executed
+	- Executable viewed via Windows GUI apps
+- After XP, ShimCache no longer include execution time
+- Win7 & 8/8.1 include execution flags (Win 10 does not)
+	- InsertFlag = True (App Executed)
+
+**Win 7+**
+```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache\AppCompatCache```
+- Server 2003 = 512 Entries
+- Win7-10, Server 2008-2019 = 1024 Entries
+
+**Win XP**
+```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatibility\AppCompatCache```
+- 96 entries
+
+**Notes**
+- Most recent activities are on the top
+- New entries are only written on shutdown (only exist in memory before)
+- Each "ControlSet" can have its own ShimCache database
+- [Leveraging the Application Compatibility Cache in Forensic Investigations](https://web.archive.org/web/20190209113245/https://www.fireeye.com/content/dam/fireeye-www/services/freeware/shimcache-whitepaper.pdf)
+
+**Analysis**
+- [AppCompatCacheParser](https://github.com/EricZimmerman/AppCompatCacheParser)
+```.\AppCompactCacheParser.exe -f .\SYSTEM --csv c:\temp```
+- Written in order excecution or GUI discovery
+- Additional tool from Mandiant: [ShimCacheParser](https://github.com/mandiant/ShimCacheParser)
+
+
+<br>
 
 ---
 
