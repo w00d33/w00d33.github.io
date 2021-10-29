@@ -14,7 +14,13 @@
     + [Stacking Autoruns](#stacking-autoruns)
     + [Stacking Services](#stacking-services)
     + [Stacking WMI Filters and Consumers](#stacking-wmi-filters-and-consumers)
-- [Windows Forensics](windows-forensics)
+  * [Intrusion Analysis](#intrusion-analysis)
+    + [Evidence of Execution](#evidence-of-execution)
+      - [Prefetch](#prefetch)
+      - [ShimCache - Application Compatibility](#shimcache---application-compatibility)
+      - [Amcache.hve - Application Compatibility](#amcachehve---application-compatibility)
+      - [Automating & Scaling Execution Analysis](#automating---scaling-execution-analysis)
+- [Windows Forensics](#windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
   * [Users and Groups](#users-and-groups)
@@ -385,7 +391,9 @@ C:\Windows\AppCompat\Programs\Amcache.hve
 ```
 amcacheparser.exe -i -f amcache.hve --csv G:\<folder>
 ```
-	- Leverages allowlisting and blocklisting based on SHA1
+- Leverages allowlisting and blocklisting based on SHA1
+
+<br>
 
 #### Automating & Scaling Execution Analysis
 - Malware 101
