@@ -429,6 +429,13 @@ Perform least frequency of occurence analysis
 ```
 AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe'"
 ```
+
+<br>
+
+### Event Logs
+
+
+
 <br>
 
 ---
@@ -614,7 +621,42 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 <br>
 
 ## Living of the Land Binaries
-* [LOLBAS Project](https://lolbas-project.github.io/)
+* [LOLBAS Project](https://lolbas-project.github.io/)  
+
+**RUNONCE.EXE**
+- Executes a Run Once Task that has been configured in the registry
+```
+Runonce.exe /AlternateShellStartup
+```
+
+**RUNDLL32.EXE**
+- Used by Windows to execute dll files
+```
+rundll32.exe AllTheThingsx64,EntryPoint
+```
+
+**WMIC.EXE**
+- The WMI command-line (WMIC) utility provides a command-line interface for WMI
+```
+wmic.exe process call create calc
+```
+
+**NETSH.EXE**
+- Netsh is a Windows tool used to manipulate network interface settings.
+```
+netsh.exe add helper C:\Users\User\file.dll
+```
+
+**SCHTASKS.EXE**
+- Schedule periodic tasks
+```
+schtasks /create /sc minute /mo 1 /tn "Reverse shell" /tr c:\some\directory\revshell.exe
+```
+**MSIEXEC.EXE**
+- Used by Windows to execute msi files
+```
+msiexec /quiet /i cmd.msi
+```
 
 <br>
 
