@@ -373,6 +373,18 @@ C:\Windows\AppCompat\Programs\Amcache.hve
 	- Provides Installation Date
 	- Publisher information
 - InventoryDriverBinary
+	- Keys contain file path of driver
+	- DriverId: SHA1 Hash
+	- DriverLastWriteTime: Modification Time of Driver
+	- DriverSigned: 1 = signed
+	- Product/ProductVersion = Driver Metadata
+	- Rootkits are often heavily reliant on drivers
+	- Most drivers in ```C:\Windows\system32\drivers\```
+
+Can be parsed with [AmCacheParser](https://github.com/EricZimmerman/AmcacheParser)
+```
+amcacheparser.exe -i -f amcache.hve --csv G:\<folder>
+```
 
 
 <br>
