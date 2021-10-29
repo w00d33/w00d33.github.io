@@ -346,6 +346,34 @@ SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatibility\AppCompatCache
 - Written in order of excecution or GUI discovery
 - Additional tool from Mandiant: [ShimCacheParser](https://github.com/mandiant/ShimCacheParser)
 
+<br>
+
+#### Amcache.hve - Application Compatibility
+```
+C:\Windows\AppCompat\Programs\Amcache.hve
+```
+- Win7+
+- Tracks installed applications, loaded drivers, and unassociated excectuables
+- Full path, file size, file modification time, compilation time, publisher metadata
+- SHA1 hashes of executables and drivers
+- Entries can be due to file discovery or installation and not always execution
+- [ANALYSIS OF THE AMCACHE](https://www.ssi.gouv.fr/uploads/2019/01/anssi-coriin_2019-analysis_amcache.pdf)
+
+**Analysis**
+- InventoryApplicationFile
+	- FileId: SHA1 Hash
+	- LinkDate: PE Header Compilation Time
+	- LowerCaseLongPath: Full Path
+	- ProgramId: Cross-Ref with InventoryApplication key for more info
+		- Unassociated (not installed) applications dont have a ProgramId
+		- Malware often does not go through the installation process
+	- Size: File Size
+- InventoryApplication
+	- Installed Application
+	- Provides Installation Date
+	- Publisher information
+- InventoryDriverBinary
+
 
 <br>
 
