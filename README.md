@@ -300,6 +300,8 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 - Can be analyzed with PECmd.exe ```PECmd.exe -d "C:\Windows\Prefetch" --csv "G:\cases" -q```  
 - [PECmd](https://github.com/EricZimmerman/PECmd)
 
+<br>
+
 #### ShimCache - Application Compatibility
 - Available on workstations AND Servers
 - Not as easy to delete as Prefetch
@@ -341,7 +343,7 @@ SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatibility\AppCompatCache
 ```
 .\AppCompactCacheParser.exe -f .\SYSTEM --csv c:\temp
 ```
-- Written in order excecution or GUI discovery
+- Written in order of excecution or GUI discovery
 - Additional tool from Mandiant: [ShimCacheParser](https://github.com/mandiant/ShimCacheParser)
 
 
