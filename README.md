@@ -381,10 +381,37 @@ C:\Windows\AppCompat\Programs\Amcache.hve
 	- Rootkits are often heavily reliant on drivers
 	- Most drivers in ```C:\Windows\system32\drivers\```
 
-Can be parsed with [AmCacheParser](https://github.com/EricZimmerman/AmcacheParser)
+- Can be parsed with [AmCacheParser](https://github.com/EricZimmerman/AmcacheParser)
 ```
 amcacheparser.exe -i -f amcache.hve --csv G:\<folder>
 ```
+	- Leverages allowlisting and blocklisting based on SHA1
+
+#### Automating & Scaling Execution Analysis
+- Malware 101
+	- One/two letter executables
+	- Executions from temp ro $Recycle.Bin folders
+- Common Tools
+	- psexec.exe
+	- wmic.exe
+	- scrcons.exe
+	- certutil.exe
+	- rar.exe
+	- wsmprovhost.exe
+	- whoami.exe
+	- schtasks.exe
+- IOCs
+	- Known Malware
+	- Tools
+	- Staging directories
+
+**[appcompatprocessor.py](https://github.com/mbevilacqua/appcompatprocessor)**
+- Performs scalable hunting of ShimCache and Amcache artifacts
+- Regex Searches + built library of common anomalies
+- "Reconscan" to search for grouping of known recon tools
+- [ShimCache and AmCache Enterprise-wide Hunting](https://github.com/mbevilacqua/appcompatprocessor)
+- Temporal correlations of execution activity
+
 
 
 <br>
