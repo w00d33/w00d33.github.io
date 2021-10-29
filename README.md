@@ -19,7 +19,7 @@
       - [Prefetch](#prefetch)
       - [ShimCache - Application Compatibility](#shimcache---application-compatibility)
       - [Amcache.hve - Application Compatibility](#amcachehve---application-compatibility)
-      - [Automating & Scaling Execution Analysis](#automating---scaling-execution-analysis)
+      - [Automating and Scaling Execution Analysis](#automating-and-scaling-execution-analysis)
 - [Windows Forensics](#windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
@@ -395,7 +395,7 @@ amcacheparser.exe -i -f amcache.hve --csv G:\<folder>
 
 <br>
 
-#### Automating & Scaling Execution Analysis
+#### Automating and Scaling Execution Analysis
 - Malware 101
 	- One/two letter executables
 	- Executions from temp ro $Recycle.Bin folders
