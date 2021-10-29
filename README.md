@@ -279,6 +279,25 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 
 <br>
 
+## Intrusion Analysis
+
+### Threat Hunting & Assessment
+
+#### Prefetch
+- Evidence of execution
+	- Executable name, execution time(s), and execution count
+- Off by default on servers or workstations with SSDs
+- .pf filename
+	- executable file name followed by dash and hexidecimal representation of a hash of the file's path
+- Multiple .pf files with the same executable name can be indicative of two executables with the same name being run from different locations
+	- Execeptions: hosting applications (svchost, dllhost, backgroundtaskhost, and rundll32) hash values calculated based off of commandline arguments
+- First execution (creation date)
+- Last execution (modified date -10 seconds)
+- Can be analyzed with PECmd.exe
+```PECmd.exe -d "C:\Windows\Prefetch" --csv "G:\cases" -q```
+- [PECmd](https://github.com/EricZimmerman/PECmd)
+
+
 ---
 
 <br>
