@@ -20,6 +20,16 @@
       - [ShimCache - Application Compatibility](#shimcache---application-compatibility)
       - [Amcache.hve - Application Compatibility](#amcachehve---application-compatibility)
       - [Automating and Scaling Execution Analysis](#automating-and-scaling-execution-analysis)
+    + [Event Logs Analysis](#event-logs-analysis)
+      - [Location](#location)
+      - [Types](#types)
+      - [Profiling Account Usage](#profiling-account-usage)
+      - [Brute Force Password Attack](#brute-force-password-attack)
+      - [Built-In Accounts](#built-in-accounts)
+      - [Tracking Administrator Account Activity](#tracking-administrator-account-activity)
+      - [Auditing Account Creation](#auditing-account-creation)
+      - [Remote Desktop Activity](#remote-desktop-activity)
+      - [Account Logon Events](#account-logon-events)
 - [Windows Forensics](#windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
@@ -617,6 +627,10 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 			- Logon Username
 - 4624 Type 7
 	- Often Unlock or RDP Reconnect
+
+<br>
+
+#### Account Logon Events
 
 
 
