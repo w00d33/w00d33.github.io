@@ -486,19 +486,19 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 - Logon events are not recorded when backdoors, remote exploits, or similar malicous means are used to access a system
 - Important
 
-**Logon Types**
-2: Logon via console (keyboard, server KVM, or virtual client)
-3: Network logon (SMB and some RDP connections)
-4: Batch Logon -- Often used bt Scheduled tasks
-5: Windows Service Logon
-7: Credentials used to lock or unlock screen; RDP session reconnect
-8: Network logon sending credentials in cleartext
-9: Different credentials used than logged on user -- RunAs/netonly
-10: Remote interactive login (Remote Desktop Protocol)
-11: Cached credentials used to log on
-12: Cached Remote Interactive (similar to Type 10)
-13: Cached unlock (similar to Type 7)
-Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
+**Logon Types**  
+2: Logon via console (keyboard, server KVM, or virtual client)  
+3: Network logon (SMB and some RDP connections)  
+4: Batch Logon -- Often used bt Scheduled tasks  
+5: Windows Service Logon  
+7: Credentials used to lock or unlock screen; RDP session reconnect  
+8: Network logon sending credentials in cleartext  
+9: Different credentials used than logged on user -- RunAs/netonly  
+10: Remote interactive login (Remote Desktop Protocol)  
+11: Cached credentials used to log on  
+12: Cached Remote Interactive (similar to Type 10)  
+13: Cached unlock (similar to Type 7)  
+Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)  
 
 
 <br>
