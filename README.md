@@ -632,6 +632,25 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 
 #### Account Logon Events
 
+- Different than logon events
+- Recorded on system that authenticated credentials
+	- Local Account/Workgroup = on workstation
+	- Domain/Active Directory = on domain controller  
+
+- Event ID codes (NTLM)
+	- 4776: Successful/Failed account authentication  
+
+- Event ID codes (Kerberos protocol)
+	- 4768: TGT was granted (successful logon)
+	- 4769: Service Ticket was requested (access to server resource)
+	- 4771: Pre-authentication failed (failed logon)
+
+- Anomaly: find places where authentication didnt happen on domain controller (local account)  
+
+- Error codes show why attempt failed
+
+
+
 
 
 ---
