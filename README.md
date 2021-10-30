@@ -684,16 +684,58 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 
 <br>
 
-### Tracking Reconaissance
-
-#### Account and Group Enumeration
+### Account and Group Enumeration
 
 - Event ID 4798: A user's local group was enumerated
 - Event ID 4799: A security-enabled local group membership was enumerated
 
 **Notes**
 
+- New events starting with Win10 and Server 2016
+- Focus on the process being used
+	- PowerShell
+	- WMIC
+	- Cmd
+- Filter on sensitive groups, unusual accounts, and process information
+- Allowlist common processes
+	- mmc.exe
+	- services.exe
+	- taskhostw.exe
+	- explorer.exe
+	- VSSSVC.exe
 
+**Common Attack Tools**
+
+- PowerView (PowerSploit)
+- PowerShell Empire
+- DeathStar
+
+**Log Attributes**
+
+- Account Name: Account that performed enumeration
+- Group Name: Group Enumerated
+- Process Name: Process used for enumeration
+
+<br>
+
+### Event Log Analysis
+
+- [Event Log Explorer](https://eventlogxp.com/)
+	- Color Codes by Event IDs
+	- Open many logs simultaneously
+	- Filtering
+	- Log merging (aids correlation and search time)
+
+- [EvtxEcmd](https://github.com/EricZimmerman/evtx)
+	- Xpath filters
+	- Output to CSV, XML, JSON
+	- Extraction of "custom" fields
+	- Log merging and normalization
+	- Crowd-sourced event maps
+	- Noise reduction
+	- Extract from VSS and de-duplicate
+
+<br>
 
 ---
 
