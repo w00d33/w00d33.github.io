@@ -14,22 +14,25 @@
     + [Stacking Autoruns](#stacking-autoruns)
     + [Stacking Services](#stacking-services)
     + [Stacking WMI Filters and Consumers](#stacking-wmi-filters-and-consumers)
-  * [Intrusion Analysis](#intrusion-analysis)
-    + [Evidence of Execution](#evidence-of-execution)
-      - [Prefetch](#prefetch)
-      - [ShimCache - Application Compatibility](#shimcache---application-compatibility)
-      - [Amcache.hve - Application Compatibility](#amcachehve---application-compatibility)
-      - [Automating and Scaling Execution Analysis](#automating-and-scaling-execution-analysis)
-    + [Event Logs Analysis](#event-logs-analysis)
-      - [Location](#location)
-      - [Types](#types)
-      - [Profiling Account Usage](#profiling-account-usage)
-      - [Brute Force Password Attack](#brute-force-password-attack)
-      - [Built-In Accounts](#built-in-accounts)
-      - [Tracking Administrator Account Activity](#tracking-administrator-account-activity)
-      - [Auditing Account Creation](#auditing-account-creation)
-      - [Remote Desktop Activity](#remote-desktop-activity)
-      - [Account Logon Events](#account-logon-events)
+- [Intrusion Analysis](#intrusion-analysis)
+  * [Evidence of Execution](#evidence-of-execution)
+    + [Prefetch](#prefetch)
+    + [ShimCache - Application Compatibility](#shimcache---application-compatibility)
+    + [Amcache.hve - Application Compatibility](#amcachehve---application-compatibility)
+    + [Automating and Scaling Execution Analysis](#automating-and-scaling-execution-analysis)
+  * [Event Logs Analysis](#event-logs-analysis)
+    + [Location](#location)
+    + [Types](#types)
+    + [Profiling Account Usage](#profiling-account-usage)
+    + [Brute Force Password Attack](#brute-force-password-attack)
+    + [Built-In Accounts](#built-in-accounts)
+    + [Tracking Administrator Account Activity](#tracking-administrator-account-activity)
+    + [Auditing Account Creation](#auditing-account-creation)
+    + [Remote Desktop Activity](#remote-desktop-activity)
+    + [Account Logon Events](#account-logon-events)
+    + [Privileged Local Account Abuse - Pass the Hash](#privileged-local-account-abuse---pass-the-hash)
+    + [Tracking Reconaissance](#tracking-reconaissance)
+      - [Account and Group Enumeration](#account-and-group-enumeration)
 - [Windows Forensics](#windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
@@ -295,11 +298,15 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 
 <br>
 
-## Intrusion Analysis
+---
 
-### Evidence of Execution
+<br>
 
-#### Prefetch
+# Intrusion Analysis
+
+## Evidence of Execution
+
+### Prefetch
 - Evidence of execution
 	- Executable name, execution time(s), and execution count
 - Limitations: Off by default on servers or workstations with SSDs
@@ -318,7 +325,7 @@ Select-String "SystemPerformanceMonitor" *WMIEvtConsumer.csv
 
 <br>
 
-#### ShimCache - Application Compatibility
+### ShimCache - Application Compatibility
 - Available on workstations AND Servers
 - Not as easy to delete as Prefetch
 - Designed to detect and remediate
@@ -365,7 +372,7 @@ SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatibility\AppCompatCache
 
 <br>
 
-#### Amcache.hve - Application Compatibility
+### Amcache.hve - Application Compatibility
 ```
 C:\Windows\AppCompat\Programs\Amcache.hve
 ```
@@ -406,7 +413,7 @@ amcacheparser.exe -i -f amcache.hve --csv G:\<folder>
 
 <br>
 
-#### Automating and Scaling Execution Analysis
+### Automating and Scaling Execution Analysis
 - Malware 101
 	- One/two letter executables
 	- Executions from temp ro $Recycle.Bin folders
@@ -443,9 +450,9 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 
 <br>
 
-### Event Logs Analysis
+## Event Logs Analysis
 
-#### Location
+### Location
 - Server 2003 and older
 	- %systemroot%\System32\config
 	- .evt
@@ -455,7 +462,7 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 
 <br>
 
-#### Types
+### Types
 
 **Security**
 - Records access control and security settings
@@ -483,7 +490,7 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 
 <br>
 
-#### Profiling Account Usage
+### Profiling Account Usage
 - Determine which accounts have been used for attempted logons
 - Track account usage for known compromised accounts
 
@@ -523,7 +530,7 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 
 <br>
 
-#### Brute Force Password Attack
+### Brute Force Password Attack
 - Logon Type 3 - Could SMB or RDP
 - 1 accounts and many passwords = password guessing attack
 - many accounts and few passwords = password spraying attack
@@ -531,7 +538,7 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 
 <br>
 
-#### Built-In Accounts
+### Built-In Accounts
 
 - SYSTEM
 	- Most powerful local account; unlimited access to system
@@ -559,7 +566,7 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 
 <br>
 
-#### Tracking Administrator Account Activity
+### Tracking Administrator Account Activity
 
 - Event ID 4672
 - Usually follows Event ID 4624 (Successful Logon)
@@ -569,7 +576,9 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 	- Identifying compromised service accounts
 - Scheduled tasks run with administrative privileges also trigger this
 
-#### Auditing Account Creation
+<br>
+
+### Auditing Account Creation
 
 - Event ID 4720
 - Complementary events include
@@ -581,7 +590,10 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 	- 4738: A user account was changed
 	- 4756: A member was added to a security enabled universal group
 
-#### Remote Desktop Activity
+<br>
+
+### Remote Desktop Activity
+
 - Event ID 4778 (Session Reconnected)
 	- Should see 4624 (Successful logon) simultaneously
 	- Session name contains "RDP"
@@ -630,7 +642,7 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 
 <br>
 
-#### Account Logon Events
+### Account Logon Events
 
 - Different than logon events
 - Recorded on system that authenticated credentials
@@ -647,9 +659,39 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 
 - Anomaly: find places where authentication didnt happen on domain controller (local account)  
 
-- Error codes show why attempt failed
+**Error Codes**
+- 4771 - 4776/4625
+	- 0x6 - 0xC0000064: Invalid Username
+	- 0x7 - n/a: Requested server not found
+	- 0xC - 0xC0000070: Logon from unauthorzed workstation
+	- 0x12 - 0xC0000234: Account locked, disabled, or expired
+	- 0x17 - 0xC0000071: Password expired
+	- 0x18 - 0xC000006A: Password invalid
+	- 0x25 - n/a: Clock skew between machines is too great
 
+<br>
 
+### Privileged Local Account Abuse - Pass the Hash
+
+- Filter event logs for Event ID 4776 (exclude Domain Controllers)
+- Identify any workstations with these events
+- Note Source Workstation, if Source Workstation doesn't match source of log activity is taking place remotely
+- Review events surrounding 4776
+	- 4624 (succesful logon)
+		- Type 3 often indicative of share mapping or exceuting code with PsExec
+	- 4672 - Privelged logon
+	- 5140 - File Share event
+
+<br>
+
+### Tracking Reconaissance
+
+#### Account and Group Enumeration
+
+- Event ID 4798: A user's local group was enumerated
+- Event ID 4799: A security-enabled local group membership was enumerated
+
+**Notes**
 
 
 
