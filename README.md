@@ -443,6 +443,8 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 	- %systemroot%\System32\winevt\logs
 	- .evtx
 
+<br>
+
 #### Types
 
 **Security**
@@ -468,6 +470,8 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 - WMI
 - Firewall
 - DNS (Servers)
+
+<br>
 
 #### Profiling Account Usage
 - Determine which accounts have been used for attempted logons
