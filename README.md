@@ -488,12 +488,11 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 **Notes**
 - Windows does not reliably record logoffs, also look for 4647 -> user initiated logoff for interactive logons
 - Logon events are not recorded when backdoors, remote exploits, or similar malicous means are used to access a system
-- Important
 
 **Logon Types**  
 2: Logon via console (keyboard, server KVM, or virtual client)  
 3: Network logon (SMB and some RDP connections)  
-4: Batch Logon -- Often used bt Scheduled tasks  
+4: Batch Logon -- Often used by Scheduled tasks  
 5: Windows Service Logon  
 7: Credentials used to lock or unlock screen; RDP session reconnect  
 8: Network logon sending credentials in cleartext  
@@ -502,8 +501,36 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 11: Cached credentials used to log on  
 12: Cached Remote Interactive (similar to Type 10)  
 13: Cached unlock (similar to Type 7)  
-Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)  
+Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 
+**Identify Logon Sessions**
+- Use Logon ID value to link a logon with a logoff and determine session length
+- Useful for interactive logons (Type 2, 10, 11, 12)
+- Can tie togther actions like special user privileges assigned to the session, process tracking, and object access
+- Admin logins generate two different sessions
+	- high privilege session
+	- lower privlege session
+
+<br>
+
+#### Brute Force Password Attack
+- Logon Type 3 - Could SMB or RDP
+- 1 accounts and many passwords = password guessing attack
+- many accounts and few passwords = password spraying attack
+- [Failed Login Codes](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4625)
+
+<br>
+
+#### Built-In Accounts  
+SYSTEM - Most powerful local account; unlimited access to system  
+LOCAL SERVICE - Limited privileges similar to authenticated user account; can access only network resources via null session  
+NETWORK SERVICE - Slightly higher privileges that LOCAL SERVICE; can access network resouces similar to authenticated user account  
+HOSTNAME$ - Every domain-joined windows system has a computer account  
+DWM - Desktop window manager\Window manager group  
+UMFD - Font driver host account  
+ANONYMOUS LOGON - Null session w/o credentials use to authenticate with resource  
+
+- Recommended to ignore in initial investigation (very noisy)
 
 <br>
 
