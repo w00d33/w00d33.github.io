@@ -522,14 +522,22 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 <br>
 
 #### Built-In Accounts  
-SYSTEM - Most powerful local account; unlimited access to system  
-LOCAL SERVICE - Limited privileges similar to authenticated user account; can access only network resources via null session  
-NETWORK SERVICE - Slightly higher privileges that LOCAL SERVICE; can access network resouces similar to authenticated user account  
-HOSTNAME$ - Every domain-joined windows system has a computer account  
-DWM - Desktop window manager\Window manager group  
-UMFD - Font driver host account  
-ANONYMOUS LOGON - Null session w/o credentials use to authenticate with resource  
+SYSTEM  
+- Most powerful local account; unlimited access to system  
+LOCAL SERVICE  
+- Limited privileges similar to authenticated user account; can access only network resources via null session  
+NETWORK SERVICE  
+- Slightly higher privileges that LOCAL SERVICE; can access network resouces similar to authenticated user account  
+HOSTNAME$  
+- Every domain-joined windows system has a computer account  
+DWM  
+- Desktop window manager\Window manager group  
+UMFD  
+- Font driver host account  
+ANONYMOUS LOGON  
+- Null session w/o credentials use to authenticate with resource  
 
+**Notes**  
 - Recommended to ignore in initial investigation (very noisy)
 
 <br>
