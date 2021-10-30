@@ -549,6 +549,77 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 
 <br>
 
+#### Tracking Administrator Account Activity
+
+- Event ID 4672
+- Usually follows Event ID 4624 (Successful Logon)
+- Important for:
+	- Account auditing
+	- Planning for password resets
+	- Identifying compromised service accounts
+- Scheduled tasks run with administrative privileges also trigger this
+
+#### Auditing Account Creation
+
+- Event ID 4720
+- Complementary events include
+	- 4722: A user account was enabled
+	- 4724: An attempt was made to reset an accounts password
+	- 4728: A member was added to a security enabled global group
+	- 4732: A member was added to a security enabled local group
+	- 4735: A security enabled local group was changed
+	- 4738: A user account was changed
+	- 4756: A member was added to a security enabled universal group
+
+#### Remote Desktop Activity
+- Event ID 4778 (Session Reconnected)
+	- Should see 4624 (Successful logon) simultaneously
+	- Session name contains "RDP"
+	- Client Name: True Client Hostname (regardless of hops)
+- Event ID 4779 (Session Disconnected)
+	- Should see 4647 (Successful logoff) simultaneously
+- Not a reliable indicator of all RDP activity (records reconnects)
+	- Fill in gaps with Event ID 4624 Type 3,7,10 Events
+- Logs provide IP address and hostname
+- False positive: Shared workstations (fast user switching)
+	- Session Name: Console
+- Source System
+	- Security
+		- 4648: Logon with alternate credentials
+			- Current logged on username
+			- Alternate user name
+			- Destination hostname/ip
+			- Process Name
+	- TerminalServices-RdpClient
+		- 1024
+			- Destination hostname
+		- 1102
+			- Destination IP
+- Destination System
+	- Security
+		- 4624 Type 10
+			- Source IP/Logon Username
+		4778/4779
+			- IP address of source/source system name
+			- Logon Username
+	- Remote Desktop Services-RDPCoreTS
+		- 131 - Connection attempts
+			- Source ip/logon username
+		- 98 - Successful connections
+	- TerminalServices Remote Connection Manager
+		- 1149
+			- Source ip/logon user name
+				- Blank may indicate use of sticky keys
+	- Terminal Services LocalSession Manager
+		- 21,22,25
+			- Source IP, Logon username
+		- 41
+			- Logon Username
+- 4624 Type 7
+	- Often Unlock or RDP Reconnect
+
+
+
 ---
 
 <br>
