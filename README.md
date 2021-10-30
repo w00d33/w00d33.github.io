@@ -341,6 +341,7 @@ SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatibility\AppCompatCache
 - Most recent activities are on the top
 - New entries are only written on shutdown (only exist in memory before)
 - Each "ControlSet" can have its own ShimCache database
+- If the executable is modified (content changes) or renamed, it will be shimmed again
 - [Leveraging the Application Compatibility Cache in Forensic Investigations](https://web.archive.org/web/20190209113245/https://www.fireeye.com/content/dam/fireeye-www/services/freeware/shimcache-whitepaper.pdf)
 
 **Analysis**
@@ -432,8 +433,72 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 
 <br>
 
-### Event Logs
+### Event Logs Analysis
 
+#### Location
+- >= Server 2003
+	- %systemroot%\System32\config
+	- .evt
+- Vista+
+	- %systemroot%\System32\winevt\logs
+	- .evtx
+
+#### Types
+
+**Security**
+- Records access control and security settings
+- Events based on audit and group policies
+- Example: Failed logon; folder access
+- User authentication
+- User behavior and actions
+- File/Folder/Share access
+
+**System**
+- Contains events related to Windows services, system components, drivers, resources, etc.
+- Example: Service stopped; system rebooted
+
+**Application**
+- Software events unrealted to operating system
+- Example: SQL server fails to access database
+
+**Other**
+- Task Scheduler
+- Terminal Services
+- Powershell
+- WMI
+- Firewall
+- DNS (Servers)
+
+#### Profiling Account Usage
+- Determine which accounts have been used for attempted logons
+- Track account usage for known compromised accounts
+
+**Event IDs**
+- 4624: Successful Logon
+- 4625: Failed Logon
+- 4634/4647: Successful Logoff
+- 4648: Logon using explicit credentials (RunAs)
+- 4672: Account logon with superuser rights (Administrator)
+- 4720/4726: An account was created/deleted
+
+**Notes**
+- Windows does not reliably record logoffs, also look for 4647 -> user initiated logoff for interactive logons
+- Logon events are not recorded when backdoors, remote exploits, or similar malicous means are used to access a system
+- Important
+
+**Logon Types**
+2: Logon via console (keyboard, server KVM, or virtual client)
+3: Network logon (SMB and some RDP connections)
+4: Batch Logon -- Often used bt Scheduled tasks
+5: Windows Service Logon
+7: Credentials used to lock or unlock screen; RDP session reconnect
+8: Network logon sending credentials in cleartext
+9: Different credentials used than logged on user -- RunAs/netonly
+10: Remote interactive login (Remote Desktop Protocol)
+11: Cached credentials used to log on
+12: Cached Remote Interactive (similar to Type 10)
+13: Cached unlock (similar to Type 7)
+Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 
 
 <br>
