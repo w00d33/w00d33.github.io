@@ -31,8 +31,8 @@
     + [Remote Desktop Activity](#remote-desktop-activity)
     + [Account Logon Events](#account-logon-events)
     + [Privileged Local Account Abuse - Pass the Hash](#privileged-local-account-abuse---pass-the-hash)
-    + [Tracking Reconaissance](#tracking-reconaissance)
-      - [Account and Group Enumeration](#account-and-group-enumeration)
+    + [Account and Group Enumeration](#account-and-group-enumeration)
+    + [Event Log Analysis Tools](#event-log-analysis-tools)
 - [Windows Forensics](#windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
@@ -718,7 +718,7 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 
 <br>
 
-### Event Log Analysis
+### Event Log Analysis Tools
 
 - [Event Log Explorer](https://eventlogxp.com/)
 	- Color Codes by Event IDs
