@@ -436,10 +436,10 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 ### Event Logs Analysis
 
 #### Location
-- >= Server 2003
+- Server 2003 and older
 	- %systemroot%\System32\config
 	- .evt
-- Vista+
+- Vista and newer
 	- %systemroot%\System32\winevt\logs
 	- .evtx
 
