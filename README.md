@@ -856,6 +856,66 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 
 <br>
 
+### Suspicious Services
+
+- Analyze logs for suspicious services running at boot time
+	- Service type changed to Boot
+- Review services started and stopped during time of a suspected hack
+
+<br>
+
+- System Log
+	- 7034: Service Crashed Unexpectedly
+	- 7035: Service sent a Start/Stop control
+	- 7036: Service started or stopped
+	- 7040: Start typed changed (Boot, On Request, Disabled)
+	- 7045: A new service was installed on the system (Win2008R2+)
+- Security Log
+	- 4697: A new service was installed on the system
+
+<br>
+
+**Notes**
+- A large amount of malware and worms in the wild utilize Services
+- Services started on bot illustrate peristence
+- Services can crash due to attacks like process injections
+
+<br>
+
+**Example - PsExec**
+- Filter by 7045 (New service installed)
+- Look for services not tied to Built-In accounts (SIDs)
+- Everytime PsExec runs, it starts a brand new service
+- Note service File Name
+
+<br>
+
+### Event Log Clearing
+- 1102: Audit Log Cleared (Security)
+- 104: Audit Log Cleared (System)
+
+<br>
+
+**Notes**
+- Requires Admin Rights
+- GUI and command-line clearing (i.e. wevutil) recorded 
+- Note Account Name
+
+**Event Log Attacks**
+- Mimikatz ```event::drop```
+- DanderSpritz ```eventlogedit```
+- ```Invoke-Phantom``` thread killing
+- Event Log service suspension; memory based attacks
+
+<br>
+
+**Mitigation**
+- Event Log Forwarding
+- Logging "heartbeat"
+- Log gap analysis
+
+<br>
+
 ---
 
 <br>
