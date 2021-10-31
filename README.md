@@ -825,10 +825,10 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 
 ### Lateral Movement - Scheduled Tasks
 
-- Log: Task Scheduler | Security
-	- 106 | 4698 - Task Created
-	- 140 | 4720 - Task Updated
-	- 141 | 4699 - Task Deleted
+- Log: Task Scheduler - Security
+	- 106 - 4698 - Task Created
+	- 140 - 4720 - Task Updated
+	- 141 - 4699 - Task Deleted
 - Task Scheduler
 	- 200/201: Task Executed/Completed
 - Security
