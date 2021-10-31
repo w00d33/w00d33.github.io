@@ -33,6 +33,10 @@
     + [Privileged Local Account Abuse - Pass the Hash](#privileged-local-account-abuse---pass-the-hash)
     + [Account and Group Enumeration](#account-and-group-enumeration)
     + [Event Log Analysis Tools](#event-log-analysis-tools)
+    + [Lateral Movement - Network Shares](#lateral-movement---network-shares)
+    + [Cobalt Strike Mapping Shares](#cobalt-strike-mapping-shares)
+    + [Lateral Movement - Explicit Credentials - runas](#lateral-movement---explicit-credentials---runas)
+    + [Lateral Movement - Scheduled Tasks](#lateral-movement---scheduled-tasks)
 - [Windows Forensics](#windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
@@ -67,7 +71,6 @@
 - [Misc](#misc)
   * [Decode Base64](#decode-base64)
   * [Powershell CommandLine Switches](#powershell-commandline-switches)
-
 <br>
 
 ---
@@ -734,6 +737,122 @@ Ref: [Logon Type Codes Revealed](https://techgenix.com/Logon-Types/)
 	- Crowd-sourced event maps
 	- Noise reduction
 	- Extract from VSS and de-duplicate
+
+<br>
+
+### Lateral Movement - Network Shares
+
+- Event Id 5140: Network share was accessed
+- Event Id 5145: Share object accessed (detailed file share auditing)
+
+**Notes**
+
+- Log provides share name and IP address of remote machine making connection
+- Account name and logon ID allow tracking of relevant account and other activities
+- Requires object access auditing to be enabled
+- Event IDs 5142-5144 track share creation, modification, and deletion
+- Detailed file share auditing (5145) provides detail on individual files access (can be very noisy)
+
+<br>
+
+### Cobalt Strike Mapping Shares
+
+- Share Name: ```\\*\ADMIN$```
+	- Windows Folder
+	- Originaly designed to push patches
+- Source Address: 127.0.0.1 (localhost)
+	- Normally see remote host
+- Account Name: COMPUTERNAME$
+	- Normally see non-computer account
+
+<br>
+
+- Share Name: ```\\*\IPC$```
+	- Sets up initial SMB connection
+	- Part of authentication
+	- Can be seen as part of enumeration tools
+- Source Address: Remote Host
+- Account Name: non-computer account
+
+**Notes**
+- Usually contains a corresponding 4624 event with Type 3 logon
+
+Mandiant stated 24% of malware families they observed were cobalt strike
+
+<br>
+
+### Lateral Movement - Explicit Credentials - runas
+
+- Track credential chagne common during lateral movement
+- Event Id: 4624 (Logon Type 9)
+- Event Id: 4648 (Logon using explicit credentials)
+
+**Notes**
+- Changing credentials necessary to move from system to system
+- Typically only admins and attacks juggle multiple credentials
+- 4648 events log on the originating system and help to identify attacker lateral movement from that system
+- Logged if explicit credentials are supplied (even if no account change)
+- RDP connections using different credentials often log 4648 events on both systems
+
+**Detection**
+- Originating Host - Event Id 4648
+	- Subject
+		- Account Name: Intitial Account Name
+	- Account Whose Credentials Were Used
+		- Account Name: "run as" account name
+	- Target Server
+		- Target Server Name: Remote Target
+- Target System - Event Id 5140
+	- Account Name: Should match account name of "Account Whose Credentials Were Used" from orginating host 4648 log
+	- Source Address: Source IP of originating host
+	- Share Name: Share accessed (IPC$, etc)
+	- Computer: Computer name of remote host
+
+**Cobalt Strike - Make Token or Pass the hash**
+
+- EventID 4624
+	- Logon Type 9 (explicit credentials)
+	- "Subject - Account Name" matches "New Logon - Account Name"
+	- Note Process information
+
+<br>
+
+- EventId 4648 (explicit credentials)
+	- "Subject - Account Name" mathces "Account Whose Credentials Were Used - Account Name"
+	- Note Target Server Name
+
+<br>
+
+### Lateral Movement - Scheduled Tasks
+
+- Log: Task Scheduler | Security
+	- 106 | 4698 - Task Created
+	- 140 | 4720 - Task Updated
+	- 141 | 4699 - Task Deleted
+- Task Scheduler
+	- 200/201: Task Executed/Completed
+- Security
+	- 4700/4701: Task Enabled/Disabled
+
+**Notes**
+- Tasks can be executed locally and remotely
+	- Remotely scheduled task also cause Logon (ID 4624) Type 3 events
+- Attackers commonly delete scheduled tasks after execution
+	- Hunt deleted tasks (rare)
+- Tasks running executables from /Temp likey evil
+
+**Task Scheduler Artifacts**
+- XML Files
+- Saved in:
+	- \Windows\System32\Tasks
+	- \Windows\SysWOW64\Tasks
+- Includes:
+	- Task Name
+	- Registration date and time (local)
+	- Account used to register
+	- Trigger conditions and frequency
+	- Full command path
+	- Account authenticated to run task
 
 <br>
 
