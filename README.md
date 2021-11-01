@@ -916,6 +916,11 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 
 <br>
 
+## Lateral Movement Tactics
+
+- [Hunt Evil](https://github.com/w00d33/w00d33.github.io/blob/main/_files/SANS_Hunt_Evil_Poster.pdf)
+
+
 ---
 
 <br>
