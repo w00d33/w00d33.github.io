@@ -922,9 +922,11 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 
 
 ### RDP - Source System Artifacts
-- Also look for VNC and TeamViewer
-
-<br>
+- VNC
+	- 4624 Type 2 (Console)
+- TeamViewer
+	- TeamViewerX_Logfile.log (X = TV Version) - Source
+	- Connections_incoming.txt - Destination
 
 **Event Logs**
 - Security.evtx
