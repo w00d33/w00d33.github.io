@@ -922,6 +922,9 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 
 
 ### RDP - Source System Artifacts
+- Also look for VNC and TeamViewer
+
+<br>
 
 **Event Logs**
 - Security.evtx
@@ -968,6 +971,7 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 - Bitmap Cache ```C:\Users\<username>\AppData\Local\Microsoft\Terminal Server Client\Cache```
 	- bcache##.bmc
 	- cache####.bin
+	- [Bitmap Cache Parser](https://github.com/ANSSI-FR/bmc-tools)
 
 
 <br>
