@@ -921,6 +921,57 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 - [Hunt Evil](https://github.com/w00d33/w00d33.github.io/blob/main/_files/SANS_Hunt_Evil_Poster.pdf)
 
 
+### RDP - Source System Artifacts
+
+**Event Logs**
+- Security.evtx
+	- 4648 - Logon specifying alternate credentials - if NLA enabled on destination
+		- Current logged on username
+		- Alternate username
+		- Destination Hostname/IP
+		- Process Name
+- Microsoft-Windows-TerminalServices-RDPClient%4Operational.evtx
+	- 1024
+		- Destination Hostname
+	- 1102
+		- Destination IP address
+
+<br>
+
+**Registry**
+- Remote Desktop Destinations are tracked per-user
+	- NTUSER\Software\Microsoft\Terminal Server Client\Servers
+- ShimCache - SYSTEM
+	- mstsc.exe Remote Desktop Client
+- BAM/DAM - SYSTEM - Last Time Executed
+	- mstsc.exe Remote Desktop Client
+- Amcache.hve - First Time Executed
+	- mstsc.exe
+- UserAssist - NTUSER.DAT
+	- mstsc.exe Remote Desktop Client execution
+	- Last Time Executed
+	- Number of Times Executed
+- RecentApps - NTUSER.DAT
+	- mstsc.exe Remote Desktop Client Execution
+	- Last Time Executed
+	- Number of Times Executed
+	- RecentItems subkey tracks connection destination and times
+
+<br>
+
+**File System**
+- Jumplists ```C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations\```
+	- {MSTSC-APPID}-automaticdestinations-ms
+	- Tracks remote desktop connection destination and times
+- Prefetch ```C:\Windows\Prefetch\```
+	- mstsc.exe-{hash}.pf
+- Bitmap Cache ```C:\Users\<username>\AppData\Local\Microsoft\Terminal Server Client\Cache```
+	- bcache##.bmc
+	- cache####.bin
+
+
+<br>
+
 ---
 
 <br>
