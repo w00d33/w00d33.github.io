@@ -1020,6 +1020,85 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 
 <br>
 
+### Windows Admin Shares - Source System Artifacts
+- C$
+- ADMIN$
+- IPC$
+
+**Event Logs***
+- security.evtx
+	- 4648 – Logon specifying alternate credentials
+		- Current logged-on User Name
+		- Alternate User Name
+		- Destination Host Name/IP
+		- Process Name
+- Microsoft-Windows-SmbClient%4Security.evtx
+	- 31001 – Failed logon to destination
+		- Destination Host Name
+		- User Name for failed logon
+		- Reason code for failed destination logon (e.g. bad password)
+
+<br>
+
+**Registry**
+- MountPoints2 – Remotely mapped shares ```NTUSER\Software\Microsoft\Windows\CurrentVersion\Explorer\MountPoints2```
+- Shellbags – USRCLASS.DAT
+	- Remote folders accessed inside an interactive session via Explorer by attackers
+- ShimCache – SYSTEM
+	- net.exe
+	- net1.exe
+- BAM/DAM – NTUSER.DAT – Last Time Executed
+	- net.exe
+	- net1.exe
+- AmCache.hve – First Time Executed
+	- net.exe
+	- net1.exe
+
+	```net use z: \\host\c$ /user:domain\username <password>```
+
+<br>
+
+**File System**
+- Prefetch – C:\Windows\Prefetch\
+	- net.exe-{hash}.pf
+	- net1.exe-{hash}.pf
+- User Profile Artifacts
+	- Review shortcut files and jumplists for remote files accessed by attackers, if they had interactive access (RDP)
+
+<br>
+
+### Windows Admin Shares -  Destination System Artifacts
+
+**Event Logs**
+- Security Event Log – security.evtx
+	- 4624 Logon Type 3
+		- Source IP/Logon User Name
+- 4672
+	- Logon User Name
+	- Logon by user with administrative rights
+	- Requirement for accessing default shares such as C$ and ADMIN$
+- 4776 – NTLM if authenticating to Local System
+	- Source Host Name/Logon User Name
+- 4768 – TGT Granted
+	- Source Host Name/Logon User Name
+	- Available only on domain controller
+- 4769 – Service Ticket Granted if authenticating to Domain Controller
+	- Destination Host Name/Logon User Name
+	- Source IP
+	- Available only on domain controller
+- 5140
+	- Share Access
+- 5145
+	- Auditing of shared files – NOISY!
+
+<br>
+
+**File System**
+- File Creation
+	- Attacker's files (malware) copied to destination system
+- Look for Modified Time before Creation Time
+- Creation Time is time of file copy
+
 ---
 
 <br>
