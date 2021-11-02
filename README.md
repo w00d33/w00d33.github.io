@@ -1140,6 +1140,11 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 <br>
 
 ### PsExec - Destination System Artifacts
+- Authenticates to destination system
+- Named pipes are used to communicate
+- Mounts hidden ADMIN$ share
+- Copies PsExec.exe and other binaries to windows folder
+- Executes code via a service (PSEXESVC)
 
 **Event Logs**
 - security.evtx
@@ -1179,6 +1184,18 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 - psexesvc.exe will be placed in ADMIN$ (\Windows) by default, as well as other executables (evil.exe) pushed by PsExec
 
 <br>
+
+### Windows Remote Management Tools
+- Create and Start a remote service
+```sc \\host create servicename binpath= “c:\temp\evil.exe”```
+```sc \\host start servicename```
+- Remotely schedule tasks
+```at \\host 13:00 "c:\temp\evil.exe"```
+```schtasks /CREATE /TN taskname /TR c:\temp\evil.exe /SC once /RU “SYSTEM” /ST 13:00 /S host /U username```
+- Interact with Remote Registries
+```reg add \\host\HKLM\Software\Microsoft\Windows\CurrentVersion\Run /v Data /t REG_SZ /d "C:\evil.exe"```
+- Execute any remote command
+```winrs -r:host -u:user command```
 
 ---
 
