@@ -975,6 +975,48 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 	- cache####.bin
 	- [Bitmap Cache Parser](https://github.com/ANSSI-FR/bmc-tools)
 
+<br>
+
+### RDP - Destination System Artifacts
+
+**Event Logs**
+- Security Event Log – security.evtx
+	- 4624 Logon Type 10
+ 		- Source IP/Logon User Name
+	- 4778/4779
+		- IP Address of Source/Source
+		- System Name
+ 		- Logon User Name
+- Microsoft-WindowsRemoteDesktopServicesRdpCoreTS%4Operational.evtx
+	- 131 – Connection Attempts
+ 		- Source IP
+ 	- 98 – Successful Connections
+- Microsoft-Windows-Terminal Services-RemoteConnection Manager%4Operational.evtx
+	- 1149
+		- Source IP/Logon User Name
+ 			- Blank user name may indicate use of Sticky Keys
+- Microsoft-Windows-Terminal Services-LocalSession Manager%4Operational.evtx
+	- 21, 22, 25
+		- Source IP/Logon User Name
+	- 41
+ 		- Logon User Name
+
+<br>
+
+**Registry**
+- ShimCache – SYSTEM
+	- rdpclip.exe
+	- tstheme.exe
+- AmCache.hve – First Time Executed
+ - rdpclip.exe
+ - tstheme.exe
+
+<br>
+
+**File System**
+- Prefetch ```C:\Windows\Prefetch\```
+ - rdpclip.exe-{hash}.pf
+ - tstheme.exe-{hash}.pf
 
 <br>
 
