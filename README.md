@@ -37,6 +37,16 @@
     + [Cobalt Strike Mapping Shares](#cobalt-strike-mapping-shares)
     + [Lateral Movement - Explicit Credentials - runas](#lateral-movement---explicit-credentials---runas)
     + [Lateral Movement - Scheduled Tasks](#lateral-movement---scheduled-tasks)
+    + [Suspicious Services](#suspicious-services)
+    + [Event Log Clearing](#event-log-clearing)
+  * [Lateral Movement Tactics](#lateral-movement-tactics)
+    + [RDP - Source System Artifacts](#rdp---source-system-artifacts)
+    + [RDP - Destination System Artifacts](#rdp---destination-system-artifacts)
+    + [Windows Admin Shares - Source System Artifacts](#windows-admin-shares---source-system-artifacts)
+    + [Windows Admin Shares -  Destination System Artifacts](#windows-admin-shares----destination-system-artifacts)
+    + [PsExec - Source System Artifacts](#psexec---source-system-artifacts)
+    + [PsExec - Destination System Artifacts](#psexec---destination-system-artifacts)
+    + [Windows Remote Management Tools](#windows-remote-management-tools)
 - [Windows Forensics](#windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
@@ -71,6 +81,7 @@
 - [Misc](#misc)
   * [Decode Base64](#decode-base64)
   * [Powershell CommandLine Switches](#powershell-commandline-switches)
+
 <br>
 
 ---
