@@ -1068,6 +1068,9 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 <br>
 
 ### Windows Admin Shares -  Destination System Artifacts
+- Stage malware/access sensitive files
+- Pass-the-Hash attacks common
+- Vista+ requires domain or built-in admin rights
 
 **Event Logs**
 - Security Event Log – security.evtx
