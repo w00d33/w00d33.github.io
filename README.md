@@ -1208,9 +1208,275 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 - Execute any remote command  
 	- ```winrs -r:host -u:user command```  
 
+<br>
+
+### Remote Services - Source System Artifacts
+
+**Registry**
+- ShimCache – SYSTEM
+	- ```sc.exe```  
+- BAM/DAM – SYSTEM – Last Time Executed
+	- ```sc.exe```  
+-	AmCache.hve – First Time Executed
+	- ```sc.exe```  
+
+<br>
+
+**File System**
+- Prefetch – ```C:\Windows\Prefetch\```  
+	- ```sc.exe-{hash}.pf```  
+
+<br>
+
+### Remote Services - Destination System Artifacts
+
+**Event Logs**
+- security.evtx
+	- 4624 Logon Type 3
+		- Source IP/Logon User Name
+- 4697
+	- Security records service install, if enabled
+	- Enabling non-default Security events such as ID 4697 are particularly useful if only the Security logs are forwarded to a centralized log server
+- system.evtx
+	- 7034 – Service crashed unexpectedly
+	- 7035 – Service sent a Start/Stop control
+	- 7036 – Service started or stopped
+	- 7040 – Start type changed _(Boot | On Request | Disabled)_
+	- 7045 – A service was installed on the system
+
+<br>
+
+**Registry**
+- ```SYSTEM\CurrentControlSet\Services\```
+	- New service creation
+- ShimCache – SYSTEM
+	- evil.exe
+	- ShimCache records existence of malicious service executable, unless implemented as a service DLL
+- AmCache.hve – First Time Executed
+	- evil.exe
+
+<br>
+
+**File System**
+- File Creation
+	- evil.exe or evil.dll malicious service executable or service DLL
+- Prefetch – ```C:\Windows\Prefetch\```
+	- ```evil.exe-{hash}.pf```
+
+
+<br>
+
+### Scheduled Tasks - Source System Artifacts
+
+**Event Logs**
+- security.evtx
+	- 4648 – Logon specifying alternate credentials
+		- Current logged-on User Name
+		- Alternate User Name
+		- Destination Host Name/IP
+		- Process Name
+
+<br>
+
+**Registry**
+-	ShimCache – SYSTEM
+	- at.exe
+	- schtasks.exe
+-	BAM/DAM – SYSTEM – Last Time Executed
+	- at.exe
+	- schtasks.exe
+- AmCache.hve -First Time Executed
+	- at.exe
+	- schtasks.exe
+
+<br>
+
+**File System**
+- Prefetch – ```C:\Windows\Prefetch\```
+	- ```at.exe-{hash}.pf```
+	- ```schtasks.exe-{hash}.pf```
+
+<br>
+
+### Scheduled Tasks - Destination System Artifacts
+
+**Event Logs**
+- security.evtx
+	- 4624 Logon Type 3
+		- Source IP/Logon User Name
+	- 4672
+		- Logon User Name
+		- Logon by a user with administrative rights Requirement for accessing default shares such as C$ and ADMIN$
+	- 4698 – Scheduled task created
+	- 4702 – Scheduled task updated
+	- 4699 – Scheduled task deleted
+	- 4700/4701 – Scheduled task enabled/disabled
+- Microsoft-Windows-Task Scheduler%4Operational.evtx
+	- 106 – Scheduled task created
+	- 140 – Scheduled task updated
+	- 141 – Scheduled task deleted
+	- 200/201 – Scheduled task
+
+<br>
+
+**Registry**
+- SOFTWARE
+	- ```Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tasks```  
+	- ```Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\```  
+- ShimCache – SYSTEM
+	- evil.exe
+- AmCache.hve – First Time Executed
+	- evil.exe
+
+<br>
+
+**File System**
+- File Creation
+	- evil.exe
+	- Job files created in ```C:\Windows\Tasks```  
+	- XML task files created in ```C:\Windows\System32\Tasks```  
+		- Author tag under "RegistrationInfo" can identify:
+			- Source system name
+			- Creator username
+- Prefetch – ```C:\Windows\Prefetch\```  
+	- evil.exe-{hash}.pf
+
+<br>
+
+### WMI - Source System Artifacts
+- Powerful lateral movement options
+- Native to Windows OS
+
+**Event Logs**
+- security.evtx
+	- 4648 – Logon specifying alternate credentials
+		- Current logged-on User Name
+		- Alternate User Name
+		- Destination Host Name/IP
+		- Process Name
+
+<br>
+
+**Registry**
+- ShimCache – SYSTEM
+	- wmic.exe
+- BAM/DAM – SYSTEM – Last Time Executed
+	- wmic.exe
+- AmCache.hve – First Time Executed
+	- wmic.exe
+
+<br>
+
+**File System**
+- Prefetch – ```C:\Windows\Prefetch\```  
+	- ```wmic.exe-{hash}.pf```  
+
+<br>
+
+### WMI - Destination System Artifacts
+- wmiprvse.exe
+- Microsoft-Windows-WMI-Activity/Operational
+
+**Event Logs**
+- security.evtx
+	- 4624 Logon Type 3
+		- Source IP/Logon User Name
+- 4672
+	- Logon User Name
+	- Logon by an a user with administrative rights
+- Microsoft-Windows-WMIActivity%4Operational.evtx
+	- 5857
+		- Indicates time of wmiprvse execution and path to provider DLL – attackers sometimes install malicious WMI provider DLLs
+- 5860, 5861
+	Registration of Temporary (5860) and Permanent (5861) Event Consumers. Typically used for persistence, but
+can be used for remote execution.
+
+<br>
+
+**Registry**
+- ShimCache – SYSTEM
+	- scrcons.exe
+	- mofcomp.exe
+	- wmiprvse.exe
+	- evil.exe
+- AmCache.hve – First Time Executed
+	- scrcons.exe
+	- mofcomp.exe
+	- wmiprvse.exe
+	- evil.exe
+
+<br>
+
+**File System**
+- File Creation
+	- evil.exe
+	- evil.mof – .mof files can be used to manage the WMI Repository
+- Prefetch – ```C:\Windows\Prefetch\```  
+	- ```scrcons.exe-{hash}.pf```  
+	- ```mofcomp.exe-{hash}.pf```  
+	- ```wmiprvse.exe-{hash}.pf```  
+	- ```evil.exe-{hash}.pf```  
+- Unauthorized changes to the WMI Repository in ```C:\Windows\system32\wbem\Repository```
+
+<br>
+
+### Powershell Remoting - Source Sytem Artifacts
+
+**Event Logs**
+- security.evtx
+	- 4648 – Logon specifying alternate credentials
+		- Current logged-on User Name
+		- Alternate User Name
+		- Destination Host Name/IP
+		- Process Name
+- Microsoft-Windows-WinRM%4Operational.evtx
+	- 6 – WSMan Session initialize
+		- Session created
+		- Destination Host Name or IP
+		- Current logged-on User Name
+	- 8, 15, 16, 33 – WSMan Session deinitialization
+		- Closing of WSMan session
+		- Current logged-on User Name
+- Microsoft-Windows-PowerShell%4Operational.evtx
+	- 40961, 40962
+		- Records the local initiation of powershell.exe and associated user account
+	- 8193 & 8194
+		- Session created
+	- 8197 - Connect
+		- Session closed
+
+<br>
+
+**Registry**
+- ShimCache – SYSTEM
+	- powershell.exe
+- BAM/DAM – SYSTEM – Last Time Executed
+	- powershell.exe
+- AmCache.hve – First Time Executed
+	- powershell.exe
+
+<br>
+
+**File System**
+- Prefetch – ```C:\Windows\Prefetch\```
+	- ```powershell.exe-{hash}.pf```
+	- PowerShell scripts (.ps1 files) that run within 10 seconds of powershell.exe launching will be tracked in powershell.exe prefetch file
+Command history
+C:\USERS\<USERNAME>\AppData\Roaming\
+Microsoft\Windows\PowerShell\
+PSReadline\ConsoleHost_history.txt
+With PS v5+, a history file with previous 4096
+commands is maintained per user
+
+
+
+<br>
+
 ---
 
 <br>
+
+
 
 # Windows Forensics
 
