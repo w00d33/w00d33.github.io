@@ -945,7 +945,7 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 
 **Registry**
 - Remote Desktop Destinations are tracked per-user
-	- NTUSER\Software\Microsoft\Terminal Server Client\Servers
+	- ```NTUSER\Software\Microsoft\Terminal Server Client\Servers```
 - ShimCache - SYSTEM
 	- mstsc.exe Remote Desktop Client
 - BAM/DAM - SYSTEM - Last Time Executed
@@ -1015,8 +1015,8 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 
 **File System**
 - Prefetch ```C:\Windows\Prefetch\```
- - rdpclip.exe-{hash}.pf
- - tstheme.exe-{hash}.pf
+ - ```rdpclip.exe-{hash}.pf```
+ - ```tstheme.exe-{hash}.pf```
 
 <br>
 
@@ -1025,7 +1025,7 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 - ADMIN$
 - IPC$
 
-**Event Logs***
+**Event Logs**
 - security.evtx
 	- 4648 – Logon specifying alternate credentials
 		- Current logged-on User Name
@@ -1059,9 +1059,9 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 <br>
 
 **File System**
-- Prefetch – C:\Windows\Prefetch\
-	- net.exe-{hash}.pf
-	- net1.exe-{hash}.pf
+- Prefetch – ```C:\Windows\Prefetch\```
+	- ```net.exe-{hash}.pf```
+	- ```net1.exe-{hash}.pf```
 - User Profile Artifacts
 	- Review shortcut files and jumplists for remote files accessed by attackers, if they had interactive access (RDP)
 
@@ -1101,6 +1101,84 @@ Mandiant stated 24% of malware families they observed were cobalt strike
 	- Attacker's files (malware) copied to destination system
 - Look for Modified Time before Creation Time
 - Creation Time is time of file copy
+
+<br>
+
+### PsExec - Source System Artifacts
+
+**Event Logs**
+- security.evtx
+	- 4648 – Logon specifying alternate credentials
+		- Current logged-on User Name
+		- Alternate User Name
+		- Destination Host Name/IP
+		- Process Name
+
+<br>
+
+**Registry**
+- NTUSER.DAT
+	- ```Software\SysInternals\PsExec\EulaAccepted```
+- ShimCache – SYSTEM
+	- psexec.exe
+- BAM/DAM – SYSTEM – Last Time Executed
+	- psexec.exe
+- AmCache.hve – First Time Executed
+	- psexec.exe
+
+<br>
+
+**File System**
+- Prefetch – ```C:\Windows\Prefetch\psexec.exe-{hash}.pf```
+- Possible references to other files accessed by psexec.exe, such as executables copied to target system with the “-c” option
+- File Creation
+	- psexec.exe file downloaded and created on local host as the file is not native to Windows
+
+```psexec.exe \\host -accepteula -d -c c:\temp\evil.exe```
+
+
+<br>
+
+### PsExec - Destination System Artifacts
+
+**Event Logs**
+- security.evtx
+	- 4648 Logon specifying alternate credentials
+		- Connecting User Name
+		- Process Name
+- 4624 Logon Type 3 (and Type 2 if “-u” Alternate Credentials are used)
+	- Source IP/Logon User Name
+- 4672
+	- Logon User Name
+	- Logon by a user with administrative rights
+	- Requirement for access default shares such as C$ and ADMIN$
+- 5140 – Share Access
+	- ADMIN$ share used by PsExec
+- system.evtx
+	- 7045
+		- Service Install
+
+<br>
+
+**Registry**
+- New service creation configured in ```SYSTEM\CurrentControlSet\Services\PSEXESVC```
+	- “-r” option can allow attacker to rename service
+- ShimCache – SYSTEM
+	- psexesvc.exe
+- AmCache.hve First Time Executed
+	- psexesvc.exe
+
+<br>
+
+**File System**
+- Prefetch – ```C:\Windows\Prefetch\```
+		- ```psexesvc.exe-{hash}.pf```
+		- ```evil.exe-{hash}.pf```
+- File Creation
+	- User profile directory structure created unless “-e” option used
+- psexesvc.exe will be placed in ADMIN$ (\Windows) by default, as well as other executables (evil.exe) pushed by PsExec
+
+<br>
 
 ---
 
