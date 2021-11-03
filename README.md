@@ -47,6 +47,13 @@
     + [PsExec - Source System Artifacts](#psexec---source-system-artifacts)
     + [PsExec - Destination System Artifacts](#psexec---destination-system-artifacts)
     + [Windows Remote Management Tools](#windows-remote-management-tools)
+    + [Remote Services - Source System Artifacts](#remote-services---source-system-artifacts)
+    + [Remote Services - Destination System Artifacts](#remote-services---destination-system-artifacts)
+    + [Scheduled Tasks - Source System Artifacts](#scheduled-tasks---source-system-artifacts)
+    + [Scheduled Tasks - Destination System Artifacts](#scheduled-tasks---destination-system-artifacts)
+    + [WMI - Source System Artifacts](#wmi---source-system-artifacts)
+    + [WMI - Destination System Artifacts](#wmi---destination-system-artifacts)
+    + [Powershell Remoting - Source Sytem Artifacts](#powershell-remoting---source-sytem-artifacts)
 - [Windows Forensics](#windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
@@ -81,7 +88,7 @@
 - [Misc](#misc)
   * [Decode Base64](#decode-base64)
   * [Powershell CommandLine Switches](#powershell-commandline-switches)
-
+  
 <br>
 
 ---
