@@ -1468,12 +1468,9 @@ can be used for remote execution.
 - Prefetch – ```C:\Windows\Prefetch\```
 	- ```powershell.exe-{hash}.pf```
 	- PowerShell scripts (.ps1 files) that run within 10 seconds of powershell.exe launching will be tracked in powershell.exe prefetch file
-Command history
-C:\USERS\<USERNAME>\AppData\Roaming\
-Microsoft\Windows\PowerShell\
-PSReadline\ConsoleHost_history.txt
-With PS v5+, a history file with previous 4096
-commands is maintained per user
+- Command history 
+	- ```C:\USERS\<USERNAME>\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt```
+	- With PS v5+, a history file with previous 4096 commands is maintained per user
 
 
 
