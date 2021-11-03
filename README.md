@@ -1472,7 +1472,10 @@ can be used for remote execution.
 	- ```C:\USERS\<USERNAME>\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt```
 	- With PS v5+, a history file with previous 4096 commands is maintained per user
 
-
+```
+Enter-PSSession –ComputerName host
+Invoke-Command –ComputerName host –ScriptBlock {Start-Process c:\temp\evil.exe}
+```
 
 <br>
 
