@@ -1480,6 +1480,8 @@ Invoke-Command –ComputerName host –ScriptBlock {Start-Process c:\temp\evil.e
 <br>
 
 ### Powershell Remoting - Destination Sytem Artifacts
+- Source Process: powershell.exe
+- Destination Process: wsmprovhost.exe
 
 **Event Logs**
 - security.evtx
@@ -1522,6 +1524,82 @@ Invoke-Command –ComputerName host –ScriptBlock {Start-Process c:\temp\evil.e
 - Prefetch – ```C:\Windows\Prefetch\```  
 	- ```evil.exe-{hash].pf```  
 	- ```wsmprovhost.exe-{hash].pf```  
+
+<br>
+
+### Application Deployment Software
+- Patch Management Tools
+- Cloud Control Panels (Azure, AWS, Google Cloud, etc.)
+
+<br>
+
+### Vulnerability Exploitation
+- Crash Detection
+	- Crash Reports
+	- Event logs
+- Process Tracking
+	- Event ID 4688 (New process creation)
+		- IIS worker process spawning command shells
+	- Process anomalies
+	- Code injection
+- Threat Intel
+- AV/HIPS/Exploit Guard Logging
+
+<br>
+
+## Commandline, PowerShell and WMI Analysis
+
+### Evidence of Malware Execution
+
+- System Event Log
+	- Review Critical, Warning, and Error events for system and process crashes
+- Application Event Log
+	- EID 1000-1002
+		- Windows Error Reporting (WER), Application crashes and hangs
+
+**Notes**
+- Note Crashed Applications, processes, and system reboots
+- Review Windows Error Reports (Report.WER) written during times of interest
+	- ```C:\Program Data\Microsoft\Windows\WER```
+	- ```%User Profile%\AppData\Local\Microsoft\Windows\WER```
+	- Includes Loaded DLLs and SHA1 hash
+	- [Using .WER files to hunt evil](https://medium.com/dfir-dudes/amcache-is-not-alone-using-wer-files-to-hunt-evil-86bdfdb216d7)
+- Windows Defender and/or AV logs should also be reviewed
+
+<br>
+
+### Process Tracking and Capturing Command Lines
+- cmd.exe and powershell.exe
+- EID 4688: New Process Created (includes executable path)
+- EID 4689: Process Exit
+
+<br>
+
+**Notes**
+- Available in Windows 7+
+- Records account used, process info, and full command line
+- Command line capture requires Process Tracking to be enabled (not on by default)
+- Logon ID value can be used to link processes to a user session
+- Note Parent/Child Process relationships
+
+### WMI
+- Enterprise information mangement framework designed to allow access to system data at scale
+- WMIC.exe
+
+**Recon**
+- ```wmic process get CSName,Description,ExecutablePath,ProcessId```
+- ```wmic useraccount list full```
+- ```wmic group list full```
+- ```wmic netuse list full```
+- ```wmic qfe get Caption,Description,HotFixID,InstalledOn```
+- ```wmic startup get Caption,Command,Location,User```
+
+**Privilege Escalation**
+- ```Get-WmiObject -Class win32_service -Filter "Name='$ServiceName'" | Where-Object {$_}```
+- ```Get-WmiObject -Class win32_service | Where-Object {$_} | Where-Object {($_.pathname -ne $null) -and ($_.pathname.trim() -ne "")} | Where-Object {-not $_.pathname.StartsWith("`"")} | Where-Object {-not $_.pathname.StartsWith("'")} | Where-Object {($_.pathname.Substring(0, $_.pathname.IndexOf(".exe") + 4)) -match ".* .*"```
+- ```Get-WmiObject -Class win32_process | Where-Object {$_} | ForEach-Object {$Owners[$_.handle] = $_.getowner().user}```
+- From [PowerUp.ps1](https://github.com/PowerShellEmpire/PowerTools/blob/master/PowerUp/PowerUp.ps1)
+
 ---
 
 <br>
