@@ -54,6 +54,16 @@
     + [WMI - Source System Artifacts](#wmi---source-system-artifacts)
     + [WMI - Destination System Artifacts](#wmi---destination-system-artifacts)
     + [Powershell Remoting - Source Sytem Artifacts](#powershell-remoting---source-sytem-artifacts)
+    + [Powershell Remoting - Destination Sytem Artifacts](#powershell-remoting---destination-sytem-artifacts)
+    + [Application Deployment Software](#application-deployment-software)
+    + [Vulnerability Exploitation](#vulnerability-exploitation)
+  * [Commandline, PowerShell and WMI Analysis](#commandline--powershell-and-wmi-analysis)
+    + [Evidence of Malware Execution](#evidence-of-malware-execution)
+    + [Process Tracking and Capturing Command Lines](#process-tracking-and-capturing-command-lines)
+    + [WMI](#wmi)
+    + [Auditing WMI Peristence](#auditing-wmi-peristence)
+    + [Quick Wins - WMI-Activity/Operational Log](#quick-wins---wmi-activity-operational-log)
+    + [PowerShell Logging](#powershell-logging)
 - [Windows Forensics](#windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
@@ -1582,6 +1592,8 @@ Invoke-Command –ComputerName host –ScriptBlock {Start-Process c:\temp\evil.e
 - Logon ID value can be used to link processes to a user session
 - Note Parent/Child Process relationships
 
+<br>
+
 ### WMI
 - Enterprise information mangement framework designed to allow access to system data at scale
 - WMIC.exe
@@ -1600,11 +1612,66 @@ Invoke-Command –ComputerName host –ScriptBlock {Start-Process c:\temp\evil.e
 - ```Get-WmiObject -Class win32_process | Where-Object {$_} | ForEach-Object {$Owners[$_.handle] = $_.getowner().user}```
 - From [PowerUp.ps1](https://github.com/PowerShellEmpire/PowerTools/blob/master/PowerUp/PowerUp.ps1)
 
+**Lateral Movement**
+- Process Call Create
+- ```wmic.exe PROCESS CALL CREATE \"C:\\Windows\\System32\\rundll32.exe \\\"C:\\Windows\\perfc.dat\\\" #1```
+
+**Event Logs**
+- CommmandLine: ```C:\Windows\system32\wbem\wmic.exe" process call create "c:\Windows\system32\wscript.exe C:\egxifm\lkhqhtnbrvyo.vbs"```
+- ImageFileName: ```\Device\HarddiskVolume1\Windows\SysWOW64\wbem\WMIC.exe```
+- Event Logs (EID 4688)
+- Microsoft Sysmon
+- Commercial EDR Tools
+
+<br>
+
+### Auditing WMI Peristence
+- Easily audit for malicious WMI event consumer
+- EID 5858 records query errors, including host and username
+- EID 5857-5861 record filter/consumer
+- EID 5861 is the most useful: new permanent event consumer creation
+
+**Notes**
+- WMI-Activity/Operational Log
+- Enabled by default on Win10 and Win2012R2+
+- Event Filter and Consumer recorded in logs
+- Both CommandLineEvent and ActiveScriptEvent consumers are logged
+
+<br>
+
+### Quick Wins - WMI-Activity/Operational Log
+- EID 5861: New permanent consumers
+- Create an WMI consumer allowlist
+- WMIC commandlines in Process Tracking (Security Logs)
+- EID 5857 tracks loaded provider dlls
+- EID 5858 includes hostname and username
+- Search for:
+	- CommandLine
+	- ActiveScript
+	- scrcons
+	- wbemcons
+	- powershell
+	- eval
+	- .vbs
+	- .ps1
+	- ActiveXObject
+
+
 ---
 
 <br>
 
+### PowerShell Logging
+- EID 4103: Module logging and pipeline output
+- EID 4104: Script block logging
+- EID 4105/4106: Script Start/Stop (not recommended)
 
+**Notes**
+- Powershell/Operational
+	- Powershell downgrade attacks can circumvent logging and security by running ```powershell -Version 2 -Command <..>```
+- Script block logging includes scripts and some deobfuscation
+- Windows Powershell.evtx is older but still useful (EID 400/800)
+- WinRM/Operational logs records inbound and outbound PowerShell Remoting
 
 # Windows Forensics
 
