@@ -522,7 +522,7 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 **Example**
 ```powershell
 Get-WinEvent -FilterHashtable
-@{Logname-"Security"; id=4624} | where
+@{Logname="Security"; id=4624} | where
 {$_.Message -match "w00d33"}
 ```
 
