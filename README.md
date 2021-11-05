@@ -21,6 +21,8 @@
     + [Amcache.hve - Application Compatibility](#amcachehve---application-compatibility)
     + [Automating and Scaling Execution Analysis](#automating-and-scaling-execution-analysis)
   * [Event Logs Analysis](#event-logs-analysis)
+    + [Event Log Summary](#event-log-summary)
+    + [Event Log Collection](#event-log-collection)
     + [Location](#location)
     + [Types](#types)
     + [Profiling Account Usage](#profiling-account-usage)
@@ -100,7 +102,6 @@
     + [Bloodhound - Find a Path to Domain Admin](#bloodhound---find-a-path-to-domain-admin)
 - [Misc](#misc)
   * [Decode Base64](#decode-base64)
-  * [Powershell CommandLine Switches](#powershell-commandline-switches)
   
 <br>
 
@@ -504,6 +505,34 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 |CommandLines|Security <br> PowerShell-Operational|4688 <br> 4103-4104|
 |WMI|WMI-Activity-Operational|5857-5861|
 
+<br>
+
+### Event Log Collection
+**Live System Collection**
+- Export from Event Viewer
+- PsLogList (Sysinternals)
+- Kape, Kansa, Velociraptor
+- PowerShell
+
+**PowerShell**
+- Remote: ```Get-WinEvent -ComputerName```  
+- Local: ```Get-WinEvent -Logname```
+- Archived: ```Get-WinEvent -Path```
+
+**Example**
+```powershell
+Get-WinEvent -FilterHashtable
+@{Logname-"Security"; id=4624} | where
+{$_.Message -match "w00d33"}
+```
+
+<br>
+
+```powershell
+Get-WinEvent -FilterHashtable
+@{Path="C:\Path-To-Exported\Security*.evtx"
+;id=5140} | Where {$_.Message -match "\\Admin\$"}
+```
 
 <br>
 
