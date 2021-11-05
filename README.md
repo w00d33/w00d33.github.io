@@ -64,6 +64,9 @@
     + [Auditing WMI Peristence](#auditing-wmi-peristence)
     + [Quick Wins - WMI-Activity/Operational Log](#quick-wins---wmi-activity-operational-log)
     + [PowerShell Logging](#powershell-logging)
+    + [Quick Wins - PowerShell](#quick-wins---powershell)
+    + [PowerShell Transcript Logs](#powershell-transcript-logs)
+    + [PSReadline](#psreadline)
 - [Windows Forensics](#windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
@@ -98,7 +101,7 @@
 - [Misc](#misc)
   * [Decode Base64](#decode-base64)
   * [Powershell CommandLine Switches](#powershell-commandline-switches)
-
+  
 <br>
 
 ---
