@@ -114,3 +114,76 @@ sourcetype=velwineventlog EventID="4648" EventData.SubjectUserName!="*$"  EventD
 | search source=*  
 | fields  source target count
 ```
+
+## WMI
+New Permanent Consumers - EID 5861
+```r
+Channel="Microsoft-Windows-WMI-Activity/Operational" EventID=5861
+| rex field=System.Computer "(?<SourceHostname>[^\.]+)"
+| rename UserData.Operation_ESStoConsumerBinding.ESS as "WMI Filter Name" UserData.Operation_ESStoConsumerBinding.CONSUMER as "WMI Consumer" SourceHostname as "Target Hostname" UserData.Operation_ESStoConsumerBinding.PossibleCause as "WMI Binding" 
+| search "WMI Consumer"!="NTEventLogEventConsumer=\"SCM Event Log Consumer\"" 
+| table  _time "Target Hostname" "WMI Filter Name" "WMI Consumer" "WMI Binding"
+```
+<br>
+
+Suspicious WMI Consumers - EID 5861
+```r
+(Channel="Microsoft-Windows-WMI-Activity/Operational" EventID="5861" ("CommandLine" OR "ActiveScript" OR "powershell" OR ".eval" OR ".vbs" OR ".ps1" OR ".dll" OR "ActiveXObject" OR ".exe" OR "ScriptText"))
+| rex field=System.Computer "(?<SourceHostname>[^\.]+)"
+| rename UserData.Operation_ESStoConsumerBinding.ESS as "WMI Filter Name" UserData.Operation_ESStoConsumerBinding.CONSUMER as "WMI Consumer" UserData.Operation_ESStoConsumerBinding.PossibleCause as "WMI Binding" 
+| search "WMI Consumer"!="NTEventLogEventConsumer=\"SCM Event Log Consumer\"" 
+| stats values(SourceHostname) as "Source Hostname" count by "WMI Filter Name" "WMI Consumer" "WMI Binding"
+```
+
+<br>
+
+WMI Query Errors - EID 5858
+```r
+Channel="Microsoft-Windows-WMI-Activity/Operational" EventID=5858 UserData.Operation_ClientFailure.User!=""  "UserData.Operation_ClientFailure.User"!="NT AUTHORITY\\SYSTEM"  UserData.Operation_ClientFailure.User!="NT AUTHORITY\\LOCAL SERVICE"
+| rex field=System.Computer "(?<SourceHostname>[^\.]+)"
+| stats  values(UserData.Operation_ClientFailure.Operation) as Operation count by UserData.Operation_ClientFailure.User SourceHostname
+| sort  num(count)
+| rename  UserData.Operation_ClientFailure.User as "Source User" SourceHostname as "Source Hostname"
+```
+
+<br>
+
+WMI Temporary Events - EID 5860
+```r
+Channel="Microsoft-Windows-WMI-Activity/Operational" EventID=5860
+| rex field=System.Computer "(?<SourceHostname>[^\.]+)"
+| stats  values(UserData.Operation_TemporaryEssStarted.Query) as Query count by UserData.Operation_TemporaryEssStarted.User SourceHostname
+| sort  num(count)
+| rename  UserData.Operation_TemporaryEssStarted.User as "Source User" SourceHostname as "Source Hostname"
+```
+
+<br>
+
+WMI Remote Targets
+```r
+sourcetype="velwineventlog" (EventID=4624 OR EventID="4625") "wmiprvse"
+| rex field=EventData.ProcessName "(?<ProcessName>[^\\\]+)$$"
+| rex field=System.Computer "(?<TargetHostname>[^\.]+)"
+| stats count by EventData.TargetUserName ProcessName TargetHostname
+| appendpipe  [stats  count by EventData.TargetUserName ProcessName | rename  EventData.TargetUserName as source, ProcessName as target]  
+| appendpipe  [stats  count by ProcessName TargetHostname  | rename  ProcessName as source, TargetHostname as target]
+| search source=*  
+| fields  source target count
+```
+
+<br>
+
+WMI Remote Targets
+```r
+sourcetype=velwineventlog EventID="4648" "wmic.exe"
+| eval TargetIP = 'EventData.IpAddress' + ":" + 'EventData.IpPort'
+| rex field=EventData.ProcessName "(?<ProcessName>[^\\\]+)$$"
+| rex field=EventData.TargetServerName "(?<TargetHostname>[^\.]+)"
+| rex field=System.Computer "(?<SourceHostname>[^\.]+)"
+| stats  count by SourceHostname ProcessName EventData.TargetUserName TargetHostname
+| appendpipe  [stats  count by SourceHostname ProcessName | rename  SourceHostname as source, ProcessName as target]  
+| appendpipe  [stats  count by ProcessName EventData.TargetUserName  | rename  ProcessName as source, EventData.TargetUserName as target]  
+| appendpipe  [stats  count by EventData.TargetUserName TargetHostname  | rename EventData.TargetUserName as source, TargetHostname as target]
+| search source=*  
+| fields  source target count
+```
