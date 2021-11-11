@@ -78,9 +78,15 @@
   * [Memory Forensic Process](#memory-forensic-process)
   * [Memory Analysis](#memory-analysis)
   * [Volatility](#volatility)
+    + [Image Identification](#image-identification)
   * [Steps to Finding Evil](#steps-to-finding-evil)
   * [Identify Rogue Processes](#identify-rogue-processes)
-    + [Analysis Process](#analysis-process)
+    + [Procces Analysis](#procces-analysis)
+    + [Pslist](#pslist)
+    + [Psscan](#psscan)
+    + [Pstree](#pstree)
+    + [Automating Analysis with Baseline](#automating-analysis-with--baseline)
+    + [Rogue Processes Review](#rogue-processes-review)
 - [Windows Forensics](#windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
@@ -1972,7 +1978,7 @@ powershell -w Hidden -nop -noni -exec bypass IEX (New-ObjectSystem.Net.WebClient
 
 <br>
 
-**Image Identification**
+### Image Identification
 - Windows Specification Example
 	- Edition: Windows 10 Pro
 	- Version: 1709
@@ -2024,7 +2030,7 @@ Document Version and Build During Collection
 
 <br>
 
-### Analysis Process
+### Procces Analysis
 - Image Name
 	- Legitamate Process?
 	- Spelled correctly?
@@ -2055,7 +2061,7 @@ Document Version and Build During Collection
 
 <br>
 
-**Pslist**
+### Pslist
 - Print all running processes by following the EPROCESS linked list
 - Show information for specific PIDs (-p)
 - Provides the binary name (Name). parent process (PPID), and time started (Time)
@@ -2067,7 +2073,7 @@ Document Version and Build During Collection
 
 <br>
 
-**Psscan**
+### Psscan
 - Scan physical memory for EPROCESS pool allocations
 - By scanning all of memory for process blocks, and not simply following the EPROCESS linked list, hidden processes may be identified
 - psscan will also identify processes no loner running
@@ -2079,66 +2085,57 @@ Document Version and Build During Collection
   - Process start time
   - Process exit time
 
-  <br>
+<br>
 
-  **Pstree**
-  - Print process list as a tree
-  - Show verbose information, including image path and commandline used for each procecss (-v)
-  - Very useful for visually identifying malicious processes spawned by the wrong parent process (i.e Explorer.exe as the parent of svchost.exe)
-  - ```pstree``` relies upon the EPROCESS linked list and hence will not show unlinked processes
-  - Lists:
-    - Virtual offset of EPROCESS block
-    - PID
-    - PPID
-    - Number of threads
-    - Number of handles
-    - Process start time
-  - Can output a Graphiz DOT graph
-    - ```vol.py -f memory.img --profile=Win10x64_16299 pstree --output=dot --output-file=pstree.dot```  
-  - Convert dot file to image (SIFT)
-    - ```dot -Tpng pstree.dot -o pstree.png```
-  - Parent Process of Interest
-    - WMI Remoting - WmiPrvSE.exe/scrcons.exe (parent process of ActiveScriptEventConsumers)
-    - PowerShell Remoting - Wsmprovhost.exe
+### Pstree
 
-  **Automating Analysis with ```baseline```**
-  - Compare memory objects founf in suspect image to those present in a baseline (known good) image
-  - Provide baseline image (-B)
-  - Only display items not found in baseline image (-U)
-  - Only display items present in the baseline (-K)
-  - Verbose mode (-v)
-  - Baseline consits of three plugins: processbl, servicebl, and driverbl
-  - Important information can be gleaned from items present and not present in baseline (e.g an identically named driver with a different file path in the baseline image would only be displayed using the -K option no options at all)
-  - [baseline.py](https://github.com/csababarta/volatility_plugins/blob/master/baseline.py)
-  - ```vol.py -f darkcomet.img --profile=Win7SP1x86 -B ./baseline-memory/Win7SP1x86-baseline.img processbl -U 2>error.log```
-  - [ANALYZING DARKCOMET IN MEMORY](http://www.tekdefense.com/news/2013/12/23/analyzing-darkcomet-in-memory.html)
+- Print process list as a tree
+- Show verbose information, including image path and commandline used for each procecss (-v)
+- Very useful for visually identifying malicious processes spawned by the wrong parent process (i.e Explorer.exe as the parent of svchost.exe)
+- ```pstree``` relies upon the EPROCESS linked list and hence will not show unlinked processes
+- Lists:
+  - Virtual offset of EPROCESS block
+  - PID
+  - PPID
+  - Number of threads
+  - Number of handles
+  - Process start time
+- Can output a Graphiz DOT graph
+  - ```vol.py -f memory.img --profile=Win10x64_16299 pstree --output=dot --output-file=pstree.dot```  
+- Convert dot file to image (SIFT)
+  - ```dot -Tpng pstree.dot -o pstree.png```
+- Parent Process of Interest
+  - WMI Remoting - WmiPrvSE.exe/scrcons.exe (parent process of ActiveScriptEventConsumers)
+  - PowerShell Remoting - Wsmprovhost.exe
 
-  <br>
-
-  **Rogue Processes Review**
-  - All identified processes should be sanity checked for:
-    - Correct/image executable name
-    - Correct file location (path)
-    - Correct parent process
-    - Correct command line and parameters used
-    - Start time information
-
-  - Volatility provides multiple ways to review processes:
-    - pslist: gives a high-level view of what is in the EPROCESS linked list
-    - psscan: gives a low-level view, searching for unlinked process blocks
-    - pstree: visually shows parent-processes for anomalies
-    - malprocfind: scans system for processes for anomalies
-    - processbl: allows comparisons with a known good baseline
-
-
-
+### Automating Analysis with Baseline
+- Compare memory objects founf in suspect image to those present in a baseline (known good) image
+- Provide baseline image (-B)
+- Only display items not found in baseline image (-U)
+- Only display items present in the baseline (-K)
+- Verbose mode (-v)
+- Baseline consits of three plugins: processbl, servicebl, and driverbl
+- Important information can be gleaned from items present and not present in baseline (e.g an identically named driver with a different file path in the baseline image would only be displayed using the -K option no options at all)
+- [baseline.py](https://github.com/csababarta/volatility_plugins/blob/master/baseline.py)
+- ```vol.py -f darkcomet.img --profile=Win7SP1x86 -B ./baseline-memory/Win7SP1x86-baseline.img processbl -U 2>error.log```
+- [ANALYZING DARKCOMET IN MEMORY](http://www.tekdefense.com/news/2013/12/23/analyzing-darkcomet-in-memory.html)
 
   <br>
 
+### Rogue Processes Review
+- All identified processes should be sanity checked for:
+  - Correct/image executable name
+  - Correct file location (path)
+  - Correct parent process
+  - Correct command line and parameters used
+  - Start time information
 
-
-
-
+- Volatility provides multiple ways to review processes:
+  - pslist: gives a high-level view of what is in the EPROCESS linked list
+  - psscan: gives a low-level view, searching for unlinked process blocks
+  - pstree: visually shows parent-processes for anomalies
+  - malprocfind: scans system for processes for anomalies
+  - processbl: allows comparisons with a known good baseline
 
 <br>
 
