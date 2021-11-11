@@ -2141,19 +2141,19 @@ Document Version and Build During Collection
 
 ## Memory Forensics - Master Process
 
-**yarascan**
+**yarascan**  
 ```vol.py -f base-rd01-memory.img --profile=Win10x64_162699 yarascan -y signature-base.yar > yarascan.txt```  
 
-**psscan**
+**psscan**  
 ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 psscan > psscan.txt```  
 
-**pstree**
+**pstree**  
 ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 pstree > pstree.txt```  
 
-**pstree -> dot file**
+**pstree -> dot file**  
 ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 pstree --output=dot --output-file=pstree.dot```  
 
-**pstree.dot -> png file**
+**pstree.dot -> png file**  
 ```dot -Tpng pstree.dot -o pstree.png```  
 
 
