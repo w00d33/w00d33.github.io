@@ -2141,22 +2141,35 @@ Document Version and Build During Collection
 
 ## Memory Forensics - Master Process
 
+**Compare to baseline image**
+- ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 -B ./baseline/Win10x64.img processbl -U 2>>error.log```
+- Shows processes not in baseline
+
 **yarascan**  
-```vol.py -f base-rd01-memory.img --profile=Win10x64_162699 yarascan -y signature-base.yar > yarascan.txt```  
+- ```vol.py -f base-rd01-memory.img --profile=Win10x64_162699 yarascan -y signature-base.yar > yarascan.txt```  
+- Note interesting processes their start/exit times, PPID, and PID (included possible LOLBins)
 
 **psscan**  
-```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 psscan > psscan.txt```  
+- ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 psscan > psscan.txt```  
 
 **pstree**  
-```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 pstree > pstree.txt```  
+- ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 pstree > pstree.txt```  
 
 **pstree -> dot file**  
-```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 pstree --output=dot --output-file=pstree.dot```  
+- ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 pstree --output=dot --output-file=pstree.dot```  
 
 **pstree.dot -> png file**  
-```dot -Tpng pstree.dot -o pstree.png```  
+- ```dot -Tpng pstree.dot -o pstree.png```  
+- Note any suspicious parent to child process relationships
+- Use [EchoTrail](https://www.echotrail.io/) to better understand processes
 
+**Note times of suspicious processes - pslist**
+- ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 pslist | grep -i rundll32 > pslist_rundll32.txt```
+- Document days and time ranges of suspicious files
 
+**Correlate Process Data to Available Logs**
+- ```grep -i WMIPrvSE psscan.txt > WMIPrvSE_psscan.txt```
+- Return to your event logs and identify which WMIPrvSE process matches the time recorded for the malicious WMI event consumer in the logs
 
 <br>
 
