@@ -2173,6 +2173,161 @@ Document Version and Build During Collection
 
 <br>
 
+## Analyze Process Objects
+- DLLs: Dynamic Linked Libraries (shared code)
+- Handles: Pointer to a resource
+  - Files: Open files for I/O devices
+  - Directories: List of names used for access to kernel objects
+  - Registry: Access to a key within with Windows Registry
+  - Mutexes/Semaphores: Control/limit access to an object
+  - Events: Notifications that help threads communicate and organize
+- Threads: Smallest unit of execution; the workhorse of a process
+- Memory Sections: Shared memory areas used by process
+- Sockets: Network port and connection information with a process
+
+<br>
+
+### Object Analysis Plugins
+- dlllist - Print list of loaded DLLs for each process
+- cmdline - Display commandline args for each process
+- getsids - Print the ownership SIDs for each process
+- handles - Print list of open handles for each process
+- mutantscan - Scan memory of mutant objects (KMUTANT)
+
+<br>
+
+### dlllist
+- Display the loaded DLLs and the commandline used to start each process
+  - Base offset
+  - DLL size
+  - Load count
+  - Load time (newer versions of Volatility only)
+  - DLL file path
+- Show information for specific IDs (-p)
+- The command line displayed for the process provides full path information, including arguments provided
+- LoadTime can help detect anomalies like DLL injection
+- A complete list of DLLs can be too much data to review; consider limiting output to specific PIDs with the -p option
+- The base offset provided can be used with the ```dlldump``` plugin to extract a specific DLL for analysis
+
+<br>
+
+### getsids
+- Display Security Identifiers (SIDs) for each process
+- Show information for specific process IDs (-p)
+- Token information for a suspected process can be useful to determine how it was spawned and with that permissions
+- Identifying a system process (e.g scvhost.exe) with a user SID is an important clue that something awry
+- [Well Known SIDs](https://docs.microsoft.com/en-US/windows/security/identity-protection/access-control/security-identifiers)
+- First line - Account SID
+- Everything after - Group SID
+
+<br>
+
+### handles
+- Also can be known as a pointer
+- Print list of handles opened by the process
+- Operate only on these process IDs (-p PID)
+- Surpress unnamed handles (-s)
+- Show only handles of a certain type (-t type)
+- Each process can have hundreds or even thousands of handles; reviewing them can be like searching for a needle in a haystack
+- Limit your search by looking at specific types (-t) of handles; FIle and Registry handles are excellent for quick wins
+  - Process 
+  - Thread
+  - Key (great place to look)
+  - Files (great place to look)
+  - Mutant
+  - Semaphore
+  - Token
+  - WmiGuid
+  - Port
+  - Directory
+  - WindowsStation
+  - IOCompletion
+  - Timer
+- ```filescan``` and ```mutantscan``` search for makers indicating FILE_OBJECTS and KMUTANT objects and return their respective results
+
+**Named Pipes**
+- [Named Pipes](https://docs.microsoft.com/en-us/windows/win32/ipc/named-pipes)
+- Designed to use SMB
+- Allow multiple processes or computers to communicate with each other
+- Used by psexec, cobalt strike, covenant, trickbot
+- Examples (Cobalt Strike)
+  - ```MSSE-####-server```
+  - ```msagent_##```
+  - ```status_##```
+  - ```postex_ssh_####```
+  - ```\\.\pipe\######```
+  - postex_###
+
+  **Mutants/Mutex**
+  - Allows flow control
+  - Often used by malware to mark territory
+  - Identified by reverse engineers to make IOCs (unique)
+  - Limits the access to a resource
+  - Malware will "mark" a compromised system so it doesnt get reinfected
+  - Process object
+
+<br>
+
+### Analyzing Process Objects Review
+- Objects that make up a process will provide a clue
+  - DLLs
+  - Account SID
+  - Handles
+- Narrow focus to suspect processes or those known to be often subverted (e.g svchost.exe, services.exe, lsass.exe)
+- Check process commandline, DLL files paths, and SID, and use hadnles when necessary to provide additional confirmation
+
+<br>
+
+## Network Artifacts
+- Suspicious ports
+  - Communication via abnormal ports?
+  - Indications of listening ports/backdoors?
+- Suspicious Connections
+  - External Connections
+  - Connections to known bad IPs
+  - TCP/UDP connections
+  - Creation times
+- Suspicious Processes
+  - Why does this process have network capability (open sockets)?
+
+**Examples**
+- Any process communicating over port 80, 443, or 8080 that is not browser
+- Any browser not communicating over port 80, 443, or 8080
+- Connections to unexplained internal or external IP addresses
+- Web requests directly to an IP address rather than a domain name
+- RDP connections (port 3389), particularly if originating from odd or external IP addresses
+- DNS requests for unusual domain names
+- Workstation to workstaion connections
+
+### Plugins
+- XP/2003
+  - connections: Print list of active, open TCP connections
+  - connscan: Scan memory for TCP connections, including those closed or unlinked
+  - sockets: Print list of active, available sockets (any protocol)
+  - sockscan: Scan memory for sockets, including, those closed on unlinked
+- Vista+
+  - netscan: All of the above--scan for both connections and sockets
+
+<br>
+
+### netstat
+- Identify network sockets and tcp structures resident in memory
+- Both active (established) and terminated (closed) TCP connections may be returned
+- Pay close attention to the process attached to the connection
+- Does a socket or network connection for that process make?
+- Creation times available for both sockets and TCP connections
+- Lists:
+  - Memory offset
+  - Protocol
+  - Local IP address
+  - Remote IP address
+  - State (TCP Only)
+  - Process ID (PID)
+  - Owner Process Name
+  - Creation Time
+
+<br>
+
 ---
 
 <br>
