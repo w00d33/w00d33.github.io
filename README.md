@@ -2164,8 +2164,23 @@ Document Version and Build During Collection
 - Use [EchoTrail](https://www.echotrail.io/) to better understand processes
 
 **Note times of suspicious processes - pslist**
-- ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 pslist | grep -i rundll32 > pslist_rundll32.txt```
+- ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 pslist | grep -i rundll32 > pslist_rundll32.txt```  
 - Document days and time ranges of suspicious files
+
+**List dlls for Suspicious Executables**
+- ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 dlllist -p 5948 > pid5948_dlllist.txt```  
+
+**Identify SID and Account Name Used to Start Process**
+- ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 getsids -p 8260 > pid8260_getsids.txt```  
+
+**Identify Other Processes Tied to SID**
+- ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 getsids | grep -i spsql >  spsql_getsids.txt```  
+
+**Identify Files and Registries Process Interacted With**
+- ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 handles -s -t File,Key -p 5948 > pid5948_handles_File_Key.txt```  
+
+**Enumerate Network Connections**
+- ```vol.py -f base-rd01-memory.img --profile=Win10x64_16299 netscan | egrep -i 'CLOSE|ESTABLISHED|Offset' > netscan.txt```  
 
 **Correlate Process Data to Available Logs**
 - ```grep -i WMIPrvSE psscan.txt > WMIPrvSE_psscan.txt```
@@ -2325,6 +2340,137 @@ Document Version and Build During Collection
   - Process ID (PID)
   - Owner Process Name
   - Creation Time
+- PowerShell uses port 5985 & 5986
+- WMI uses port 135
+
+<br>
+
+## Evidence of Code Injection
+- Camoflauge: Use legitamite process to run
+- Access to Memory and Permissions of Target
+- Process Migration: Change the process its running under
+- Evade A/V and Application Control
+- Assist with Complex Attacks (Rootkits)
+- Required administrator or debug privileges on the system
+  - SeDebugPrivilege
+
+<br>
+
+### Code Injection
+- Common with modern malware
+- Built in Windows Feature
+  - VirtualAllocEx()
+  - CreateRemoteThread()
+  - SetWindowsHookEx() -> **DLL Injection**
+    - Hook a process's filter functions
+- Reflective injection loads code without registering with host process
+  - Malware creates its own loader, bypassing common API functions
+  - Results in code runnind that is not registered with any host process
+- Use of PowerShell-based injection is growing in popularity
+
+### Process Hollowing
+- Malware starts a suspended (not running) instance of legitimate process
+- Original process code deallocated and replaced
+- Can retain DLLs, handles, data, etc from original process
+- Process image EXE not backed with file on disk -> **process hollowing**
+- [Process Hollowing Analysis](https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/analyzing-malware-hollow-processes/)
+
+### DLL Injection
+1. Attacker Process Attaches to Victim Process
+  - OpenProcess()
+2. Attacker Process Allocates an Amount of Memory in Victim Process
+  - VirtualAllocEx()
+3. Attacker Process Writes the Full Path of the Malicous DLL in Allocated Space
+  - WriteProcessMemory()
+4. Attacker Process Starts a New Thread in Victim Process
+  - CreateRemoteThread()
+5. Malicous DLL is Retrieved from Disk, Loaded, and Executed
+  - LoadLibraryA()
+- Note: There is no legitimate Windows Function to load code from anywhere but disk
+- Modern systems isolate system processes from user processes
+- Modern malware (Mimikatz and Meterpreter) evade by using API functions:
+  - NtCreateThreadEx
+  - RtlCreateUserThread
+
+<br>
+
+### Code Injection Plugins
+- ldrmodules: Detecting unlinked DLLs and non-memory-mapped files
+- malfind: Find hidden and injected code and dump affected memory sections
+- hollowfind: Identify evidence of known process hollowing techniques
+- threadmap: Analyze threads to identify process hollowing countermeasures
+- [DETECTING DECEPTIVE PROCESS HOLLOWING](https://cysinfo.com/detecting-deceptive-hollowing-techniques/)
+- [threadmap](https://github.com/kslgroup/threadmap/blob/master/threadmap%20documentation.pdf)
+
+<br>
+
+### ldrmodules
+- DLLs are tracked in three different linked lists in the PEB for each process
+- Stealthy malware can unlink loaded DLLs from these lists
+- This plugin queries each list and displays the results for comparison
+- Show information for specific process IDs (-p)
+- Verbose: Show full paths from each of the three PEB DLL lists (-v)
+
+**Notes**
+- Normal DLLs will be in all three lists with a "True" in each column
+- Legitimate entries might be missing in some of the lists
+  - The process executable will no be present in the "InInit" list
+  - Unloaded DLLs not yet removed from process memory
+- IF an entry has no "MappedPath" information, it is indicative of a DLL not loaded using the Windows API (usually as sign of injection)
+
+**Fields**
+- Process ID
+- Process Name
+- Base Offset (location in memory pages)
+- PEB InLoadOrderModule List ("InLoad") - Order Loaded
+- PEB InInitializationOrderModule List ("InInit") - Order Initialized 
+- PEB InMemoryOrderModule List ("InMem") - Order in Memory
+- VAD Tree Mapped Path
+
+**Data Sources**
+- Unlinking from on or more of these lists is simple means for malware to hide injected DLLs
+- Dlllist will not show unlinked DLLS
+- True within a column means the DLL was present in the list
+- Determine DLLs that are unlinked or suspiciously loaded
+- Exe's will be missing from the InInit list
+- Most DLLS are loaded from:
+  - ```\Windows\System32```
+  - ```\Program Files```
+  - ```\Windows\WinSxS```
+- .mui and .fon have same header has executable (false positve)
+- Legitimate dlls can be unloaded by process (unlinked) and still show up because its being used by another process
+- Volatility will show empty path when it finds an executables not mapped to disk (red flag)
+- True - False - True & No mapped path usually mean process hollowing
+- False - False - False & No mapped path usually sign of code injection
+
+<br>
+
+### Reflective Injection
+- Evades using Windows Standard API
+- Explicity calls LoadLibrary
+- Use a custom reflective loader instead of Windows Loader
+- Code is not registered in any way with the hose system, making it very difficult to detect
+- Used by metasploit, Cobalt Strike, PowerSploit, Empire, and DoublePulsar
+- Memory analysis is well suited for detection
+
+**Detection**
+1. Memory section marked as Page_Execute_ReadWrite
+  - Identify every memory location assigned to process
+  - Check permissions
+2. Memory section not back with file on disk
+3. Memory section contains code (PE file or shellcode)
+
+- ```malfind``` plug in performs first two steps
+- Analyst must confirm if section contains code
+
+<br>
+
+### malfind
+
+
+
+
+
 
 <br>
 
