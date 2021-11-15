@@ -2489,8 +2489,7 @@ Document Version and Build During Collection
 - Look for the 'MZ' header to confirm executable (4d 5a 90 00 or 'MZ')
 - greg malfind for executables ( grep -B4 MZ | grep Process)
 - Handling Non-MZ headers (Well known assembly code prologue present in injected memory section)
-  - ```
-  PUSH EBP
+  - ```PUSH EBP
   MOV EBP, ESP
   ADD ESP, 0xfffffa30
   MOV ESI, [EBP+0x8]
@@ -2499,8 +2498,7 @@ Document Version and Build During Collection
   PUSH 0x0
   PUSH 0x0
   CALL DWORD [ESI+0x85]
-  MOV [ESI+0x8c5], EAX
-  ```
+  MOV [ESI+0x8c5], EAX```
 
 
 
