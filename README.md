@@ -2487,7 +2487,7 @@ Document Version and Build During Collection
 - You might see multiple injected sections within the same process
 - Dumped sections can reverse engineered or scanned with A/V
 - Look for the 'MZ' header to confirm executable (4d 5a 90 00 or 'MZ')
-- greg malfind for executables ( ```| grep -B4 MZ | grep Process```)
+- greg malfind for executables (```| grep -B4 MZ | grep Process```)
 - Handling Non-MZ headers (Well known assembly code prologue present in injected memory section)
   - ```
   PUSH EBP
