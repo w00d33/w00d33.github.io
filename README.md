@@ -2466,6 +2466,41 @@ Document Version and Build During Collection
 <br>
 
 ### malfind
+- Scans process memory sections looking indications of hidden code injection
+- Identified sections are extracted for further analysis
+- Directory to save extracted files (--dump-dir=directory)
+- Show information for specific process IDs (-p PID)
+- Provide physical offset of a single process to scan (-o offset)
+- Fields:
+  - Name (Process Name)
+  - PID (Process ID)
+  - Start (Starting Offset)
+  - End (Ending Offset)
+  - Tag (Pool tag indicating type of memory section)
+  - Hits (Number of hits from YARA signatures)
+  - Protect (Memory section permissions)
+    - PAGE_EXECUTE_READWRITE indicator of injection
+
+**Notes**
+- Although malfind has an impressive hit rate, false positives occur
+  - Disassembled code provided can be helpful as a sanity check
+- You might see multiple injected sections within the same process
+- Dumped sections can reverse engineered or scanned with A/V
+- Look for the 'MZ' header to confirm executable (4d 5a 90 00 or 'MZ')
+- greg malfind for executables ( grep -B4 MZ | grep Process)
+- Handling Non-MZ headers (Well known assembly code prologue present in injected memory section)
+  - ```
+  PUSH EBP
+  MOV EBP, ESP
+  ADD ESP, 0xfffffa30
+  MOV ESI, [EBP+0x8]
+  LEA EAX, [ESI+0x3fb]
+  PUSH EAX
+  PUSH 0x0
+  PUSH 0x0
+  CALL DWORD [ESI+0x85]
+  MOV [ESI+0x8c5], EAX
+  ```
 
 
 
