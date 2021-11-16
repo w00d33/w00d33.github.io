@@ -80,7 +80,6 @@
   * [Volatility](#volatility)
     + [Image Identification](#image-identification)
   * [Steps to Finding Evil](#steps-to-finding-evil)
-  * [Memory Forensics - Master Process](#memory-forensics---master-process)
   * [Identify Rogue Processes - Step 1](#identify-rogue-processes---step-1)
     + [Procces Analysis](#procces-analysis)
     + [Pslist](#pslist)
@@ -88,6 +87,7 @@
     + [Pstree](#pstree)
     + [Automating Analysis with Baseline](#automating-analysis-with-baseline)
     + [Rogue Processes Review](#rogue-processes-review)
+  * [Memory Forensics - Master Process](#memory-forensics---master-process)
   * [Analyze Process Objects - Step 2](#analyze-process-objects---step-2)
     + [Object Analysis Plugins](#object-analysis-plugins)
     + [dlllist](#dlllist)
@@ -123,6 +123,13 @@
     + [memdump](#memdump)
     + [strings](#strings)
     + [grep](#grep)
+    + [cmdscan and consoles](#cmdscan-and-consoles)
+    + [Windows 10 Memory Compression](#windows-10-memory-compression)
+    + [dumpfiles](#dumpfiles)
+    + [filescan](#filescan)
+    + [Registry Artifacts - shimcachemem](#registry-artifacts---shimcachemem)
+    + [Extracted File Analysis](#extracted-file-analysis)
+    + [Live Analysis](#live-analysis)
 - [Windows Forensics](#windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
@@ -2758,6 +2765,88 @@ sort strings.txt > sorted_strings.txt
 ```bash
 grep -i "command prompt" conhost.uni
 ```  
+
+### cmdscan and consoles
+- Scan csrss.exe (XP) and conhost.exe (Win7) for Command_History and Console_Information residue
+- Gathering command history and console output can give insight into user/attacker activities
+- ```cmdscan``` provides information from the command history buffer
+- ```consoles``` prints commands (inputs) + screen buffer (outputs)
+- Plugins can identify info from active and closed sessions
+
+<br>
+
+### Windows 10 Memory Compression
+- Win 10 has also implemented compression for the pagefile as well as in frequently used areas of RAM
+- ```win10memcompression.py```
+  - Addition to the volatility project
+  - Facilitates decompression as compressed pages of memory are detected
+  - Can take advantage of Volatility plugins
+
+<br>
+
+### dumpfiles
+- Dump File_Objects from memory
+- Directory to save extracted files (-D or --dump-dir=)
+- Extract using physical offset of File_Object (-Q)
+- Extract using regular expression (-r) (add -i for case sensitive)
+- Use original filename in output
+- Use -n to use original name in output
+
+**Notes**
+- Extract documents, logs, executables, and even removable media files
+- The ```filescan``` plugin is particulary complementary with ```dumpfiles```  
+- No guarantees. References to files may be identified via ```handles``` , ```vadinfo```, and ```filescan```, but files may not be cached
+
+```bash
+vol.py -f memory.img dumpfiles -n -i -r \\.exe --dump-dir=./output
+```
+
+<br>
+
+### filescan
+- Scan for File_Objects in memory
+
+**Notes**
+- Returns the physical offset where a File_Object exists
+- Identifies files in memory even if there are no handles (closed files)
+- Finds NTFS special files (such as $MFT) that are not present in the VAD tree or process handles lists
+- ```filescan``` is particularly complementary with ```dumpfiles```  
+
+```bash
+vol.py -f memory.img filescan
+voly.py -f memory.img dumpfiles -n -Q 0x09135278 --dump-dir=.
+```
+
+<br>
+
+### Registry Artifacts - shimcachemem
+- Parses the Application Compatibility ShimCache from kernel memory
+- --output=csv
+- --output-file=filename
+- -c, --clean_file_paths: replace path prefixes with C:
+
+**Notes**
+- Shimcache is only written to the registry upon a reboot or shutdown
+- One of the only tools available to extract cached ShimCache entires directly from kernel memory without requiring a system shutdown
+- Contents will often include data not yet written to the registry
+
+<br>
+
+### Extracted File Analysis
+- AV scannning
+- Malware Sandbox
+- Dynamic Analysis
+- Static malware debugging and disassembly
+
+<br>
+
+### Live Analysis
+- [Get-InjectedThread](https://gist.github.com/jaredcatkinson/23905d34537ce4b5b1818c3e6405c1d2)
+- [Kansa Get-InjectedThreads.ps1](https://github.com/davehull/Kansa/blob/master/Modules/Process/Get-InjectedThreads.ps1)
+- [hollows_hunter](https://github.com/hasherezade/hollows_hunter/wiki)
+- [GRR Rapid Response](https://grr-doc.readthedocs.io/en/v3.4.2.4/release-notes.html)
+- [Velociraptor](https://github.com/Velocidex/velociraptor)
+- [Veloxity Volcano](https://www.volexity.com/products-overview/volcano/)
 
 <br>
 
