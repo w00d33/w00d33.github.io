@@ -2014,7 +2014,7 @@ Document Version and Build During Collection
 
 <br>
 
-## Identify Rogue Processes
+## Identify Rogue Processes - Step 1
 - Processes have a forward link (flink) and a back link (blink)
 - EPROCESS block holds a majority of the metadata for a process
 	- Name of process executable (image name)
@@ -2188,7 +2188,7 @@ Document Version and Build During Collection
 
 <br>
 
-## Analyze Process Objects
+## Analyze Process Objects - Step 2
 - DLLs: Dynamic Linked Libraries (shared code)
 - Handles: Pointer to a resource
   - Files: Open files for I/O devices
@@ -2293,7 +2293,7 @@ Document Version and Build During Collection
 
 <br>
 
-## Network Artifacts
+## Network Artifacts - Step 3
 - Suspicious ports
   - Communication via abnormal ports?
   - Indications of listening ports/backdoors?
@@ -2345,7 +2345,7 @@ Document Version and Build During Collection
 
 <br>
 
-## Evidence of Code Injection
+## Evidence of Code Injection - Step 4
 - Camoflauge: Use legitamite process to run
 - Access to Memory and Permissions of Target
 - Process Migration: Change the process its running under
@@ -2361,7 +2361,7 @@ Document Version and Build During Collection
 - Built in Windows Feature
   - VirtualAllocEx()
   - CreateRemoteThread()
-  - SetWindowsHookEx() -> **DLL Injection**
+  - SetWindowsHookEx()
     - Hook a process's filter functions
 - Reflective injection loads code without registering with host process
   - Malware creates its own loader, bypassing common API functions
@@ -2372,8 +2372,11 @@ Document Version and Build During Collection
 - Malware starts a suspended (not running) instance of legitimate process
 - Original process code deallocated and replaced
 - Can retain DLLs, handles, data, etc from original process
-- Process image EXE not backed with file on disk -> **process hollowing**
+- Process image EXE not backed with file on disk
 - [Process Hollowing Analysis](https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/analyzing-malware-hollow-processes/)
+- Volatility modules
+  - hollowfind
+  - threadmap
 
 ### DLL Injection
 1. Attacker Process Attaches to Victim Process
@@ -2487,7 +2490,7 @@ Document Version and Build During Collection
 - You might see multiple injected sections within the same process
 - Dumped sections can reverse engineered or scanned with A/V
 - Look for the 'MZ' header to confirm executable (4d 5a 90 00 or 'MZ')
-- greg malfind for executables (```| grep -B4 MZ | grep Process```)
+- grep malfind for executables (```| grep -B4 MZ | grep Process```)
 - Handling Non-MZ headers (Well known assembly code prologue present in injected memory section)
   - ```
   PUSH EBP
@@ -2501,10 +2504,143 @@ Document Version and Build During Collection
   CALL DWORD [ESI+0x85]
   MOV [ESI+0x8c5], EAX
 ```
+- False Positive (Contains all or mostly 0's)
+  - ```
+  ADD [EAX], AL
+  ADD [EAX], AL
+  ADD [EAX], AL
+  ADD [EAX], AL
+  ADD [EAX], AL
+  ADD [EAX], AL
+  ADD [EAX], AL
+  ADD [EAX], AL
+  ADD [EAX], AL
+  ADD [EAX], AL
+```
 
+### malfind Countermeasures
+- malfind only shows a "preview" of the first 64 bytes
+  - Overwrite first four bytes (MZ magic value)
+  - Clear entire PE header (or first 4096)
+  - Jump or redirect to code placed later in page
+- ```---dump-dir``` option outputs entire contents
+  1. Strings, scan with YARA signatures, AV scan
+  2. Have a reverse engineer validate the code
 
+## Hooking and Rootkit Detection - Step 5
 
+### Rootkit Hooking
+- System Service Descriptor Table (SSDT)
+  - Kernel Instruction Hooking
+  - Every SSDT entry will point to a instructions in either the system kernel (ntoskrnl.exe) or the GUI driver (win32k.sys)
+- Interrupt Descriptor Table (IDT)
+  - IDT maintains a table of addresses to functions handling interrupts and exceptions
+  - Kernel Hooks; not very common on modern systems
+- Import Address Table (IAT) and Inline API
+  - User-mode DLL function hooking
+  - Volatility ```apihooks``` module is best for identifying
+- I/O Request Packets (IRP)
+  - Driver hooking
+  - How OS processes interact with hardware drivers
 
+<br>
+
+### Plugins
+- ssdt: Display SSDT entries
+- psxview: Find hidden processes via cross-view techniques
+- modscan: Find modules via pool tag scanning
+- apihooks: Find DLL function (inline and trampoline) hooks
+- driverirp: Identify I/O Packets (IRP) hooks
+- idt: Display Interrupt Descriptor Table Hooks
+
+<br>
+
+### ssdt
+- Display hooked functions within the System Service Descriptor table (Windows Kernel Hooking)
+- The plugin displays every SSDT table entry
+- Eliminate legitimate entries pointing within ntoskrnl.exe and win32k.sys
+  - ```| egrep -v '(ntoskrnl\.exe | win32k\.sys)'``` or ```| egrep -v '(ntoskrnl|win32k)'```
+- Also attempts to discover new tables added by malware
+
+<br>
+
+### Direct Kernel Object Manipulation
+- DKOM is an advanced process hiding technique
+  - Unlink an EPROCESS from the doubly linked list
+- Tools like ```tasklist.exe``` and ```pslist.exe``` on a live system are defeated by DKOM
+- Use ```psscan```
+
+### psxview
+- Performs a cross-view analysis using seven different process listing plugins to visually identify hidden processes
+- Limit false positives by using "known good rules" -R
+- It's important to know the idiosyncrasies of each source:
+  - An entry not found by ```pslist``` could be exited or hidden
+  - Processes run early in boot cycle like smss.exe and csrss.exe will not show in ```csrss``` column
+  - Processes run before smss.exe will not show in ```session``` and ```deskthrd``` columns
+  - Terminated processes might show only in ```psscan``` column
+  - If using "-R", well-known anomalies will be marked "Okay"
+
+### modscan and modules
+- modules lists modules while modscan scans for them (similar to pslist and psscan)
+- Walked link list to identify kernel drivers loaded (modules)
+- Scan memory image to find loaded, unloaded, and unlinked kernel modules (modscan plugin)
+- Provides a list of loaded drivers, their size and location
+- Drivers are a common means for malware to take control; loading a driver gives complete access to kernel objects
+- Identifying a bad driver amoung hundreds of others can be hard; other information like hooks and a baseline might help
+- Two main way to install rootkit: exploit (rare) or driver (common)
+
+**Notes**
+- Automating analysis (baseline plugin)
+  - ```vol.py driverbl -f TDSS.img -B baseline.img -U```
+
+<br>
+
+### apihooks - Inline DLL Hooking
+- Detect inline and Import Address Table function hooks used by rootkits to modify and control information returned
+- Operate only on these PIDs (-p PID)
+- Skip kernel mode checks (-R)
+- Scan only critical processes and dlls (-Q)
+
+**Notes**
+- A large number of legitimate hooks can exist; weeding them out take practice and an eye for looking for anomalies
+- This plugin can take a long time to run due to the sheer number of locations it must query--be patient
+- Now supports x86 and x64 memory images
+
+### Trampoline Hooking
+- Indicators
+  - ```Hooking module: <unkown>``` (not mapped to disk)
+  - Disassembly contains ```JMP <Hook Address>```
+
+<br>
+
+## Dump Suspicious Processes and Drivers - Step 6
+
+### Plugins
+- dlldump: Dump DLLs from a process
+- moddump: Dump a kernel driver to an executable file sample
+- procdump: Dump a process to an execuable file sample
+- memdump: Dump all addressable memory for a process into one file
+- cmdscan: Scan for COMMAND_HISTORY buffers
+- consoles: Scan for CONSOLE_INFORMATION output
+- dumpfiles: Extract files by name or physical offset
+- filescan: Scan memory for FILE_OBJECTs
+- shimcachemem: Extract Application Compatibility Cache artifacts from memory
+
+### dlldump
+- Extract DLL files belonging to a specific process or group of processes
+- Directory to save extracted files (--dump-dir=directory)
+- Dump only from these PIDs (-p PID)
+- Dump DLL located at a specifc base offset (-b offset)
+- Dump DLLs matching a REGEX name pattern (-r regex)
+
+**Notes**
+- Use -p and the -b or -r options to limit the number of DLLs extracted
+- Many processes point to the same DLLs, so you might encounter multiple copies of the same DLL extracted
+
+<br>
+
+### moddump
+- Used to extract kernel drivers from a memory image
 
 
 <br>
