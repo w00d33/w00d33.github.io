@@ -80,13 +80,49 @@
   * [Volatility](#volatility)
     + [Image Identification](#image-identification)
   * [Steps to Finding Evil](#steps-to-finding-evil)
-  * [Identify Rogue Processes](#identify-rogue-processes)
+  * [Memory Forensics - Master Process](#memory-forensics---master-process)
+  * [Identify Rogue Processes - Step 1](#identify-rogue-processes---step-1)
     + [Procces Analysis](#procces-analysis)
     + [Pslist](#pslist)
     + [Psscan](#psscan)
     + [Pstree](#pstree)
-    + [Automating Analysis with Baseline](#automating-analysis-with--baseline)
+    + [Automating Analysis with Baseline](#automating-analysis-with-baseline)
     + [Rogue Processes Review](#rogue-processes-review)
+  * [Analyze Process Objects - Step 2](#analyze-process-objects---step-2)
+    + [Object Analysis Plugins](#object-analysis-plugins)
+    + [dlllist](#dlllist)
+    + [getsids](#getsids)
+    + [handles](#handles)
+    + [Analyzing Process Objects Review](#analyzing-process-objects-review)
+  * [Network Artifacts - Step 3](#network-artifacts---step-3)
+    + [Plugins](#plugins)
+    + [netstat](#netstat)
+  * [Evidence of Code Injection - Step 4](#evidence-of-code-injection---step-4)
+    + [Code Injection](#code-injection)
+    + [Process Hollowing](#process-hollowing)
+    + [DLL Injection](#dll-injection)
+    + [Code Injection Plugins](#code-injection-plugins)
+    + [ldrmodules](#ldrmodules)
+    + [Reflective Injection](#reflective-injection)
+    + [malfind](#malfind)
+    + [malfind Countermeasures](#malfind-countermeasures)
+  * [Hooking and Rootkit Detection - Step 5](#hooking-and-rootkit-detection---step-5)
+    + [Rootkit Hooking](#rootkit-hooking)
+    + [Plugins](#plugins-1)
+    + [ssdt](#ssdt)
+    + [Direct Kernel Object Manipulation](#direct-kernel-object-manipulation)
+    + [psxview](#psxview)
+    + [modscan and modules](#modscan-and-modules)
+    + [apihooks - Inline DLL Hooking](#apihooks---inline-dll-hooking)
+    + [Trampoline Hooking](#trampoline-hooking)
+  * [Dump Suspicious Processes and Drivers - Step 6](#dump-suspicious-processes-and-drivers---step-6)
+    + [Plugins](#plugins-2)
+    + [dlldump](#dlldump)
+    + [moddump](#moddump)
+    + [procdump](#procdump)
+    + [memdump](#memdump)
+    + [strings](#strings)
+    + [grep](#grep)
 - [Windows Forensics](#windows-forensics)
   * [SANS Windows Forensic Analysis Poster](#sans-windows-forensic-analysis-poster)
   * [Registy Overview](#registy-overview)
@@ -120,7 +156,7 @@
     + [Bloodhound - Find a Path to Domain Admin](#bloodhound---find-a-path-to-domain-admin)
 - [Misc](#misc)
   * [Decode Base64](#decode-base64)
-  
+
 <br>
 
 ---
@@ -2641,7 +2677,87 @@ Document Version and Build During Collection
 
 ### moddump
 - Used to extract kernel drivers from a memory image
+- Directory to save extracted files (--dump-dir=directory)
+- Dump drivers matching a REGEX name pattern (-r regex)
+- Dump driver using offset (-b module base address)
+- Use -r or -b options to limit the number of drivers extracted (all kernel drivers dumped by default)
+- Find the driver offset using modules or modscan
+- ```vol.py -f memory.img moddump -b 0xf7c24000 --dump-dir=./output```
 
+<br>
+
+### procdump
+- Dump a process to an executable memory sample
+- Directory to save extracted files (--dump-dir=directory)
+- Dump only these processes (-p PID)
+- Specify process by specific offset (-o offset)
+- Use regular expression to specify process (-n regex)
+
+**Notes**
+- When dumping all processes, the EPROCESS doubly linked list is used (will not dump terminated or unlinked processes)
+  - Use the offset (-o option) to dump unlinked processes
+- Not all processes will be "paged in" to memory -> an error is provided if the process is not memory resident
+
+<br>
+
+### memdump
+- Dump every memory section owned by a process into a single file
+- Direcotry to save extracted files (--dump-dir=directory)
+- Operate only on these PIDs (-p PID)
+- Use regular expression to specify process (-n regex)
+
+**Note**
+- Use the -p option to limit the number of processes extracted
+- The resulting dump file will be much larger than just the process; it contains every memory section owned by the process
+- String analysis of the dump can idenitify data items like domain names, IP addresses, and passwords
+- vaddump is similar but dumps every section to a separate file
+
+<br>
+
+### strings
+- Valuable information
+  - IP addresses/domain names
+  - Malware filenames
+  - Internet markers (e.g http://, https://, ftp://)
+  - Usernames/email addresses
+- Output
+  - Byte offset and string
+  - Byte offset used to calculate cluster location
+
+**Notes**
+- Use -t d option in order to get the exact byte offset
+- Strings of interests and their offset can be used to correlate and determine context
+- Run once for unicode strings (-e l) and once for ASCII
+  - Files can be combined into single file (example conhost)
+
+```bash
+vol.py -f memory.img memdump -n conhost --dump-dir=.
+```  
+
+```bash
+strings -a -t d file > strings.asc
+strings -a -t d -e l file >> strings.uni
+```  
+or
+
+```bash
+strings -a -t d file > strings.txt
+strings -a -t d -e l file >> strings.txt
+sort strings.txt > sorted_strings.txt  
+```  
+- Alternative for Windows: bstrings.exe
+
+<br>
+
+### grep
+- -i ignore case
+- -A Num print Num lines AFTER pattern match
+- -B Num pring Num lines BEFORE pattern match
+- -f filename: file with lost of words (Dirty Word List)
+
+```bash
+grep -i "command prompt" conhost.uni
+```  
 
 <br>
 
