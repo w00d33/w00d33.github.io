@@ -135,6 +135,23 @@
   * [Registy Overview](#registy-overview)
   * [Users and Groups](#users-and-groups)
   * [System Configuration](#system-configuration)
+- [Malware Discovery](#malware-discovery)
+    + [YARA](#yara)
+    + [Sigcheck](#sigcheck)
+    + [DensityScout](#densityscout)
+    + [capa](#capa)
+    + [Putting It All Together](#putting-it-all-together)
+- [Timeline Analysis](#timeline-analysis)
+  * [Overview](#overview)
+    + [Benefits](#benefits)
+    + [Forensic Trinity](#forensic-trinity)
+    + [Windows Artifacts](#windows-artifacts)
+    + [The Pivot Point](#the-pivot-point)
+    + [Contect Clues](#contect-clues)
+    + [Timeline Capabilities](#timeline-capabilities)
+    + [Analysis Process](#analysis-process)
+  * [Filesystem Timeline Creation and Analysis](#filesystem-timeline-creation-and-analysis)
+    + [NTFS Timestamps](#ntfs-timestamps)
 - [Threat Hunting](#threat-hunting)
   * [Common Malware Names](#common-malware-names)
   * [Common Malware Locations](#common-malware-locations)
@@ -3216,6 +3233,8 @@ capa.exe -f pe -v <file>
 
 
 <br>
+
+<img alt="Micosoft's Attack Lifecycle" src="https://raw.githubusercontent.com/w00d33/w00d33.github.io/main/_files/macb.PNG" />
 
 ---
 
