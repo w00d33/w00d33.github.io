@@ -3016,6 +3016,117 @@ voly.py -f memory.img dumpfiles -n -Q 0x09135278 --dump-dir=.
 - Determine if the user properly shuts down their machine
 
 
+<br>
+
+---
+
+<br>
+
+# Malware Discovery
+
+### YARA
+- Search for string and header based signatures
+- Standard IOC sharing
+- Easy to create custom signatures to detect new tools/malware
+- [YARA](http://virustotal.github.io/yara/)
+- Compile multiple rule files with yarac64.exe
+
+```bash
+yara64.exe -C compiled-rules-file <file or directory>
+```
+
+<br>
+
+### Sigcheck
+- Microsoft tool designed to validate digital signatures
+- Create file hashes
+- Virus Total Support
+
+```bash
+sigcheck -c -e -h -v <dir-of-exe> > sigcheck-results.csv
+```  
+
+<br>
+
+### DensityScout
+- Checks for possible obfuscation and packing
+- Files receive an entropy score
+- Score can be used to idenitify whether a set of files further investigation
+- [DensityScout](https://www.cert.at/en/downloads/software/software-densityscout)
+
+```bash
+densityscout -pe -r -p 0.1 -o results.txt <directory-of-exe>
+```  
+
+<br>
+
+### capa
+- File capability identification
+- Anti-analysis features?
+- Contains and embedded.exe?
+- Code injection capabilities?
+- Triage detection using crowdsourced code patterns (rules)
+  - File header
+  - API Calls
+  - Strings and Constants
+  - Disassembly
+- Rules match common malware actions
+  - Communication, Host interaction, Persistence, Anti-analysis
+  - ATT&CK technique mapping also included
+- Designed to provide capabilities in plain language to speed-up investigations
+- [capa](https://github.com/mandiant/capa)
+- [capa: Automatically Identify Malware Capabilities](https://www.mandiant.com/resources/capa-automatically-identify-malware-capabilities)
+-[Malware Behavior Catalog](https://github.com/MBCProject/mbc-markdown)
+
+```bash
+capa.exe -f pe -v <file>
+```  
+
+<br>
+
+### Putting It All Together
+- Poor Density Score + No Digital Signature + Anomalistic Behavior - Known Good = Suspicious Files
+
+<br>
+
+# Timeline Analysis
+
+## Overview
+
+### Benefits
+- Examine System Activity
+- Detect C2 Channels
+- Extremely Hard for Anti-Forensics to Succeed -- Too many Time Entries
+- Adversaries Leave Footprints Everywhere on System
+
+<br>
+
+### Forensic Trinity
+- Filesystem Metadata
+- Windows Artifacts
+- Registry Keys
+
+### Windows Artifacts
+- [SANS Windows Forensic Analysis Poster](https://github.com/w00d33/w00d33.github.io/blob/main/_files/SANS_Windows_Forensics_Poster.pdf)
+
+<br>
+
+### The Pivot Point
+- Challenge: Where do I begin to look?
+  - Use your scope and case knowledge to help form that answer
+  - A timeline has many places where critical activity has occurred
+  - Called a timeline pivot point
+- Pivot Point: Point used to examine the temporal proximity in the timeline
+  - Temporal proximity: What occured immediately before and after a specific event?
+- Why a pivot point?
+  - Use the pivot point to look before and after in your timeline to get a better idea of what happened on the system
+  - Example: Program execution followed by multple writes to C:\Windows\System32 and updating registry entries
+  - You can also use the "pivot point" to help identify potential malware by finding suspicious files and finding how they interact with the sytem via the timeline
+
+
+
+<br>
+
 ---
 
 <br>
