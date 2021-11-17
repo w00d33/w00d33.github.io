@@ -3129,6 +3129,94 @@ capa.exe -f pe -v <file>
 
 <br>
 
+### Contect Clues
+- Recovering a single artifact is similar to recovering a single word
+- Seeing the context surrounding the artifact is needed to accurately use timeline
+- Example -> sweet
+  - 1. Sarah is such a sweet little girl; she is always looking after her brother
+    - Sweet = kind and friendly
+  - 2. This tea is too sweet for me to drink! How much sugar is in it?
+    - sweet = a taste similar to sugar
+
+<br>
+
+### Timeline Capabilities
+- Filesystem: ```fls or MFTECmd```  
+  - Filesystem metadata only
+  - More filesystem types
+    - Apple (HFS)
+    - Solaris (UFS)
+    - Linux (EXT)
+    - Windows (FAT/NTFS)
+    - CD-ROM
+  - Wider OS/Filesystem capability
+
+<br>
+
+- Super Timeline: ```log2timeline```  
+  - Obtain everything (Kitchen Sink)
+  - Filesystem metadata
+  - Artifact timestamps
+  - Registry timestamps
+
+<br>
+
+### Analysis Process
+1. Determine Timeline Scope: What questions do you need to answer?
+2. Narrow Pivot Points
+  - Time-based
+  - Artifact based
+3. Determine the Best Process for Timeline Creation
+  - Filesystem-Based Timeline Creation -- FLS or MFTECmd - Fast (Triage Mode)
+  - Super Timeline Creation - Automated or Targeted - LOG2TIMELINE
+4. Filter Timeline
+5. Analyze Timeline
+  - Focus on the context of evidence
+  - Use Windows Forensic Analysis Poster "Evidence of..."
+
+<br>
+
+## Filesystem Timeline Creation and Analysis
+
+**Tools Will Parse**
+- Filesystem Metadata
+  - Directories
+  - Files
+    - Deleted Files
+    - Unallocated Metadata
+
+**Collect Times From**
+- Data Modified (M)
+- Data Access (A)
+- Metadata Change (C)
+- File Creation (B)
+
+**Timelines Can Be Created For Many Filesystem Types**
+- NTFS
+- FAT12/16/32
+- EXT2/3/4
+- ISO9660 -CDROM
+- HFS+
+- UFS1&2
+
+<br>
+
+### NTFS Timestamps
+- **M: Data Content Change Time (Focus)**
+  - Time the data content of a file was modified
+- A: Data Last Access Time
+  - Approximate Time when the file data last accessed
+- C: Metadata Change Time
+  - Time this MFT record was last modified
+  - When a file is renamed, size changes, security permissions update, or if file ownership is changed
+- **B: File Creation Time (Focus)**
+  - Time file was created in the volume
+- UTC Time Format (NTFS)
+- Local Time (FAT)
+
+
+<br>
+
 ---
 
 <br>
