@@ -3123,7 +3123,9 @@ capa.exe -f pe -v <file>
   - Example: Program execution followed by multple writes to C:\Windows\System32 and updating registry entries
   - You can also use the "pivot point" to help identify potential malware by finding suspicious files and finding how they interact with the sytem via the timeline
 
+<br>
 
+<img alt="Micosoft's Attack Lifecycle" src="https://raw.githubusercontent.com/w00d33/w00d33.github.io/main/_files/pivot_points.PNG" />
 
 <br>
 
