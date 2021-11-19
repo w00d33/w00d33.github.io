@@ -3438,7 +3438,7 @@ pinfo.py -v plaso.dump
 
 ### psort.py
 - --output-time-zone ZONE - Converts stored times to specified time zone
-- o FORMAT: -  Chose the output modile (default is "dynamic" minimal CSV)
+- -o FORMAT: -  Chose the output modile (default is "dynamic" minimal CSV)
   - l2tcsv - Traditional CSV format used by log2timeline
   - elastic - Sends result into an Elasticsearch database
 - -w FILE - Name of output file to be written
@@ -3446,8 +3446,47 @@ pinfo.py -v plaso.dump
   - ```date > datetime ('2018-08-23T00:00:00') AND date < datetime ('2018-09-07T00:00:00')``` 
 
 ```bash
-psort.py --output-time-zone 'UTC' --o l2tcsv -w supertimeline.csv plaso.dump FILTER
+psort.py --output-time-zone 'UTC' -o l2tcsv -w supertimeline.csv plaso.dump FILTER
 ```  
+<br>
+
+### Case Study: Web Server Intrusion
+- Step 1: Parse Triage Image from Web Server
+```bash
+log2timeline.py 'EST5EDT' --parsers 'winevtx, winiis' plaso.dump /cases/IIS_Triage_Files
+```  
+- Step 2: Add fill MFT Metadata
+```bash
+log2timeline.py 'EST5EDT' --parsers 'mactime' plaso.dump /cases/IIS/mftecmd.body
+```  
+- Step 3: Filter Timeline
+```bash
+psort.py  --output-time-zone 'UTC' -o l2tcsv -w supertimeline.csv plaso.dump "date > datetime ('2018-08-23T00:00:00') AND date < datetime ('2018-09-07T00:00:00')"
+``` 
+
+## Super Timeline Analysis
+
+### Recommended Columns
+- date
+- time
+- MACB
+- sourcetype
+- source
+- desc
+- filename
+- inode
+- extra
+
+### Colorize Timeline
+- Automatically colorized in Timeline Explorer
+- CTRL-T: Tag or untag selected rows
+- CTRL-D: Bring up details (for use with supertimelines)
+- CTRL-C: Copy selected cells (and headers) to clipboard
+- CTRL-F: Show Find dialog
+- CTRL-Down: Select Last Row
+- CTRL-Shift-A: Select all values in current column
+- Wildcards are supported in column filters
+- [Colorized Super Timeline Template for Log2timeline Output Files](https://www.sans.org/blog/digital-forensic-sifting-colorized-super-timeline-template-for-log2timeline-output-files/)
 
 <br>
 
