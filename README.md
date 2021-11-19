@@ -3231,10 +3231,83 @@ capa.exe -f pe -v <file>
 - UTC Time Format (NTFS)
 - Local Time (FAT)
 
-
 <br>
 
 <img alt="Micosoft's Attack Lifecycle" src="https://raw.githubusercontent.com/w00d33/w00d33.github.io/main/_files/macb.PNG" />
+
+<br>
+
+### Timestamp Rules Exceptions
+- Applications
+  - Office Products
+  - Winzip
+  - Updates access times (randomly)
+- Anti-Forensics
+  - Timestomping
+  - Touch
+  - Privacy cleaners
+- Archives
+  - ZIP, RAR, and RGZ
+  - Retains original date/timestamps
+  - Usually affects modified time only
+- Scanning
+  - Depends on how well the A/V is written
+
+<br>
+
+### Understanding Timestamps - Lateral Movement Analysis
+- File copied to remote system
+  - Created time: Time of copy (possible time of lateral movement)
+  - Modification time: maintains the original modification time
+  - Use as a "Pivot Point"
+
+<br>
+
+### Filesystem Timeline Format
+- Columns
+  - Time: All entries kwith the same time are grouped
+  - macb: Indication of timestamp type
+  - File Size
+  - Permissions (Unix Only)
+  - User and Group (Unix Only)
+  - Meta: Metadata address ($MFT record number for NTFS)
+  - File Name
+    - Deleted files are appended with "deleted"
+
+<br>
+
+### Create Triage Timeline Bodyfile Step 1 - MFTECmd.exe
+- -f "filename" ($MFT, $J, $BOOT, $SDS)
+- --csv "dir" (directory to save csv, tab separated)
+- --csvf name (Dir to save csv)
+- --body "dir" (Dir to save CSV)
+- --bodyf "name" (File name to save CSV)
+- --bdl "name" Drive letter (C, D, etc.) to use with body file
+- --blf (When true, use LF vs CRLF for newlines. Default is false)
+
+```bash
+MFTECmd.exe -f "E:\C\$MFT --body "G:\timeline" --bodyf mft.body --blf --bdl C:
+```
+
+<br>
+
+### Create Triage Timeline Body File Step 1 - fls
+- The fls tool allows use to interact with a forensics image as though it were a normal filesystem
+- The fls tool in the Sleuth Kit can be used to collect timeline information from the filename layer
+- It take the inode value of a directory, processes the contents, and displays the filenames in the directory (including deleted items)
+
+<br>
+
+### Create Triage Image Timeline Step 2 - mactime
+- The mactime tool is a perl script that takes bodyfile formatted files as input
+- It can be given a date range to restrict itself or it can cover the entire time range
+- "-z" i the output time zone to use. We highly recommend standardizing on UTC to match other artifacts and eliminate timezone and daylight savings challenges 
+
+```bash
+mactime [options] -d -b boddyfile -z timezone > timeline.csv
+```
+
+<br>
 
 ---
 
