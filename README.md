@@ -3309,6 +3309,148 @@ mactime [options] -d -b boddyfile -z timezone > timeline.csv
 
 <br>
 
+# Super Timelines
+
+## Lateral Movement Example
+0.  Found a suspicious prefetch file (evil.exe) and birth timestammp (first time executed)
+1. Scroll Up and find an authentication event (annotate account)
+  - 4672 (Admin Logon)
+  - 4624 (Login Successful)
+  - 4776
+  - Logon Type 3 (network)
+2. Focus on M times and B times
+  - Evidence of File Copy (evil.exe M time older than B)
+3. Execution event
+  - Prefetch (B - First Run, M - Additional Run Times)
+  - Identify time gaps in between file transfers and execution
+4. Directory creation event (...b)
+5. Regisitry Modification
+  - "REG"
+  - Example: ```HKLM\...\services\Netman\domain] home: http://13.192.235/ads pause: 64```
+  - M...
+6. More File Execution
+  - .A.B (first executed)
+
+<br>
+
+## Malware Execution Example
+0. Identify suspicious execution event
+1. Scroll Up and find an authentication event (annotate account)
+  - 4672 (Admin Logon)
+  - 4624 (Login Successful)
+2. File Creation
+  - .A.B
+  - Run capa, sigcheck, yara, densityscout
+3. New Service Created
+  - 7045 Created
+  - 7036 Started
+4. File Execution
+5. File Creation
+  - .A.B
+6. Logoff
+  - 4634
+
+<br>
+
+## Process
+1. log2timeline - Extract timeline
+2. psort - Post processing and output
+3. pinfo - Display storage metadata
+
+<br>
+
+## log2timeline usage
+```bash
+log2timeline.py [STORAGE FILE] [SOURCE]
+```  
+
+- STORAGE FILE: Plaso output database file ```/path/to/output.dump```
+- SOURCE: Device, image, or directory of files to be parsed ```/path/to/image/dd```
+- -z: Define the timezone of the system being investigated (not the output). IF a forensic image is provided (e.g. E01, raw), the timezone wil lbe identified automatically
+- --z "timezone": list of available timezones
+- --help: list all options with usage descriptions
+- [Plaso](https://plaso.readthedocs.io/en/latest/)
+
+<br>
+
+## Target Examples
+- Raw Image
+```bash
+log2timeline.py /path-to/plaso.dump /path-to/image.dd
+```  
+- EWF Image
+```bash
+log2timeline.py /path-to/plaso.dump /path-to/image.E01
+```  
+- Virtual Disk Image
+```bash
+log2timeline.py /path-to/plaso.dump /path-to/triage.vhdx
+```  
+- Physical Device
+```bash
+log2timeline.py /path-to/plaso.dump /dev/sdd
+```  
+- Volume via Partition Num
+```bash
+log2timeline.py --partition 2 /path-to/plaso.dump /path-to/image.dd
+```  
+- Triage Folder
+```bash
+log2timeline.py /path-to/plaso.dump/ /triage-output/
+```  
+<br>
+
+## Targeted Timeline Creation
+- Parsers
+  - [Plaso Parsers](https://plaso.readthedocs.io/en/latest/sources/user/Parsers-and-plugins.html)
+  - ```log2timeline.py --parsers "win7,!filestat" plaso.dump <target>```  
+- Filter Files
+  - Allows for targeted analysis
+  - Supports text-based or YAML
+    - Regex
+    - Wildcards
+    - Path recursions
+    - Path variables
+  - [Filter Files](https://plaso.readthedocs.io/en/latest/sources/user/Collection-Filters.html)
+  - [Filter Files Plaso Github](https://github.com/log2timeline/plaso/tree/main/data)
+- Grab Kape Triage Image -> Run through plaso: ```log2timeline.py /path-to/plaso.dump/ /triage-output/```  
+
+<br>
+
+## Filtering Super Timelines
+
+### pinfo.py
+- Displays contents of Plaso database
+  - -v for "verbose" information
+- Information stored inside the plaso.dump storage container
+  - Info on when and how the tool was run
+- List of all plugins/parsers used
+- Filter file information (if applicable)
+- Information gathered during the preprocessing stage
+- A count of each artifact parsed
+- Errors and storage container metadata
+
+```bash
+pinfo.py -v plaso.dump
+```  
+
+<br>
+
+### psort.py
+- --output-time-zone ZONE - Converts stored times to specified time zone
+- o FORMAT: -  Chose the output modile (default is "dynamic" minimal CSV)
+  - l2tcsv - Traditional CSV format used by log2timeline
+  - elastic - Sends result into an Elasticsearch database
+- -w FILE - Name of output file to be written
+- FILTER - Filter arguement (e.g., provide a date range filter)
+  - ```date > datetime ('2018-08-23T00:00:00') AND date < datetime ('2018-09-07T00:00:00')``` 
+
+```bash
+psort.py --output-time-zone 'UTC' --o l2tcsv -w supertimeline.csv plaso.dump FILTER
+```  
+
+<br>
+
 ---
 
 <br>
