@@ -3490,6 +3490,40 @@ psort.py  --output-time-zone 'UTC' -o l2tcsv -w supertimeline.csv plaso.dump "da
 
 <br>
 
+### Super Timeline Creation
+
+- Create Body File of Master File Table
+```bash
+MFTECmd.exe -f '.\Location\C\$MFT' --body 'D:\Path\To Save\Timeline' --bodyf hostname-mftecmd.body --blf --bdl C:
+```  
+
+- Convert body file to csv (triage timeline)
+```bash
+mactime -z UTC -y -d -b hostname-mftecmd.body > hostname-filesystem-timeline.csv
+```  
+
+- Tune out unnecessary noise
+```bash
+grep -v -i -f timeline_noise.txt hostname-filesystem-timeline.csv > hostname-filesystem-timeline-final.csv
+```  
+
+- Timeline Windows artifacts
+```bash
+log2timeline.py -z 'PST8PDT' --parsers 'win7,!filestat' --storage-file ../plaso.dump triage_image/2021-11-20T012359_win7-cto.vhdx
+```  
+
+- Add Master File Table
+```bash
+log2timeline.py --parsers 'mactime' --storage-file ../plaso.dump ./win7-CFO-mftecmd.body
+```  
+
+- Convert Super Timeline to CSV
+```bash
+psort.py --output-time-zone 'UTC' -o l2tcsv -w ./plaso.csv ./plaso.dump "(((parser == 'winevtx') and (timestamp_desc == 'Creation Time')) or (parser != 'winevtx'))"
+```  
+
+<br>
+
 ---
 
 <br>
