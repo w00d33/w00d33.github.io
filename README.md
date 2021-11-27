@@ -3509,12 +3509,12 @@ grep -v -i -f timeline_noise.txt hostname-filesystem-timeline.csv > hostname-fil
 
 - Timeline Windows artifacts
 ```bash
-log2timeline.py -z 'PST8PDT' --parsers 'win7,!filestat' --storage-file ../plaso.dump triage_image/2021-11-20T012359_win7-cto.vhdx
+log2timeline.py -z 'PST8PDT' --parsers 'win7,!filestat' --storage-file ../plaso.dump triage_image/2021-11-20T012359_hostname.vhdx
 ```  
 
 - Add Master File Table
 ```bash
-log2timeline.py --parsers 'mactime' --storage-file ../plaso.dump ./win7-CFO-mftecmd.body
+log2timeline.py --parsers 'mactime' --storage-file ../plaso.dump ./hostname-mftecmd.body
 ```  
 
 - Convert Super Timeline to CSV
