@@ -3106,6 +3106,40 @@ capa.exe -f pe -v <file>
 
 <br>
 
+## Malware Discovery Process
+
+### yara
+
+1. Compile yara rules
+```bash
+yarac64.exe '.\rules\index.yar' yara-rules
+```  
+
+2. Scan using yara
+```bash
+yara64.exe -C yara-rules -rw G:\ > 'C:\Tools\Malware Analysis\yara-rules-out.txt'
+```  
+
+<br>
+
+### Sigcheck
+- Copy the signature file directories from the triage image location ```C\Windows\System32\CatRoot``` to analysis machine location: ```C\Windows\System32\CatRoot```
+- Change the last value from an E to a 9 fo each folder
+- Restart Cryptographic Services
+
+```bash
+sigcheck.exe -s -c -e -h -v -vt -w "C:\Tools\Malware Analysis\sigcheck-results.csv" G:\
+```  
+
+<br>
+
+### DensityScout
+```bash
+densityscout.exe -r -pe -p 0.1 -o 'C:\Tools\densityscout-results.txt' G:\
+```
+
+<br>
+
 # Timeline Analysis
 
 ## Overview
