@@ -3593,7 +3593,9 @@ grep -a -v -i -f timeline_noise.txt plaso.csv > hostname-supertimeline-final.csv
 
 <br>
 
-### Supertimeline Analysis
+## Supertimeline Analysis
+
+### Questions to Answer
 - When were suspicous directories created?
 - What is the MFT-Entry value (from the "Meta" column)?
 - What is the last modification time for the folder?
@@ -3606,7 +3608,23 @@ grep -a -v -i -f timeline_noise.txt plaso.csv > hostname-supertimeline-final.csv
   - Creation of a user profile folder generally marks the first interactive logon session of that user on a system
 - LNK files provide evidence of file and folder opening
   - Review the LNK files present in the ```C:/Users/<user>/AppData/Roaming/Microsoft/Windows/Recent``` directory
-- 
+
+<br>
+
+### Filtering
+- Filter for "AppCompatCache Registry Entry" in the "Source Description" column
+  - Adding the "Type" column can help with interpretation of the timestamps
+- Use the Power Filter to find all rows with the value "/filename"
+  - Click Line showing the creation of indicator
+  - Clear your Power Filter ("X"), allowing you to see all of the activity around the creation of that suspicious file
+- Select "Registry Key: RDP Connection", and examine the output
+  - Notice that the "File Name" column identifies this data as coming from the NTUSER.DAT registry file
+- Search for "Recycle" in your Power Filter
+  - What user RID (the last 3-4 digits of the SID) is responsible for all of the Recycle Bin activity
+- Filter for "Registry Key: BagMRU" (Folder Opening)
+- GUI program execution using a filter for the artifact "Registry Key: UserAssist"
+
+<br>
 
 ---
 
