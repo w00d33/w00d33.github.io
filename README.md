@@ -3110,12 +3110,12 @@ capa.exe -f pe -v <file>
 
 ### yara
 
-1. Compile yara rules
+- Compile yara rules
 ```bash
 yarac64.exe '.\rules\index.yar' yara-rules
 ```  
 
-2. Scan using yara
+- Scan using yara
 ```bash
 yara64.exe -C yara-rules -rw G:\ > 'C:\Tools\Malware Analysis\yara-rules-out.txt'
 ```  
@@ -3128,7 +3128,7 @@ yara64.exe -C yara-rules -rw G:\ > 'C:\Tools\Malware Analysis\yara-rules-out.txt
 - Restart Cryptographic Services
 
 ```bash
-sigcheck.exe -s -c -e -h -v -vt -w "C:\Tools\Malware Analysis\sigcheck-results.csv" G:\
+sigcheck.exe -s -c -e -h -v -vt -w 'C:\Tools\Malware Analysis\sigcheck-results.csv' G:\
 ```  
 
 <br>
