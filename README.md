@@ -3093,10 +3093,17 @@ densityscout -pe -r -p 0.1 -o results.txt <directory-of-exe>
 - Designed to provide capabilities in plain language to speed-up investigations
 - [capa](https://github.com/mandiant/capa)
 - [capa: Automatically Identify Malware Capabilities](https://www.mandiant.com/resources/capa-automatically-identify-malware-capabilities)
--[Malware Behavior Catalog](https://github.com/MBCProject/mbc-markdown)
+- [Malware Behavior Catalog](https://github.com/MBCProject/mbc-markdown)
 
 ```bash
 capa.exe -f pe -v <file>
+```  
+
+### UPX
+- Unpack execuatbles
+
+```bash
+upx -d p_exe -o p_exe_unpacked
 ```  
 
 <br>
@@ -3132,6 +3139,13 @@ yara64.exe -C yara-rules -rw G:\ > 'C:\Tools\Malware Analysis\yara-rules-out.txt
 ```bash
 sigcheck.exe -s -c -e -h -v -vt -w 'C:\Tools\Malware Analysis\sigcheck-results.csv' G:\
 ```  
+
+- Tune Out Known Good
+- Tune Out Verified
+- Tune Out Known Good Publishers
+- Note Any 32 Bit
+- Note n/a Publishers
+- Note recent PE compliation timestamps
 
 <br>
 
@@ -3533,15 +3547,28 @@ psort.py  --output-time-zone 'UTC' -o l2tcsv -w supertimeline.csv plaso.dump "da
 MFTECmd.exe -f '.\Location\C\$MFT' --body 'D:\Path\To Save\Timeline' --bodyf hostname-mftecmd.body --blf --bdl C:
 ```  
 
+<br>
+
 - Convert body file to csv (triage timeline)
 ```bash
 mactime -z UTC -y -d -b hostname-mftecmd.body > hostname-filesystem-timeline.csv
 ```  
 
+<br>
+
 - Tune out unnecessary noise
 ```bash
 grep -v -i -f timeline_noise.txt hostname-filesystem-timeline.csv > hostname-filesystem-timeline-final.csv
 ```  
+
+<br>
+
+- List Timezones
+```bash
+log2timeline.py -z list
+```
+
+<br>
 
 - Timeline Windows artifacts
 ```bash
@@ -3559,6 +3586,27 @@ psort.py --output-time-zone 'UTC' -o l2tcsv -w ./plaso.csv ./plaso.dump "(((pars
 ```  
 
 <br>
+
+```bash
+grep -a -v -i -f timeline_noise.txt plaso.csv > hostname-supertimeline-final.csv
+```  
+
+<br>
+
+### Supertimeline Analysis
+- When were suspicous directories created?
+- What is the MFT-Entry value (from the "Meta" column)?
+- What is the last modification time for the folder?
+  - The last modification time of a folder represents a change in the contents of the directory
+- When were suspicious files created?
+- Find the prefetch of suspicious executables
+- Dowloaded or Transfered Files?
+  - Downloaded Indicator: zone.identifier
+- Identify when users logged in for the first time
+  - Creation of a user profile folder generally marks the first interactive logon session of that user on a system
+- LNK files provide evidence of file and folder opening
+  - Review the LNK files present in the ```C:/Users/<user>/AppData/Roaming/Microsoft/Windows/Recent``` directory
+- 
 
 ---
 
