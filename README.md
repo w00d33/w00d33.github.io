@@ -3111,11 +3111,13 @@ capa.exe -f pe -v <file>
 ### yara
 
 - Compile yara rules
+
 ```bash
 yarac64.exe '.\rules\index.yar' yara-rules
 ```  
 
 - Scan using yara
+
 ```bash
 yara64.exe -C yara-rules -rw G:\ > 'C:\Tools\Malware Analysis\yara-rules-out.txt'
 ```  
