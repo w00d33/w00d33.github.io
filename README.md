@@ -2320,7 +2320,7 @@ Document Version and Build During Collection
   - Timer
 - ```filescan``` and ```mutantscan``` search for makers indicating FILE_OBJECTS and KMUTANT objects and return their respective results
 
-**Named Pipes**
+**Named Pipes (File Handles)**
 - [Named Pipes](https://docs.microsoft.com/en-us/windows/win32/ipc/named-pipes)
 - Designed to use SMB
 - Allow multiple processes or computers to communicate with each other
@@ -4101,3 +4101,120 @@ echo  "SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AV
   backgroundColor: 'rgb(255, 82, 82)',
   textColor: '#fff'
 })</script>
+
+<br>
+
+# Anti-Forensics
+
+## Overview
+
+### Filesystem
+- Timestomping
+- File Deletion
+- File/Free Space Wiping
+- Data Encryption (.rar files)
+- Fileless Malware
+
+<br>
+
+### Registry
+- Registry Key/Value Deletion
+- Registry Key/Value Wiping
+- Hiding Scripts in Registry
+
+<br>
+
+### Other
+- Event Log Deletion/Tampering
+- Process Evasion - Rootkits and Code Injection
+
+<br>
+
+## Recovery of Deleted Files via VSS
+
+### Volume Shadow Copies
+- Can provide backups of nearly the entire volume to earlier points in time
+- Recover key files (event logs, registry, malware, wipe files)
+- Introduction of "ScopeSnapshots" in Windows 8+ limits effectiveness (excludes user profiles)
+  - Disable by setting ```HKLM\Software\Microsoft\WindowsNT\CurrentVersion\SystemRestore``` to 0
+
+<br>
+
+### Volume Shadow Examination
+- Triage Analysis
+  - KAPE
+  - Velociraptor
+- Full-Volume Analysis
+  - Arsenal Image Mounter
+  - F-Response
+  - vshadowmount
+- Analysis on SIFT VM
+  - vshadowinfo
+  - vshadowmount
+
+<br>
+
+## Advanced NTFS Filesystem Tactics
+
+### Master File Table - MFT
+- Metdata layer contains data that describes files
+- Containers point to:
+  - Data layer for file content
+  - MAC times
+  - Permissions
+- Each metadata structure is given a numeric address
+
+<br>
+
+### MFT Entry Allocated
+- Metadata filled out (name, timestamps, permissions, etc.)
+- Pointers to clusters containing file contents (or the data itself, if the file is resident)
+
+<br>
+
+### MFT Entry Unallocated
+- Metadata may or may not be filled out
+- If filled out, it is from a deleted file (or folder)
+- The clusters pointed to may or may not still contain the deleted file's data
+  - The clusters may have been resused
+
+<br>
+
+### Sequential MFT Entries
+- As files are created, regardless of their directories, MFT allocation patterns are generally sequential and not random
+- Use analysis of contiguous metadata values to find files likely created in quick succession, even across different directories
+
+<br>
+
+### istat - Analyzing File System Metadata
+- Displays statistics about a given metadata structure (inode), including MFT entries
+- Supports dd, E01, VMDK/VHD
+- Supports NTFS, FAT12/16/32 , ExFAT, EXT2/3/4, HFS, APFS
+- Provides allocation status
+- Includes MFT entry number
+- $LogFile Sequence Number
+- $STANDAR_INFORMATION
+  - File or Folder attributes (ReadOnly, Hidden, Archived, etc.)
+  - Security Information
+  - USN Journal's Sequence Number
+  - Timestamps
+    - Created
+    - Data Modified
+    - MFT Metadata Modified
+    - Data Last Accessed
+- $FILENAME
+  - File or Folder attributes (ReadOnly, Hidden, Archived, etc.)
+  - Name of File or Directory
+  - Contains parent directory MFT Entry
+  - Four more timestamps
+- Attribute List
+  - The file has 2 $FN attributes
+    - One for the long file name
+    - Another for the short file name
+    - One $DATA attribute
+
+
+
+
+
+
