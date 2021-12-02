@@ -4217,3 +4217,45 @@ echo  "SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AV
 
 <img alt="FILE_NAME_MACB" src="https://raw.githubusercontent.com/w00d33/w00d33.github.io/main/_files/FILE_NAME_MACB.PNG" />
 
+<br>
+
+### Detecting Timestamp Manipulation
+- Timestomping is common with attackers and malware authors to make their files hide in plain sight
+- Artifacts from Timestomping vary based on the tool used
+- Anomalies:
+  1. $STANDARD_INFORMATION "B" time prior to $FILE_NAME "B" time
+  2. Fractional second values are all zeros
+  3. $STANDARD_INFORMATION "M" time prior to ShimCache timestamp
+  4. $STANDARD_INFORMATION times prior to executable's compile time
+  5. $STANDARD_INFORMATION times prior to $I30 slack entries
+  6. MFT entry number is significantly out of sequence from expected range
+
+<br>
+
+### Timestomp Detection
+- MTFECmd
+  - Created0x10 = $STANDARD_INFORMATION
+  - Created0x30 = $FILE_NAME
+  - Compare and look for mismatches
+  - (1) Column ```SI<FN``` ($FILE_NAME time more recent than $STANDARD_INFORMATION time)
+  - (2) Column ```u Sec``` Checks for zeroed out nano second value
+
+- exiftool
+  - Parse application metadata
+  - (4) Compile time (Time Stamp) more recent than either creation time or modification time
+
+- AppCompatCacheParser.exe
+  - (3) Compare Last Modificaiton time (more recent) to the file systems last modification time
+
+<br>
+
+### Analyzing $DATA
+- File data is maintained by the $DATA attribute
+  - Resident: If data is 600 bytes or less, it gets stored inside the $DATA attribute
+  - Non-resident: $DATA attribute lists the clusters on disk where the data resides
+- Files can have multiple $DATA streams
+  - The extra, or "Alternate Data Streams" (ADS), must be named
+
+  <br>
+
+  
