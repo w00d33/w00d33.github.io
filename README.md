@@ -4258,4 +4258,73 @@ echo  "SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AV
 
   <br>
 
-  
+### Extracting Data with The Sleuth Kit - icat
+```
+icat [options] image inode > extracted.data
+
+  -r: Recover deleted file
+  -s: Display slack space at end of file
+```  
+- Extract Data from a Metadata Address
+  - By default, the icat tool extracts data to STDOUT based on a specific metadata entry
+  - Able to extract data from metadata entries marked deleted
+
+<br>
+
+- Extracting NTFS $DATA streams
+  - With NTFS, the default will be to extract out the primary $DATA stream
+  - To extract a different stream, such as an Alternate Data Stream, use syntaz:
+
+```
+<mft#>-<AttributeType>-<AttributeID>
+```  
+
+```
+icat /cases/cdrive/hostname.E01 132646-128-5
+[Zone Transfer]
+ZoneId=3
+ReferrerURL=https://www.example.com
+HostUrl=https://www.badwebsite.com/most/likely/malware/412341234?journalCode=acmm
+```
+
+<br>
+
+### The Zone Identifier ADS -  Evidence of Download
+
+- Live System (Enumerate)
+
+```
+dir /r
+```
+
+- Image (Linux)
+
+```bash
+fls -r hostname.E01 | grep :.*:
+```  
+
+```bash
+istat hostname.E01 39345
+```  
+
+```bash
+icat hostname.E01 39345-128-9 > ads1
+```  
+
+```bash
+file ads1
+```  
+
+- Image (Windows)
+
+```bash
+MFTECmd.exe -f 'E:\C\$MFT' --csv 'G:\' --csvf mft.csv
+````
+
+ - Open in TimelineExplorer
+ - Filter "Has Ads" or "Is Ads"
+ - Filter .exe
+ - Note "Zone Id Contents" Column
+
+<br>
+
