@@ -140,7 +140,12 @@
     + [Sigcheck](#sigcheck)
     + [DensityScout](#densityscout)
     + [capa](#capa)
+    + [UPX](#upx)
     + [Putting It All Together](#putting-it-all-together)
+  * [Malware Discovery Process](#malware-discovery-process)
+    + [yara](#yara)
+    + [Sigcheck](#sigcheck-1)
+    + [DensityScout](#densityscout-1)
 - [Timeline Analysis](#timeline-analysis)
   * [Overview](#overview)
     + [Benefits](#benefits)
@@ -152,6 +157,30 @@
     + [Analysis Process](#analysis-process)
   * [Filesystem Timeline Creation and Analysis](#filesystem-timeline-creation-and-analysis)
     + [NTFS Timestamps](#ntfs-timestamps)
+    + [Timestamp Rules Exceptions](#timestamp-rules-exceptions)
+    + [Understanding Timestamps - Lateral Movement Analysis](#understanding-timestamps---lateral-movement-analysis)
+    + [Filesystem Timeline Format](#filesystem-timeline-format)
+    + [Create Triage Timeline Bodyfile Step 1 - MFTECmd.exe](#create-triage-timeline-bodyfile-step-1---mftecmdexe)
+    + [Create Triage Timeline Body File Step 1 - fls](#create-triage-timeline-body-file-step-1---fls)
+    + [Create Triage Image Timeline Step 2 - mactime](#create-triage-image-timeline-step-2---mactime)
+- [Super Timelines](#super-timelines)
+  * [Lateral Movement Example](#lateral-movement-example)
+  * [Malware Execution Example](#malware-execution-example)
+  * [Process](#process)
+  * [log2timeline usage](#log2timeline-usage)
+  * [Target Examples](#target-examples)
+  * [Targeted Timeline Creation](#targeted-timeline-creation)
+  * [Filtering Super Timelines](#filtering-super-timelines)
+    + [pinfo.py](#pinfopy)
+    + [psort.py](#psortpy)
+    + [Case Study: Web Server Intrusion](#case-study--web-server-intrusion)
+  * [Super Timeline Analysis](#super-timeline-analysis)
+    + [Recommended Columns](#recommended-columns)
+    + [Colorize Timeline](#colorize-timeline)
+    + [Super Timeline Creation](#super-timeline-creation)
+  * [Supertimeline Analysis](#supertimeline-analysis)
+    + [Questions to Answer](#questions-to-answer)
+    + [Filtering](#filtering)
 - [Threat Hunting](#threat-hunting)
   * [Common Malware Names](#common-malware-names)
   * [Common Malware Locations](#common-malware-locations)
@@ -180,6 +209,27 @@
     + [Bloodhound - Find a Path to Domain Admin](#bloodhound---find-a-path-to-domain-admin)
 - [Misc](#misc)
   * [Decode Base64](#decode-base64)
+- [Anti-Forensics](#anti-forensics)
+  * [Overview](#overview-1)
+    + [Filesystem](#filesystem)
+    + [Registry](#registry)
+    + [Other](#other)
+  * [Recovery of Deleted Files via VSS](#recovery-of-deleted-files-via-vss)
+    + [Volume Shadow Copies](#volume-shadow-copies)
+    + [Volume Shadow Examination](#volume-shadow-examination)
+  * [Advanced NTFS Filesystem Tactics](#advanced-ntfs-filesystem-tactics)
+    + [Master File Table - MFT](#master-file-table---mft)
+    + [MFT Entry Allocated](#mft-entry-allocated)
+    + [MFT Entry Unallocated](#mft-entry-unallocated)
+    + [Sequential MFT Entries](#sequential-mft-entries)
+    + [istat - Analyzing File System Metadata](#istat---analyzing-file-system-metadata)
+    + [Detecting Timestamp Manipulation](#detecting-timestamp-manipulation)
+    + [Timestomp Detection](#timestomp-detection)
+    + [Analyzing $DATA](#analyzing--data)
+    + [Extracting Data with The Sleuth Kit - icat](#extracting-data-with-the-sleuth-kit---icat)
+    + [The Zone Identifier ADS -  Evidence of Download](#the-zone-identifier-ads----evidence-of-download)
+    + [Filenames](#filenames)
+    + [NTFS Directory Attributes](#ntfs-directory-attributes)
 
 <br>
 
@@ -4327,4 +4377,28 @@ MFTECmd.exe -f 'E:\C\$MFT' --csv 'G:\' --csvf mft.csv
  - Note "Zone Id Contents" Column
 
 <br>
+
+### Filenames
+- Filenames potentially sotred in two places:
+  - File System Metadata
+    - MFT Entry
+  - Directory Data
+    - Contains list of children files/directories
+
+<br>
+
+**Lethal Technique**
+- Most file wipping software does not wipe directory entries
+- Slack space of directory will contain metadata including file names and timestamps
+- Some forensic tools ignore directory slack entries
+
+<br>
+
+### NTFS Directory Attributes
+- Stored in an index named $I30
+- Index composed of $INDEX_ROOT and optionally $INDEX_ALLOCATION
+  - $INDEX_ROOT -- required (Stored in MFT)
+    - Always resident
+  - $INDEX_ALLOCATION -- required for larger directories (stored in clusters)
+    - Always non-resident
 
