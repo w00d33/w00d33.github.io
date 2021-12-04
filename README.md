@@ -4402,3 +4402,46 @@ MFTECmd.exe -f 'E:\C\$MFT' --csv 'G:\' --csvf mft.csv
   - $INDEX_ALLOCATION -- required for larger directories (stored in clusters)
     - Always non-resident
 
+<br>
+
+### Parsing I30 Directory Indexes
+
+**Indx2Csv**
+  - Parses out active and slack entries
+  - Includes additional features for recovering partial entries
+
+```bash
+Indx2Csv /IndxFile:G:\cases\$I30 /OutputPath:G:\cases
+```  
+
+<br>
+
+**Velociraptor**
+- Parses out active and slack entries
+- Able to recurse the file system
+
+```bash
+Velociraptor artifacts collect Windows.NTFS.I30 --args DirectoryGlobs="F:\\Windows\\Temp\\Perfmon\\" --format=csv
+```
+
+<br>
+
+### File System Jounraling Overview
+- Records files system metadata changes
+- Two files track these changes: $LogFile and $UsnJrnl
+- Primary goal is returning file system to a clean state
+- Secondary goal is providing hints to applications about file changes
+- Forensic examiners can use journals to identify prior state of files, and when their state changed
+  - Like VSS, they serve as a time machine, detailing past file system activites
+  - Unlike VSSm the journals are rolling logs, rather than a point in time snapshot
+
+<br>
+
+### $LogFile Provides File System Resilience
+- $LogFile stores low-level transactional logs for NTFS consistency
+- Maintains very detailed information, including fill payload data to be recorded in MFT, Indexes, UsnJrnl, & more
+- Tends to last just a dew hours on active systems
+  - Secondary drives often last much longer (i.e. days)
+
+
+
