@@ -4435,6 +4435,31 @@ Velociraptor artifacts collect Windows.NTFS.I30 --args DirectoryGlobs="F:\\Windo
 - Tends to last just a dew hours on active systems
   - Secondary drives often last much longer (i.e. days)
 
+<br>
+
+### UsnJrnl
+- Stores high-level summary information about changes to files & directories
+- Used by applications to determine which files they should act upon
+- Tends to last a few days on active systems
+	- Secondary drives often last much longer (i.e., weeks)
+- Stored in large $J ADS
+
+<br>
+
+### Common Activity Patterns in the Journals
+- Due to the somwhat cryptic nature of the journals (particularly the $LogFile), interpretation often requires understanding activity patterns
+- Below are several common activities on the file system and a reliable set of codes from the journals to signify their occurence (look for the combination of the codes to avoid false-positives)
+
+<br>
+
+| **Action** | **$LogFile Codes** | **$UsnJrnl Codes** |
+| :---------------: | :---------------: | :---------------: |
+|File/Directory Creation|AddIndexEntryAllocation <br> InitializeFileRecordSegment|FileCreate|
+|File/Directory Deletion|DeleteIndexEntryAllocation <br> DeallocationFileRecordSegment|FileDelete|
+|File/Directory Rename or Move|DeleteIndexEntryAllocation <br> AddIndexEntryAllocation|RenameOldName <br> RenameNewName|
+|ADS Creation|CreateAttribute with name ending in ":ADS"|StreamChange <br> NamedDataExtend|
+|File Data Modification|* Op codes for $LogFile are not sufficient to determine file modification|DataOverwrite - DataExtend - Data Truncation|
+
 
 
 <script src="https://unpkg.com/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js"></script>
