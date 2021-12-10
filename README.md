@@ -4460,6 +4460,31 @@ Velociraptor artifacts collect Windows.NTFS.I30 --args DirectoryGlobs="F:\\Windo
 |ADS Creation|CreateAttribute with name ending in ":ADS"|StreamChange <br> NamedDataExtend|
 |File Data Modification|* Op codes for $LogFile are not sufficient to determine file modification|DataOverwrite - DataExtend - Data Truncation|
 
+<br>
+
+### Useful Filter and Searches in the Journals
+- Parent directory filtering is a powerful technique with journal logs
+
+<br>
+
+| **Parent Directories to Filter** | **Investigative Relevance** |
+| :---------------: | :---------------: |
+|C:\Windows & C\Windows\System32|Directories coveted by attackers|
+|C:\Windows\Prefetch|Attackers often delete prefetch files|
+|Attacker's Working Directories|Discover unknown attacker tools and exfil|
+|Temp Directories|Focus on executables|
+|C:\Users\*\Downloads|Find Recently Downloaded Files|
+|C:\Users\*\AppData\Roaming\Microsoft\Windows\Recent|Find additional times and files opened by users|
+|C:\$Recycle.Bin\<SID>\Check for deleted files prior to Recycle Bin empty|
+
+<br>
+
+**File Types or Names of Interest Created or Recently Deleted**
+- Executables (.exe, .dll, .sys, .pyd)
+- Archives (.rar, .zip, .cab, .7z)
+- Scripts (.ps1, .vbs, bat)
+- IOC file/directory names
+
 
 
 <script src="https://unpkg.com/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js"></script>
