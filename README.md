@@ -4475,7 +4475,7 @@ Velociraptor artifacts collect Windows.NTFS.I30 --args DirectoryGlobs="F:\\Windo
 |Temp Directories|Focus on executables|
 |C:\Users&#92;*\Downloads|Find Recently Downloaded Files|
 |C:\Users&#92;*\AppData\Roaming\Microsoft\Windows\Recent|Find additional times and files opened by users|
-|C:\$Recycle.Bin&#92;SID|Check for deleted files prior to Recycle Bin empty|
+|C:&#92;$Recycle.Bin&#92;SID|Check for deleted files prior to Recycle Bin empty|
 
 <br>
 
