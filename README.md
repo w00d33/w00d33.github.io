@@ -4485,6 +4485,70 @@ Velociraptor artifacts collect Windows.NTFS.I30 --args DirectoryGlobs="F:\\Windo
 - Scripts (.ps1, .vbs, bat)
 - IOC file/directory names
 
+<br>
+
+### LogFileParser for $LogFile Analysis
+
+```
+LogFileParser.exe /LogFileFile:E: \C\$LogFile /OutputPath:G: \ntfs-anti-forensics
+```  
+- Primary output file is "LogFile.csv" (shown below). Many supporting files created with additional details
+  - if_LSN: Log Sequence Number (LSN) orders entries
+  - if_RedoOperation: "Redo" operation is what it's about to do
+  - if_UndoOperation: "Undo" is how to back it out
+  - if_FileName: File or Directory name being updated
+  - if_CurrentAttribute: Identifies which attributes are being changed
+  - if_TextInformation: When applicable, provides pointers to payload data in supporting files
+
+<br>
+
+- [LogFileParser](https://github.com/jschicht/LogFileParser)
+- [$MFT and $LogFile Analysis](https://tzworks.com/prototype_page.php?proto_id=46)
+- [$MFT and $Logfile Analysis User Guide (mala)](https://tzworks.com/prototypes/mala/mala.users.guide.pdf)
+
+<br>
+
+### MFTECmd for $UsnJrnl Analysis
+
+```
+mftecmd.exe -f E:\C\$Extend\$J --csv G:\nfts --csvf mftecmd-usnjrnl.csv
+```  
+- Add -vss to have all volume shadow USN journals parsed automatically
+  - Name: File/Directory Name
+  - Entry Number: MFT #
+  - Parent Entry Number: Parent MFT #
+  - Update Timestamp: Update Timestamp
+  - Update Reasons: Update Reason Code(s)
+  - Update Sequence Number: Update Seq. Number
+  - File Attributes: Attribute Flags
+
+<br>
+
+- [Windows Journal Parser (jp) Users Guide](https://tzworks.com/prototypes/jp/jp.users.guide.pdf)
+
+<br>
+
+### NTFS: What Happens When a File is Deleted?
+- Data Layer
+  - Clusters will be marked as unallocated in $Bitmap, but data will be left intact until clusters are reused
+  - File data as well as slack space will still exist
+- Metadata Layer
+  - A single bit in the file's $MFT record is flipped, so all file metadata will remain until record is reused
+  - $LogFile, $UsnJrnl, and other system logs still reference file
+- Filename Layer
+  - $File_Name attribute is preserved until MFT record is reused
+  - $I30 index entry in parent directory may be preserved
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="https://unpkg.com/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js"></script>
