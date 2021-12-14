@@ -4756,7 +4756,3 @@ mftecmd.exe -f E:\C\$Extend\$J --csv G:\nfts --csvf mftecmd-usnjrnl.csv
   backgroundColor: 'rgb(255, 82, 82)',
   textColor: '#fff'
 })</script>
-
-
-
-
