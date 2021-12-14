@@ -4539,11 +4539,165 @@ mftecmd.exe -f E:\C\$Extend\$J --csv G:\nfts --csvf mftecmd-usnjrnl.csv
   - $File_Name attribute is preserved until MFT record is reused
   - $I30 index entry in parent directory may be preserved
 
+<br>
+
+## Advanced Evidence Recovery
+
+- Popular Wipers
+  - BleachBit
+  - ERASER
+  - SDelete
+  - BCWipe
+
+<br>
+
+### SDelete
+- Indicators (USNJrnl)
+  - Name contains AAAAAAAA, BBBBBBBB, CCCCCCCC
+  - Update Reasons: DataOverwrite, RenameOldNmae
+  - Windows Search Index (gather) logs has indicators
+  - $I30 Slack has indicators
+  - Prefetch has indicators (files touch within 10 seconds of execution)
+
+<br>
+
+### BCWiper
+- Renames files once with random name equal in size to original
+- $UsnJrnl, $LogFile, and Evidence of Execution artifacts persist
+
+<br>
 
 
+### Eraser
+- Includes an option to use a "legitamate" file name prior to final deletion
+- Renamed MFT records (with ADS, if present), $I30 slack, $UsnJrnl, $LogFile, and Evidence of Execution artifacts persist
 
+<br>
 
+### Cipher
+- Creates a persist directory name EFSTMPWP at the volume root and adds temp files within it to fill free space
 
+<br>
+
+### Registry Key/Value "Records" Recovery
+- Registry hives have unallocated space similar to filesystems
+- A deleted hive key is marked as unallocated; possible to recover
+  - Keys
+  - Values
+  - Timestamps
+- Eric Zimmerman's Registry Explorer makes recovering deleted registry data trivial
+
+<br>
+
+### Finding Fileless Malware in the Registry
+- Attackers try ot hide amongst the noise in the registry
+- Registry Explorer has convenient features to spot anomalies
+- Detect Large Values
+- Detect Base64 values
+
+<br>
+
+### File Recovery
+
+**Metadata Method**
+- When a file is deleted, its metadata is marked as unused, but metadata remains
+- Read metadata entries that are marked as deleted and extract the data from any clusters it points to
+
+<br>
+
+**Carving Method**
+- If the metadata entry has been resused, the data may still reside on disk, but we have to search for it
+- Use known file signatures to find the start, then extract the data to a known file footer or to reasonable size limit
+
+<br>
+
+**Files to Target**
+- Link Files
+- Jumplists
+- Recycle Bin
+- Web History
+- Prefetch
+- Binaries
+- Archives
+- Office Docs
+- CAD Drawings
+- Email Stores
+- Images
+- Videos
+
+<br>
+
+### File Recovery via Metadata Method
+- Extract deleted files individually with icat
+
+```icat -r <image> inode```  
+
+- Extract all deleted files with ```tsk_recover```  
+
+```tsk_recover <image> <output-directory>```  
+
+- Multiple forensic tools can locate MFT entries marked deleted and allow us to export (FTK Imager)
+
+<br>
+
+### File Recovery via Carving Method
+- PhotoRec is an excellent free file carver
+- Runs on Windows, Linux, and Mac
+- Provides signatures for 300+ file types
+- Leverages metadata from carved files
+- [PhotoRec](https://www.cgsecurity.org/wiki/PhotoRec)
+
+<br>
+
+### Recovering Deleted Volume Shadow Copy Snapshots
+- The ultimate files to recover -- VSS files
+- Shadow copy files from the System Volume Information folder can be recovered
+- vss_carver.py carves and recreates volumeshadow snapshots from disk images
+- [Deleted Shadow Copies](http://www.kazamiya.net/en/DeletedSC)
+- [Black Hat Presentation](https://i.blackhat.com/us-18/Thu-August-9/us-18-Kobayashi-Reconstruct-The-World-From-Vanished-Shadow-Recovering-Deleted-VSS-Snapshots.pdf)
+
+<br>
+
+- Step 1: Use vss_carver against the raw image
+
+```vss_carver -t RAW -i /mnt/ewf_mount/ewf1 -o 0 -c ~/vsscarve-basefile/catalog -s ~/vsscarve-basefile/store```  
+
+- Step 2: Review (and possibly reorder) recovered VSCs
+
+```vss_catalog_manipulator list ~/vsscarve-basefile/catalog```  
+
+- Step 3: Present recovered VSCs as raw disk images
+
+```vshadowmount -o 0 -c ~/vsscarve-basefile/catalog -s ~/vsscarve-basefile/store /mnt/ewf_file/ewf1 /mnt/vsscarve_basefile/```  
+
+- Step 4: Mount all logical filesystems of snapshot
+
+```cd /mnt/vsscarve_basefile/```  
+```for i in vss*; do mountwin $i /mnt/shadowcarve_basefile/$i; done```  
+
+<br>
+
+### Stream Carving for Event Log and File System Records
+- Potential to recover several important record types
+- NTFS:
+  - MFT
+  - $UsnJrnl
+  - $I30
+  - $ LogFile
+- Event log EVTX records
+- Bulk extractor is fast
+  - bulk_extractor-rec
+- [Bulk Extractor](https://github.com/simsong/bulk_extractor/wiki)
+- [Bulk Extractor with Record Carving](https://www.kazamiya.net/en/bulk_extractor-rec)
+
+<br>
+
+### Carving for Strings
+- [bstrings](https://github.com/EricZimmerman/bstrings)
+
+```bstrings -f image.dd.001 --lr bitlocker``` (Find BitLocker Key)
+
+- [Autopsy Keyword Search and Indexing](https://www.sleuthkit.org/autopsy/keyword.php)
 
 
 
