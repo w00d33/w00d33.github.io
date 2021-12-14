@@ -230,6 +230,31 @@
     + [The Zone Identifier ADS -  Evidence of Download](#the-zone-identifier-ads----evidence-of-download)
     + [Filenames](#filenames)
     + [NTFS Directory Attributes](#ntfs-directory-attributes)
+    + [Parsing I30 Directory Indexes](#parsing-i30-directory-indexes)
+    + [File System Jounraling Overview](#file-system-jounraling-overview)
+    + [$LogFile Provides File System Resilience](#-logfile-provides-file-system-resilience)
+    + [UsnJrnl](#usnjrnl)
+    + [Common Activity Patterns in the Journals](#common-activity-patterns-in-the-journals)
+    + [Useful Filter and Searches in the Journals](#useful-filter-and-searches-in-the-journals)
+    + [LogFileParser for $LogFile Analysis](#logfileparser-for--logfile-analysis)
+    + [MFTECmd for $UsnJrnl Analysis](#mftecmd-for--usnjrnl-analysis)
+    + [NTFS: What Happens When a File is Deleted?](#ntfs--what-happens-when-a-file-is-deleted-)
+  * [Advanced Evidence Recovery](#advanced-evidence-recovery)
+    + [SDelete](#sdelete)
+    + [BCWiper](#bcwiper)
+    + [Eraser](#eraser)
+    + [Cipher](#cipher)
+    + [Registry Key/Value "Records" Recovery](#registry-key-value--records--recovery)
+    + [Finding Fileless Malware in the Registry](#finding-fileless-malware-in-the-registry)
+    + [File Recovery](#file-recovery)
+    + [File Recovery via Metadata Method](#file-recovery-via-metadata-method)
+    + [File Recovery via Carving Method](#file-recovery-via-carving-method)
+    + [Recovering Deleted Volume Shadow Copy Snapshots](#recovering-deleted-volume-shadow-copy-snapshots)
+    + [Stream Carving for Event Log and File System Records](#stream-carving-for-event-log-and-file-system-records)
+    + [Carving for Strings](#carving-for-strings)
+  * [Defensive Coutermeasures](#defensive-coutermeasures)
+    + [Leverage File System History](#leverage-file-system-history)
+    + [Level Up on Visibility](#level-up-on-visibility)
 
 <br>
 
@@ -4699,10 +4724,30 @@ mftecmd.exe -f E:\C\$Extend\$J --csv G:\nfts --csvf mftecmd-usnjrnl.csv
 
 - [Autopsy Keyword Search and Indexing](https://www.sleuthkit.org/autopsy/keyword.php)
 
+<br>
 
+## Defensive Coutermeasures
 
+### Leverage File System History
+- Ensure Volume Snapshots are enabled
+  - Disable "ScopeSnapshots"
+  - Increase reserved size for snapshots
+  - Consider VSC scheduled tasks to increase frequency
+- Increase NTFS journal sizes:
+  - $LogFile: default size is 64MB
+  - $UsnJrnl: typical size is 32MB; some servers are 512MB
+    - $UsnJrnl is preferred due to more efficient logging
+- Monitor for suspicious file system activity
+  - fsutil, vssadmin, wmic, shadowcopym win32_shadowcopy
 
+<br>
 
+### Level Up on Visibility
+- Log
+  - Forward
+- Deploy enhanced logging configurations
+  - PowerShell and Windows audit policy improvements
+  - EDR technology such as sysmon
 
 
 <script src="https://unpkg.com/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js"></script>
