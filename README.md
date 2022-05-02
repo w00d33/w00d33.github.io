@@ -4767,12 +4767,14 @@ mftecmd.exe -f E:\C\$Extend\$J --csv G:\nfts --csvf mftecmd-usnjrnl.csv
 - Username (If proxy authentication used)
 - MIME Type (Given by the Originating Server)
 
+<br>
+
 ### Convert Timestamps
 ```date -d @1573137112.368```
 
 <br>
 
-To UTC
+To UTC  
 ```date -u -d @1573137112.368```
 
 <br>
