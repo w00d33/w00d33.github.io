@@ -4767,6 +4767,54 @@ mftecmd.exe -f E:\C\$Extend\$J --csv G:\nfts --csvf mftecmd-usnjrnl.csv
 - Username (If proxy authentication used)
 - MIME Type (Given by the Originating Server)
 
+### Convert Timestamps
+```date -d @1573137112.368```
+
+<br>
+
+To UTC
+```date -u -d @1573137112.368```
+
+<br>
+
+Convert a lot of timestamps at once
+```
+sudo cat /var/log/squid/access.log |
+awk '{$1=strftime("%F %T", $1, 1);
+print $0}'
+```
+
+<br>
+
+### Threat Hunt Process
+- Plan
+- Collect Evidence
+- Form Hypothesis (Likely a broad one)
+- Analyze Evidence
+- Support/refute/refine hypothesis
+  - Repeat until stable
+
+<br>
+
+### Uniq Domain Counts
+```
+grep-v "\"CONNECT " access.log |
+awk '{ print $7 }' |
+awk -f/ '{ print $3 }' |
+sort | uniq -c | sort -nr
+```
+
+<br>
+
+### Google Auto Complete
+```
+grep google.com access.log | wc -l
+
+grep google.com access.log | grep complete | wc -l
+
+grep google.com access.log | grep complete | less
+```
+
 
 
 
