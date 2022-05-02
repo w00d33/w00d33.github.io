@@ -255,7 +255,7 @@
   * [Defensive Coutermeasures](#defensive-coutermeasures)
     + [Leverage File System History](#leverage-file-system-history)
     + [Level Up on Visibility](#level-up-on-visibility)
-
+- [Network Forensics](#network-forensics)
 <br>
 
 ---
@@ -4748,6 +4748,10 @@ mftecmd.exe -f E:\C\$Extend\$J --csv G:\nfts --csvf mftecmd-usnjrnl.csv
 - Deploy enhanced logging configurations
   - PowerShell and Windows audit policy improvements
   - EDR technology such as sysmon
+
+<br>
+
+# Network Forensics
 
 
 <script src="https://unpkg.com/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js"></script>
