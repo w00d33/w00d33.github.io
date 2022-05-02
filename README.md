@@ -256,6 +256,7 @@
     + [Leverage File System History](#leverage-file-system-history)
     + [Level Up on Visibility](#level-up-on-visibility)
 - [Network Forensics](#network-forensics)
+
 <br>
 
 ---
@@ -4752,6 +4753,34 @@ mftecmd.exe -f E:\C\$Extend\$J --csv G:\nfts --csvf mftecmd-usnjrnl.csv
 <br>
 
 # Network Forensics
+
+## Web Proxy Data
+
+### Common Log Fields
+- UNIX Timestamp
+- Response Time
+- Requestor IP (Layer 3 or X Forwarded For)
+- Cache Status & HTTP Status Code (Cache or Retrieved)
+- Reply Size (Bytes)
+- Request Method (GET, POST, etc.)
+- URL Requested
+- Username (If proxy authentication used)
+- MIME Type (Given by the Originating Server)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="https://unpkg.com/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js"></script>
