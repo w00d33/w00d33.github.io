@@ -4817,6 +4817,55 @@ grep google.com access.log | grep complete | wc -l
 grep google.com access.log | grep complete | less
 ```
 
+<br>
+
+## HTTPS
+
+### Request Componenets
+
+- OPTIONS: Allows the client to query the server for requirements or capabilities
+- HEAD: Identical to GET, but tells server to only return resulting headers for the request
+- PUT: Requests that the serer create a resource at the specified location, containing the data supplied in the request
+- DELETE: Requests that the server remove a resource at the specified location
+- TRACE: Used in troubleshooting a request across multiple proxy srevers -- this is not common and is generally disabled on servers
+- CONNECT: Requests that a proxy switch to a tunnel, such as with SSL/TLS encryption
+
+<br>
+
+Notes:
+- Other specialized protocols such as WebDAV user their own methods as well
+- X-Forwarded-For: a header that indicates the original source of the rquest in the event that multiple proxy servers handled the request
+
+<br>
+
+### Response Codes
+- **100, Continue**: After the serer recieves the headers for a request, this directs the client to proceed
+- **200, OK**: Possibly the most common value, indicates the server was able to fufill the request with errors
+- **301, Moved Permanently**: The server provides a new URL for the request resource and the client then ostensibly makes that request. "Permanent" means the original request should assumed outdated.
+- **302, Found**: In practice, a temporary relocation, althouhg this is not strictly in compliance with the standard
+- **304, Not Modified**: Indicates the request resource has not changed since it was last requested
+- **400, Bad Syntax**: The request was somehow syntactically incorrect
+- **401, Unauthorized**: Client mus authenticate before the response can be given
+- **403, Forbidden**: Request was valid, but client is not permitted access (regardless of authentication)
+- **404, Not Found**: Requested resource does not exist
+- **407, Proxy Authentication Required**: Like 401, but for the proxy server
+- **500, Internal Server Error**: Generic Server Error Message.
+- **503, Service Unavailable**:, Server is overloaded or undergoing maintenance.
+- **507, Network Authentication Required**: Client must authenticate to gain access-used by captive proxies such as at Wi-Fi hotspots.
+
+<br>
+
+Notes
+- A long bout of 400-series return codes from a single IP address may suggest recon
+- A sequence of 500-series return codes against a search form followed by a 200 response and a lot of HTTP POST requests could be SQL injection attempt and success, followed by post-compromise operations
+
+<br>
+
+### Response Components
+
+
+
+
 
 
 
