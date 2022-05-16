@@ -4866,7 +4866,16 @@ Notes
   - ```Connection: Keep-Alive```
 - Server stops using  currect TCP session
   - ```Connection: Close```
+- Server inidcates its software using ```Server``` field
+  - ```Server: Apache/2```
+  - ```Server: Cloudflare-nginx```
+  - ```Server: Microsoft-IIS/8.0```
+- Server returns the size, data type, encoding information, as well as the application that should be used to render the response in the ```Content-*``` header
+  - ```Content-Length: 17962```
+  - ```Content-Type: text/html; charset=utf-8```
+  - ```Content-Encoding: gzip```
 
+  
 
 
 
