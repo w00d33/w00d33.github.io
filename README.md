@@ -4862,7 +4862,10 @@ Notes
 <br>
 
 ### Response Components
-
+- Server contiues using current TCP session
+  - ```Connection: Keep-Alive```
+- Server stops using  currect TCP session
+  - ```Connection: Close```
 
 
 
