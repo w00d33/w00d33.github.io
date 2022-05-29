@@ -4875,7 +4875,47 @@ Notes
   - ```Content-Type: text/html; charset=utf-8```
   - ```Content-Encoding: gzip```
 
-  
+<br>
+
+### Useful Fields
+- Data Extracted from Compromised Systems (POST)
+- User-Agent String can build Activity Profiles
+  - Malware may user User-Agent to indicate version
+- Basic Auth is easily reversed
+  - Authorization: Basic 
+- URIs show a subjects activity
+  - Requested URL, Referer, Location (Redirect)
+
+<br>
+
+**Google Analytics Cookies**
+- track visitors source, path, and history
+- Include very useful timestamps and counters
+- Long-living: 2yr, 30 min, 6 mo rolling retention periods
+
+<br>
+
+### HTTP2
+- Sent via TLS
+- Compressed headers and tags
+- Fully multiplexed
+  - Multiple requests per message
+  - Parts of multiple responses per message
+- Servers can force "push" objects to browsers
+  - No browser indication that object was not requested
+
+<br>
+
+**SIFT**
+Display the time, request method, hostname, requested URI, and User-Agent string from the contents of a pcap file
+```tshark -n -C no_desegment_tcp -r example.pcap -T fields -e frame.time -e http.request.method -e http.host -e http.request.uri -e http.user_agent -Y 'http.request' > /path/to/output/useragent_derived.log```
+
+
+
+
+
+
+
 
 
 
