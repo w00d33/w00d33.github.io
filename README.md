@@ -4907,8 +4907,10 @@ Notes
 <br>
 
 **SIFT**  
-Display the time, request method, hostname, requested URI, and User-Agent string from the contents of a pcap file  
-```tshark -n -C no_desegment_tcp -r example.pcap -T fields -e frame.time -e http.request.method -e http.host -e http.request.uri -e http.user_agent -Y 'http.request' > /path/to/output/useragent_derived.log```  
+- Display the time, request method, hostname, requested URI, and User-Agent string from the contents of a pcap file  
+  - ```
+  tshark -n -C no_desegment_tcp -r example.pcap -T fields -e frame.time -e http.request.method -e http.host -e http.request.uri -e http.user_agent -Y 'http.request' > /path/to/output/useragent_derived.log
+```  
 
 
 
