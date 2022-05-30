@@ -4908,9 +4908,25 @@ Notes
 
 **SIFT**  
 - Display the time, request method, hostname, requested URI, and User-Agent string from the contents of a pcap file  
-  - ```tshark -n -C no_desegment_tcp -r example.pcap -T fields -e frame.time -e http.request.method -e http.host -e http.request.uri -e http.user_agent -Y 'http.request' > /path/to/output/useragent_derived.log```  
-
-
+  - ```tshark -n -C no_desegment_tcp -r example.pcap -T fields -e frame.time -e http.request.method -e http.host -e http.request.uri -e http.user_agent -Y 'http.request' > /path/to/output/useragent_derived.log```
+- Determine frequency each unique User-Agent String appears within log file
+  - ```cat useragent_derived.log | awk -F"\t" '{print $5}' | sort | uniq -c | sort -nr```
+- Determine what HTTP request methods and host values are associated with the User-Agent strings
+  - ```grep "<%USER-AGENT_SUBSTRING%>" useragent_derived.log |  awk -F"\t" '{print $2,$3}' | sort | uniq -c | sort -nr```
+  - ```grep "<%USER-AGENT_SUBSTRING%>" useragent_derived.log |  awk -F"\t" '{print $4}' | sort | uniq -c | sort -nr```
+  - ```grep "Firefox/15.0" useragent_derived.log | awk -F"\t" '{print $2,$3}' | sort | uniq -c | sort -nr```
+  - ```grep "Firefox/15.0" useragent_derived.log | awk -F"\t" '{print $4}' | sort | uniq -c | sort -nr```
+  - ```grep "MSIE 8.0" useragent_derived.log | awk -F"\t" '{print $2,$3}' | sort | uniq -c | sort -nr```
+  - ```grep "MSIE 8.0" useragent_derived.log | awk -F"\t" '{print $4}' | sort | uniq -c | sort -nr```
+- Breakdown PCAPs contents by protocol
+  - ```tshark -n -C no_desegment_tcp -r example.pcap -q -z io,phs```
+- Determine First and Last Seen Times for User Agent
+ - ```tshark -n -C no_desegment_tcp -r example.pcap -T fields -e frame.time -Y 'http.user_agent contains "Firefox/15.0"' | head -n 1```
+ - ```tshark -n -C no_desegment_tcp -r example.pcap -T fields -e frame.time -Y 'http.user_agent contains "Firefox/15.0"' | tail -n 1```
+ - ```tshark -n -C no_desegment_tcp -r example.pcap -T fields -e frame.time -Y 'http.user_agent contains "MSIE 8.0"' | head -n 1```
+ - ```tshark -n -C no_desegment_tcp -r example.pcap -T fields -e frame.time -Y 'http.user_agent contains "MSIE 8.0"' | tail -n 1```
+ - Determine time between key presses within each search
+ - ```tshark -n -C no_desegment_tcp -r 10_3_59_127.pcap -T fields -e frame.time_delta_displayed -e frame.time -e http.request.uri -Y 'http.user_agent contains "MSIE 8.0" and http.request.uri contains "sugexp"'```
 
 
 
