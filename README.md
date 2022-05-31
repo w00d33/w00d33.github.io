@@ -4906,7 +4906,7 @@ Notes
 
 <br>
 
-**SIFT**  
+**SIFT - Proxy Logs**  
 - Display the time, request method, hostname, requested URI, and User-Agent string from the contents of a pcap file  
   - ```tshark -n -C no_desegment_tcp -r example.pcap -T fields -e frame.time -e http.request.method -e http.host -e http.request.uri -e http.user_agent -Y 'http.request' > /path/to/output/useragent_derived.log```
 - Determine frequency each unique User-Agent String appears within log file
@@ -4925,18 +4925,148 @@ Notes
  - ```tshark -n -C no_desegment_tcp -r example.pcap -T fields -e frame.time -Y 'http.user_agent contains "Firefox/15.0"' | tail -n 1```
  - ```tshark -n -C no_desegment_tcp -r example.pcap -T fields -e frame.time -Y 'http.user_agent contains "MSIE 8.0"' | head -n 1```
  - ```tshark -n -C no_desegment_tcp -r example.pcap -T fields -e frame.time -Y 'http.user_agent contains "MSIE 8.0"' | tail -n 1```
- - Determine time between key presses within each search
+- Determine time between key presses within each search
  - ```tshark -n -C no_desegment_tcp -r 10_3_59_127.pcap -T fields -e frame.time_delta_displayed -e frame.time -e http.request.uri -Y 'http.user_agent contains "MSIE 8.0" and http.request.uri contains "sugexp"'```
 
+ <br>
 
+### HTTP Log Formats
+- Apache
+  - NCSA Common, NCSA Common+VHost, W3C Extended/Combined
+  - Optional seperate Referer, User-Agent logs
+  - Customizable with format strings
+  - Selective use of "mod forensic" request logging
+- IIS NCSA
+  - NCSA Common, W3C Extended, IIS
+  - Central Binary Logging, ODBC database
+  - Customizable with field names
 
+<br>
 
+### NCSA Common Format
+- Requesting Hostname/IP
+- Requesting username (usually"-")
+- Authenticated user
+- Time request received
+- Request Method, URI, including query string, and protocol
+- Status code of last request (incl. redirects)
+- Size of requested object (excl. headers)
 
+<br>
 
+### W3C Extended/Combined Format
+- Same NCSA Common Fields
+- HTTP Referer header string
+  - Can help characterize suspicious traffic
+- HTTP User-Agent header string
+  - May identify malicious utilities or forged traffic
 
+<br>
 
+### IIS Log File Format
+- Requesting IP
+- Authenticated User
+- Date & Time
+- Instance Name, server name, server IP
+- Milliseconds to serve
+- Bytes in request
+- Bystes sent in response
+- HTTP status code
+- Windows return code
+- HTTP request method
+- Requested resource
+- HTTP GET request parameters
 
+<br>
 
+### IIS Centralized Binary Logging ODBC
+- Highly efficient formats for large/busy servers
+- CBL sotres in local file, ODBC uses SQL Server
+- Require querying and parsing to get human readable data
+- Microsoft Log Parser is excellent tool for this
+
+<br>
+
+### HTTP Log File Analysis Methods
+- Microsoft Log Parser provides SQL-like powering text and binary files of all kinds
+- SOF-ELK natively handles NCSA and W3C HTTP formats
+- Database backend natively handles SQL Ginsu
+
+<br>
+
+### Investigative Value of HTTP Logs
+- Identify probing for vulnerable websites
+- Identify SQL injection attempts/successes
+- Determine a known-bad IP accessed
+- Find Remote Admin Tools (RATs) in use
+- Track attackers actions using RAT
+  - Reconstruct uploaded malware
+
+<br>
+
+## DNS
+
+### DNS Basics
+- PTR: Reverse IP lookup
+  - 172.16.5.14 lookup becomes 14.5.16.172.in-addr.arpa PTR query
+- NXDOMAIN indicates nonexistent domain or hostname
+- Stateless: uses transaction ID field
+
+<br>
+
+### DNS in Network Forensics and Incident Response
+- Should not be fully outsourced to 8.8.8.8
+- Clients should use internal resolvers
+  - Internal resolvers forward requests outside
+  - Block clients from direct external DNS access
+
+<br>
+
+### Fast Flux DNS Single
+- Rapidly changing IP addresses to thwart blocking
+  - Typically, low TTLs; many A records per response
+
+<br>
+
+### Fast Flux Double
+- Similar to "single"
+- Also uses compromised hosts for the NS record it returns
+- First tier of compromised hosts act as DNS proxies
+- Still contain low TTL, A records
+
+<br>
+
+### Detecting Fast Flux DNS
+- DNS Response TTL less than 300
+- DNS Answers greater than 12
+- Recently Registered Domains
+
+<br>
+
+## Domain Generation Algorithms
+- Uses seed value (usually date) for algorithm to create many possible C2 domains
+- Identify via heuristics, historical norms, threat intel
+  - Large amount of NXDOMAIN responses
+
+<br>
+
+### DNS over Everything
+- DNS over TLS (Dot), DNS over HTTPs (DOH)
+- DoH
+  - HTTPs traffic to name servers
+
+<br>
+
+### Punycode
+- A puny-encoded hostname starts with "xn--" followed by asci chararcters in the hostnname, then another "-"
+
+<br>
+
+## Network Security Monitoring
+- Zeek
+  - community-id.py
+    - Hashes source+dest IP addresses+ports, Layer 4 protocol
+    - SHA1 hash of non-directional flow event
 
 
 
