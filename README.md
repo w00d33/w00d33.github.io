@@ -5068,6 +5068,76 @@ Notes
     - Hashes source+dest IP addresses+ports, Layer 4 protocol
     - SHA1 hash of non-directional flow event
 
+<br>
+
+### SIFT - DNS Logs
+- Determine how large the dataset is
+  - ```zcat 2019-12-*/dns.*.gz | wc -l```
+- Determine timeframe
+  - ```zcat 2019-12-09/dns.17\:00\:00-18\:00\:00.log.gz | head -n 1 | jq -cr '.ts |= todate | .ts'```
+  - ```zcat 2019-12-10/dns.14\:00\:00-15\:00\:00.log.gz | tail -n 1 | jq -cr '.ts |= todate | .ts'```
+- Examine the first record from any of the DNS log
+  - ```zcat 2019-12-09/dns.21\:00\:00-22\:00\:00.log.gz | head -n 1 | jq '.'```
+
+<br>
+
+### Baseline DNS Data
+- Distrobution of Response Codes
+  - ```zcat 2019-12-*/dns.*.gz | jq -r '.rcode_name' | sort | uniq -c | sort -nr | head -n 20```
+    - NOERROR: Normal Response
+    - NXDOMAIN: A hostname on a nonexistent domain was requested
+    - SERVFAIL: A error occured on the server's end
+    - null: ANot a response code, but indicates no rcode_name field was present
+- Profile the query types that generated a successful response code
+  - ```zcat 2019-12-*/dns.*.gz | jq -r 'select(.rcode_name == "NOERROR") | .qtype_name' | sort | uniq -c | sort -nr```
+- Distrobution of query types that did not return successfully
+  - ```zcat 2019-12-*/dns.*.gz | jq -r 'select(.rcode_name != "NOERROR") | .qtype_name' | sort | uniq -c | sort -nr```
+- For each query type, what were the response codes
+  - ```zcat 2019-12-*/dns.*.gz | jq -cr 'select(.rcode_name != "NOERROR") | { qtype_name, rcode_name }'  | sort | uniq -c | sort -nr
+```
+- Top 20 queried hostnames
+  - ```zcat 2019-12-*/dns.*.gz | jq -r 'select(.rcode_name == "NOERROR") | .query' | sort | uniq -c | sort -nr | head -n 20```
+- Top 20 queried hostnames that did not return successfully
+  - ```zcat 2019-12-*/dns.*.gz | jq -r 'select(.rcode_name != "NOERROR") | .query' | sort | uniq -c | sort -nr | head -n 20```
+
+<br>
+
+Notes:
+- High Number of NXDOMAIN
+- Filter out PTR Records for further analysis
+- Compare list of top queried hostnames to previoud periods
+  - Identify hostnames that became popular for a short period of time
+- SERVFAIL responses could be of interest
+
+<br>
+
+### Identify Malicious/Suspicious NXDOMAIN Activty using DNS Logs
+- Examine the full set of DNS queries that resulted in an NXDOMAIN response
+  - ```zcat 2019-12-*/dns.*.gz | jq -r 'select(.rcode_name == "NXDOMAIN") | .query' | sort | uniq -c | sort -nr```
+- What host exibited activity?
+  - ```zcat 2019-12-*/dns.*.gz | jq -r 'select(.query == "dinnernotice.net") | ."id.orig_h"' | sort | uniq -c | sort -nr```
+- Calculate time in between events
+
+<br>
+
+### Identify Malicious/Suspicious DNS Activity Using Threat Intelligence
+- Hostnames associated with IP address
+  - ```zgrep -h 209.160.65.66 2019-12-*/dns.*.gz | jq -cr '.query'```
+- See hosts associated with hostname
+  - ```zcat 2019-12-*/dns.*.gz | jq -cr 'select(.query == "api.roherewharewha.com") | ."id.orig_h"' | sort | uniq -c | sort -nr```
+-  Observed Time Frame
+  - ```zgrep -h api.roherewharewha.com 2019-12-*/dns.*.gz | jq -cr 'select(."id.orig_h" == "172.16.4.4") | .ts |= todate | { ts, "id.orig_h" }' | head -n 1```
+  - ```zgrep -h api.roherewharewha.com 2019-12-*/dns.*.gz | jq -cr 'select(."id.orig_h" == "172.16.4.4") | .ts |= todate | { ts, "id.orig_h" }' | tail -n 1```
+
+<br>
+
+
+
+
+
+
+
+
 
 
 
