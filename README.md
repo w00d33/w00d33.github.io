@@ -5131,6 +5131,39 @@ Notes:
 
 <br>
 
+## Netflow
+
+- HTTP/80
+  - Client Volume: Small
+  - Server Volume: Large
+  - Connection Duration: Short
+  - Potential Activity: Typical HTTP Download
+- HTTPS/443
+  - Client Volume: Large
+  - Server Volume: Small
+  - Connection Duration: Various
+  - Potential Activity: HTTP POST Upload
+- HTTPS/443
+  - Client Volume: Large
+  - Server Volume: Large
+  - Connection Duration: Long
+  - Potential Activity: TLS VPN
+- SSH/22
+  - Client Volume: Small
+  - Server Volume: Large
+  - Connection Duration: Various
+  - Potential Activity: SCP Download
+- HTTP/22
+  - Client Volume: Various
+  - Server Volume: Various
+  - Connection Duration: Long
+  - Potential Activity: Command Shell
+- DNS/53
+  - Client Volume: Large
+  - Server Volume: Large
+  - Connection Duration: Long
+  - Potential Activity: Tunnel? Suspicious
+
 
 
 
