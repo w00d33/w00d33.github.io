@@ -5164,7 +5164,20 @@ Notes:
   - Connection Duration: Long
   - Potential Activity: Tunnel? Suspicious
 
+<br>
 
+## Open Source Tools
+
+- nfcapd
+  - Receives NetFlow v5 v7 v9, IPFIX, SFLOW
+- nfdump
+  -Reads binary input from nfcapd
+
+<br>
+
+## FTP
+- Command Channel (TCP/21)
+- Data Channels (>TCP/1023 or source port TCP/20)
 
 
 
