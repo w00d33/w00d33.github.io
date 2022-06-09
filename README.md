@@ -5166,18 +5166,87 @@ Notes:
 
 <br>
 
-## Open Source Tools
-
-- nfcapd
-  - Receives NetFlow v5 v7 v9, IPFIX, SFLOW
-- nfdump
-  -Reads binary input from nfcapd
+### Open Source Tools
+ - nfcapd
+  - Recieve netflow data (v5, v7, v9, IPFIX, SFLOW)
+  - parsed with nfdump
 
 <br>
 
 ## FTP
-- Command Channel (TCP/21)
-- Data Channels (>TCP/1023 or source port TCP/20)
+
+### Capturing FTP
+- port 20 or 21
+- src portrange 1024-65535 or src port 20
+- dst portrange 1024-65535 or dst port 20
+
+<br>
+
+### Tracking Lateral Movement with NetFlow
+- Identify the top five external source IP addresses overall and the top five internal source IP addresses from Client Subnets
+  - ```nfdump -R 2018/ -s srcip/bytes -n 5 'not src net 172.16.0.0/16'```
+  - ```nfdump -R 2018/ -s srcip/bytes -n 5 'src net 172.16.6.0/24 or src net 172.16.7.0/24'```
+- Perform a more in-depth review of the IP addresses associated with the anomalous external traffic
+  - ```nfdump -R 2018/ -s ip/bytes 'dst host 206.189.69.35'```
+- What protocols and ports were used
+  - ```nfdump -R 2018/ -s port:p/bytes 'host 206.189.69.35'```
+- Supporting Evidence
+  - Proxy Log Files
+  - DNS Evidence
+
+<br>
+
+### Tracking Lateral Movement with Netflow - Kibana
+- Top 5 External Source IP Addresses
+  - ```not source_ip:172.16.0.0/16```
+- Top 5 Internal Source IP addresses
+  - ```source_ip:172.16.6.0/24 or source_ip:172.16.7.0/24```
+- Search for traffic involving the heaviest-volume internal IP address identified
+- Characterize this traffic based on the identified IP address's peers
+- What can the ports or other observed characteristics such as timing suggest about the communications
+- Suggestions
+  - Large-volume sessions
+    - Sort by Total Bytes
+  - Long-running sessions
+    - Time Between Flow Start and Flow End
+  - Unanswered TCP connection requests
+    - Unanswered reflects only SYN
+  - Abruptly/uncleanly closed TCP connections
+      - Unclean shutdown includes RST flag
+  - Unknown internal IP addresses
+  - Geographic concentrations
+    - Destination Heatmap Visualizations
+  - Traffic spikes, troughs, or plateaus
+    - Time Series Graph
+
+<br>
+
+## Microsoft Protocols
+- SMB is also used for Group Policy distrobution & DCE/RPC
+
+<br>
+
+### Windows Architecture
+- Primary Communication/Protocols
+  - AD Authentication (Kerberos/NTLM)
+  - Server Message Block (Domain Auth and GPO)
+  - Outlook to Exchange Sync (RPC, RPC via HTTPS, TLS, IMAP, POP3)
+  - External Clients (VPN)
+  - Sharepoint (HTTP or HTTPS)
+
+<br>
+
+### SMB Analysis Goals
+- Attacker Actions
+  - Where have they been?
+  - What have they looked at?
+- Detect patterns of activity or targeting
+
+<br>
+
+### Filter and Review SMB
+- Apply Display Filter
+  - Hide GPO Sync, SMB Announcements, Browser Elections
 
 
 
